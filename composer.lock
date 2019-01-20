@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f6dd2220f331076134fd75307d86b56",
+    "content-hash": "14917fd808cf3da0d7c7c7e1b01e52fe",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1504,6 +1504,173 @@
                 "serialize"
             ],
             "time": "2019-01-14T14:45:33+00:00"
+        },
+        {
+            "name": "opis/events",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/events.git",
+                "reference": "97f34bd0334975580ee915661c79880061c1bf1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/events/zipball/97f34bd0334975580ee915661c79880061c1bf1a",
+                "reference": "97f34bd0334975580ee915661c79880061c1bf1a",
+                "shasum": ""
+            },
+            "require": {
+                "opis/routing": "^5.0",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\Events\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "Opis Events is a library that can be used for dispatching and intercepting events",
+            "homepage": "https://opis.io/events",
+            "keywords": [
+                "dispatch",
+                "event",
+                "events",
+                "handler"
+            ],
+            "time": "2018-10-16T12:30:43+00:00"
+        },
+        {
+            "name": "opis/pattern",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/pattern.git",
+                "reference": "a4f280ef775f9103da06de32693e245862810e76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/pattern/zipball/a4f280ef775f9103da06de32693e245862810e76",
+                "reference": "a4f280ef775f9103da06de32693e245862810e76",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\Pattern\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "A library that will help you defining patterns and build a valid regex for them",
+            "homepage": "http://opis.io",
+            "keywords": [
+                "opis",
+                "pattern",
+                "regex"
+            ],
+            "time": "2018-05-30T09:39:43+00:00"
+        },
+        {
+            "name": "opis/routing",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/routing.git",
+                "reference": "d2ed7264e807ff3784b7a28258d00791890f7e1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/routing/zipball/d2ed7264e807ff3784b7a28258d00791890f7e1a",
+                "reference": "d2ed7264e807ff3784b7a28258d00791890f7e1a",
+                "shasum": ""
+            },
+            "require": {
+                "opis/closure": "^3.0",
+                "opis/pattern": "^1.0",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\Routing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "A framework for building packages that need routing capabilities",
+            "homepage": "http://opis.io",
+            "keywords": [
+                "framework",
+                "opis",
+                "routing",
+                "serializable"
+            ],
+            "time": "2018-10-16T12:09:31+00:00"
         },
         {
             "name": "paragonie/random_compat",

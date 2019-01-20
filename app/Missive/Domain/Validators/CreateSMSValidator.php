@@ -11,7 +11,7 @@ class CreateSMSValidator implements Middleware
     protected $rules = [
         'from' => 'required',
         'to' => 'required',
-        // 'message' => 'required'
+        'message' => 'string|max:500'
     ];
 
     public function execute($command, callable $next)

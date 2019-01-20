@@ -2,20 +2,17 @@
 
 namespace App\Missive\Actions;
 
-use Illuminate\Http\Request;
 use App\Missive\{
-		Domain\Services\Commands\CreateSMSCommand,
-		Domain\Services\Handlers\CreateSMSHandler,
+		Responders\CreateSMSResponder,
 		Domain\Validators\CreateSMSValidator,
-		Responders\CreateSMSResponder
-	};
-use Joselfonseca\LaravelTactician\CommandBusInterface;
+		Domain\Services\Handlers\CreateSMSHandler,
+		Domain\Services\Commands\CreateSMSCommand
+};
+use App\App\CommandBus\Contracts\{ActionInterface, ActionAbstract};
 
-class CreateSMSAction
+class CreateSMSAction extends ActionAbstract implements ActionInterface
 {
-	protected $bus;
-
-	protected $request;
+	protected $fields = ['from', 'to', 'message'];
 
 	protected $command = CreateSMSCommand::class;
 
@@ -25,22 +22,4 @@ class CreateSMSAction
     	CreateSMSValidator::class,
     	CreateSMSResponder::class
 	];
-
-	public function __construct(CommandBusInterface $bus, Request $request)
-	{
-	    $this->bus = $bus;
-	    $this->request = $request;
-	}
-
-	public function __invoke()
-	{
-        $this->bus->addHandler($this->command, $this->handler);
-
-        return $this->bus->dispatch($this->command, $this->getData(), $this->middlewares);
-	}
-
-	protected function getData()
-	{
-		return $this->request->only('from', 'to', 'message');
-	}
 }

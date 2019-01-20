@@ -2,7 +2,9 @@
 
 namespace App\Missive\Domain\Services\Commands;
 
-class CreateSMSCommand
+use App\App\CommandBus\Contracts\CommandInterface;
+
+class CreateSMSCommand implements CommandInterface
 {
 	public $from;
 
