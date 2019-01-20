@@ -11,7 +11,7 @@ class CreateSMSResponder implements Middleware
     {        
         $retval = $next($command);
 
-        \Log::info("CreateSMSResponder::execute");
+        // \Log::info("CreateSMSResponder::execute");
         
         return (new CreateSMSResource($command))
             ->response()
