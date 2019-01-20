@@ -2,10 +2,12 @@
 
 namespace App\Missive\Domain\Services\Handlers;
 
+use App\App\CommandBus\Contracts\CommandInterface;
+use App\App\CommandBus\Contracts\HandlerInterface;
 use App\Missive\Domain\Repositories\SMSRepository;
 use App\Missive\Domain\Services\Commands\CreateSMSCommand;
 
-class CreateSMSHandler
+class CreateSMSHandler implements HandlerInterface
 {
 	protected $smss;
 
@@ -14,7 +16,7 @@ class CreateSMSHandler
     	$this->smss = $smss;
     }
 
-    public function handle(CreateSMSCommand $command)
+    public function handle(CommandInterface $command)
     {
     	$this->smss->create([
     		'from' => $command->from,
@@ -23,6 +25,6 @@ class CreateSMSHandler
     	]);
     	
         \Log::info("InitializeHandler::handle");
-        \Log::info($command->getArguments());
+        \Log::info($command->getProperties());
     }
 }

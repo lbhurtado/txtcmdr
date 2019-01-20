@@ -19,7 +19,7 @@ class CreateSMSCommand implements CommandInterface
  		$this->message = $message;
     }
 
-    public function getArguments()
+    public function getProperties():array
     {
     	return [
     		'from' => $this->from,
