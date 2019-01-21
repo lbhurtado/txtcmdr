@@ -2,8 +2,8 @@
 
 namespace App\Missive\Domain\Observers;
 
+use Opis\Events\EventDispatcher;
 use App\Missive\Domain\Models\SMS;
-use Opis\Events\{Event,EventDispatcher};
 use App\Missive\Domain\Events\{SMSEvent, SMSEvents};
 
 class SMSObserver
@@ -18,9 +18,8 @@ class SMSObserver
     public function created(SMS $sms)
     {
     	tap($this->dispatcher, function($dispatcher) use ($sms) {
-    		tap(new SMSEvent(SMSEvents::CREATED), function ($event) use ($sms, $dispatcher) {
-    			$event->setSMS($sms);
-    			$dispatcher->dispatch($event);
+    		tap(new SMSEvent(SMSEvents::CREATED), function (SMSEvent $event) use ($sms, $dispatcher) {
+    			$dispatcher->dispatch($event->setSMS($sms));
     		});			
     	});
     }

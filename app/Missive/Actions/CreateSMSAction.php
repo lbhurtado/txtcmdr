@@ -27,12 +27,9 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 
 	public function arrange()
 	{
-		// require base_path('routes/txtcmdr.php');
-
 		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
 		  	\Log::info($event->getSMS());
-		  	$this->txtcmdr = resolve('txtcmdr');
-		  	$this->txtcmdr->execute('test'); //> Hi
+		  	$this->txtcmdr->execute($event->getSMS()->message);
 		});
 	}
 }

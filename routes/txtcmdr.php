@@ -1,19 +1,11 @@
 <?php
 
-use App\App\Services\Router;
-
 $txtcmdr = resolve('txtcmdr');
 
-$txtcmdr->register('test', function () {
-	\Log::info('It Works, yeah, yeah yo!');
-    // return "Hi";
+$txtcmdr->register('@{area}', function (string $path, array $values) {
+	\Log::info("area = {$values['area']}");
 });
 
-$txtcmdr->register('call/mom', function () {
-    return "Dial 0123456789";
+$txtcmdr->register('{keyword} {name}', function (string $path, array $values) {
+	\Log::info($values);
 });
-
-// Invokig
-
-// $txtcmdr->execute('test'); //> Hi
-echo $txtcmdr->execute('call/mom'); //> Dial 0123456789

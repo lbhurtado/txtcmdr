@@ -1,0 +1,38 @@
+<?php
+
+namespace App\App\Providers;
+
+use Opis\Events\EventDispatcher;
+use App\App\Services\TextCommander;
+use Illuminate\Support\ServiceProvider;
+use App\Missive\Domain\{Models\SMS, Observers\SMSObserver};
+use App\Missive\Domain\Repositories\{SMSRepository, SMSRepositoryEloquent};
+
+class TextCommanderServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        SMS::observe(SMSObserver::class);
+    }
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind(SMSRepository::class, SMSRepositoryEloquent::class);
+        $this->app->singleton(EventDispatcher::class);
+        $this->app->singleton('txtcmdr', function ($app) {
+            return tap(new TextCommander(), function ($txtcmdr) {
+
+            });
+        });
+    }
+}

@@ -12,6 +12,8 @@ class SMSEvent extends Event
     public function setSMS(SMS $sms)
     {
         $this->sms = $sms;
+
+        return $this;
     }
     
     public function getSMS()

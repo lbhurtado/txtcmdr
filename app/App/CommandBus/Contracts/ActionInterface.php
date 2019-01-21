@@ -15,4 +15,6 @@ interface ActionInterface
 	function getMiddlewares():array;
 
 	function getData():array;
+
+	function arrange();
 }

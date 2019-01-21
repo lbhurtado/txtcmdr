@@ -5,13 +5,13 @@ namespace App\App\Services;
 use Opis\Pattern\RegexBuilder;
 use Psr\Container\ContainerInterface;
 
-class Router {
+class TextCommander {
     protected $builder;
     protected $routes = [];
 
     public function __construct()
     {
-        $this->builder = new RegexBuilder();
+        $this->builder = new RegexBuilder([RegexBuilder::REGEX_MODIFIER=>'i']);
     }
 
     public function register(string $route, callable $action): self
