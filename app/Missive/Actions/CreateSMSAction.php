@@ -25,13 +25,13 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	protected $middlewares = [
     	CreateSMSValidator::class,
     	CreateSMSResponder::class,
+    	// CreateSMSLogger::class,
 	];
 
 	public function setup()
 	{
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
-				\Log::info($sms);
 				$this->getService()->setMobile($sms->from);
 				$this->dispatchNow(new CreateContact($sms->from));
 				$this->dispatch(new ProcessCommand($sms->message));				
