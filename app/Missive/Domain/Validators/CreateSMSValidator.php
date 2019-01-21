@@ -9,19 +9,17 @@ use Validator;
 class CreateSMSValidator implements Middleware
 {
     protected $rules = [
-        'from' => 'required',
-        'to' => 'required',
+           'from' => 'required',
+             'to' => 'required',
         'message' => 'string|max:500'
     ];
 
     public function execute($command, callable $next)
     {
-        \Log::info("CreateSMSValidator::execute");
-
         $validator = Validator::make((array) $command, $this->rules);
+
         if ($validator->fails()) {
-            // throw new CommandValidationException($command, $validator);
-            throw new CreateSMSValidationException("hello");
+            throw new CreateSMSValidationException($command, $validator);
         }
 
         return $next($command);

@@ -28,7 +28,6 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	public function arrange()
 	{
 		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
-		  	\Log::info($event->getSMS());
 		  	$this->txtcmdr->execute($event->getSMS()->message);
 		});
 	}
