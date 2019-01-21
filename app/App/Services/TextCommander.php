@@ -6,7 +6,10 @@ use Opis\Pattern\RegexBuilder;
 use Psr\Container\ContainerInterface;
 
 class TextCommander {
+    protected $mobile;
+
     protected $builder;
+
     protected $routes = [];
 
     public function __construct()
@@ -52,5 +55,17 @@ class TextCommander {
 
         // Nothing matched
         return false;
+    }
+
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
     }
 }

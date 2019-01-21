@@ -4,6 +4,7 @@ namespace App\App\CommandBus\Contracts;
 
 use Illuminate\Http\Request;
 use Opis\Events\EventDispatcher;
+use App\App\Services\TextCommander;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\App\CommandBus\Contracts\ActionInterface;
 use Joselfonseca\LaravelTactician\CommandBusInterface;
@@ -38,7 +39,7 @@ abstract class ActionAbstract implements ActionInterface
 
 	public function __invoke()
 	{
-		$this->arrange();
+		$this->setup();
 
         $this->getBus()->addHandler(
 	        					$this->getCommand(), 
@@ -77,5 +78,15 @@ abstract class ActionAbstract implements ActionInterface
 		return $this->request->only($this->fields);
 	}
 
-	abstract public function arrange();
+	public function getDispatcher()
+	{
+		return $this->dispatcher;
+	}
+
+	public function getService(): TextCommander
+	{
+		return $this->txtcmdr;
+	}
+
+	abstract public function setup();
 }

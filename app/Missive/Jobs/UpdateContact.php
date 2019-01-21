@@ -6,20 +6,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Missive\Domain\Repositories\ContactRepository;
 
-class CreateContact
+class UpdateContact
 {
     use Dispatchable, Queueable;
 
     protected $mobile;
+
+    protected $name;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($mobile)
+    public function __construct($mobile, $name)
     {
         $this->mobile = $mobile;
+        $this->name = $name;
     }
 
     /**
@@ -29,6 +32,6 @@ class CreateContact
      */
     public function handle(ContactRepository $contacts)
     {
-        $contacts->updateOrCreate(['mobile' => $this->mobile]);
+        $contacts->updateOrCreate(['mobile' => $this->mobile], ['name' => $this->name]);
     }
 }

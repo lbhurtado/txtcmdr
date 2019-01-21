@@ -2,6 +2,8 @@
 
 namespace App\Missive\Actions;
 
+use App\App\Jobs\ProcessCommand;
+use App\Missive\Jobs\CreateContact;
 use App\Missive\{
 		Responders\CreateSMSResponder,
 		Domain\Validators\CreateSMSValidator,
@@ -11,8 +13,6 @@ use App\Missive\{
 use App\App\CommandBus\Contracts\{ActionInterface, ActionAbstract};
 use Opis\Events\{Event,EventDispatcher};
 use App\Missive\Domain\Events\{SMSEvent, SMSEvents};
-use App\Missive\Jobs\CreateContact;
-
 
 class CreateSMSAction extends ActionAbstract implements ActionInterface
 {
@@ -27,17 +27,15 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
     	CreateSMSResponder::class,
 	];
 
-	public function arrange()
+	public function setup()
 	{
-		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
-			$this->dispatchNow(new CreateContact($event->getSMS()->from));
-			// CreateContact::dispatch($event->getSMS()->from);
-		  	$this->txtcmdr->execute($event->getSMS()->message);
+		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
+			tap($event->getSMS(), function ($sms) {
+				\Log::info($sms);
+				$this->getService()->setMobile($sms->from);
+				$this->dispatchNow(new CreateContact($sms->from));
+				$this->dispatch(new ProcessCommand($sms->message));				
+			});
 		});
-	}
-
-	public function getRequest()
-	{
-		return $this->request;
 	}
 }
