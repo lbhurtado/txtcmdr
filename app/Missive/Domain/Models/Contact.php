@@ -4,6 +4,7 @@ namespace App\Missive\Domain\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Missive\Domain\Contracts\Mobile;
+use App\Charging\Domain\Traits\SpendsAirtime;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Missive\Domain\Contracts\MobileInterface;
@@ -15,7 +16,7 @@ use App\Missive\Domain\Contracts\MobileInterface;
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait;
+    use TransformableTrait, SpendsAirtime;
 
     /**
      * The attributes that are mass assignable.

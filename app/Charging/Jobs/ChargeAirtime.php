@@ -38,7 +38,7 @@ class ChargeAirtime implements ShouldQueue
     public function handle(ContactRepository $contacts)
     {
         tap($this->getOrigin(), function ($origin) {
-            $record = $origin->spendAirtime($this->availment);
+            $origin->spendAirtime($this->availment);
         });
     }
 
