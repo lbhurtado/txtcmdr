@@ -4,7 +4,6 @@ namespace App\Missive\Actions;
 
 use App\Missive\{
 		Responders\CreateSMSResponder,
-		Domain\Listeners\SMSEventSubscriber,
 		Domain\Validators\CreateSMSValidator,
 		Domain\Services\Handlers\CreateSMSHandler,
 		Domain\Services\Commands\CreateSMSCommand
@@ -24,14 +23,16 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	protected $middlewares = [
     	CreateSMSValidator::class,
     	CreateSMSResponder::class,
-    	// SMSEventSubscriber::class,
 	];
 
-	public function setup()
+	public function arrange()
 	{
-		// $this->dispatcher = new EventDispatcher();
-		// $this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
-		//   	\Log::info($event->getSMS());
-		// });
+		// require base_path('routes/txtcmdr.php');
+
+		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
+		  	\Log::info($event->getSMS());
+		  	$this->txtcmdr = resolve('txtcmdr');
+		  	$this->txtcmdr->execute('test'); //> Hi
+		});
 	}
 }

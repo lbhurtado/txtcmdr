@@ -25,6 +25,5 @@ class CreateSMSHandler implements HandlerInterface
     	]);
     	
         \Log::info("InitializeHandler::handle");
-        \Log::info($command->getProperties());
     }
 }

@@ -39,7 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapTxtCmdrCommands();
     }
 
     /**
@@ -68,5 +68,15 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
              ->middleware('api')
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Defines the BotMan "hears" commands.
+     *
+     * @return void
+     */
+    protected function mapTxtCmdrCommands()
+    {
+        require base_path('routes/txtcmdr.php');
     }
 }

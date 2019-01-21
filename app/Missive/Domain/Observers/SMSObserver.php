@@ -10,13 +10,9 @@ class SMSObserver
 {
 	protected $dispatcher;
 
-	public function __construct()
+	public function __construct(EventDispatcher $dispatcher)
 	{
-		$this->dispatcher = new EventDispatcher();
-
-		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
-		  	\Log::info($event->getSMS());
-		});
+        $this->dispatcher = $dispatcher;
 	}
 
     public function created(SMS $sms)

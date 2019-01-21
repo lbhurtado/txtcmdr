@@ -3,11 +3,14 @@
 namespace App\App\CommandBus\Contracts;
 
 use Illuminate\Http\Request;
+use Opis\Events\EventDispatcher;
 use App\App\CommandBus\Contracts\ActionInterface;
 use Joselfonseca\LaravelTactician\CommandBusInterface;
 
 abstract class ActionAbstract implements ActionInterface
 {
+	protected $txtcmdr;
+
 	protected $bus;
 
 	protected $request;
@@ -20,14 +23,20 @@ abstract class ActionAbstract implements ActionInterface
 
 	protected $middlewares;
 
-	public function __construct(CommandBusInterface $bus, Request $request)
+	protected $dispatcher;
+
+	public function __construct(CommandBusInterface $bus, EventDispatcher $dispatcher, Request $request)
 	{
+		$this->txtcmdr = app()->make('txtcmdr');
 	    $this->bus = $bus;
 	    $this->request = $request;
+	    $this->dispatcher = $dispatcher;
 	}
 
 	public function __invoke()
 	{
+		$this->arrange();
+
         $this->getBus()->addHandler(
 	        					$this->getCommand(), 
 	        					$this->getHandler()
@@ -64,4 +73,6 @@ abstract class ActionAbstract implements ActionInterface
 	{
 		return $this->request->only($this->fields);
 	}
+
+	abstract public function arrange();
 }
