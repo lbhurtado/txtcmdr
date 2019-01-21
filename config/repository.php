@@ -230,15 +230,15 @@ return [
         'rootNamespace' => 'App\\',
         'stubsOverridePath' => app()->path(),
         'paths'         => [
-            'models'       => 'Entities',
-            'repositories' => 'Repositories',
-            'interfaces'   => 'Repositories',
-            'transformers' => 'Transformers',
-            'presenters'   => 'Presenters',
-            'validators'   => 'Validators',
+            'models'       => 'Missive\\Domain\\Models',
+            'repositories' => 'Missive\\Domain\\Repositories',
+            'interfaces'   => 'Missive\\Domain\\Repositories',
+            'transformers' => 'Missive\\Domain\\Transformers',
+            'presenters'   => 'Missive\\Domain\\Presenters',
+            'validators'   => 'Missive\\Domain\\Validators',
             'controllers'  => 'Http/Controllers',
             'provider'     => 'RepositoryServiceProvider',
-            'criteria'     => 'Criteria'
+            'criteria'     => 'Missive\\Domain\\Criteria'
         ]
     ]
 ];

@@ -7,6 +7,7 @@ use App\App\Services\TextCommander;
 use Illuminate\Support\ServiceProvider;
 use App\Missive\Domain\{Models\SMS, Observers\SMSObserver};
 use App\Missive\Domain\Repositories\{SMSRepository, SMSRepositoryEloquent};
+use App\Missive\Domain\Repositories\{ContactRepository, ContactRepositoryEloquent};
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class TextCommanderServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(SMSRepository::class, SMSRepositoryEloquent::class);
+        $this->app->bind(ContactRepository::class, ContactRepositoryEloquent::class);
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {
             return tap(new TextCommander(), function ($txtcmdr) {

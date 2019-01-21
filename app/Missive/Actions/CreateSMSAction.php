@@ -11,6 +11,8 @@ use App\Missive\{
 use App\App\CommandBus\Contracts\{ActionInterface, ActionAbstract};
 use Opis\Events\{Event,EventDispatcher};
 use App\Missive\Domain\Events\{SMSEvent, SMSEvents};
+use App\Missive\Jobs\CreateContact;
+
 
 class CreateSMSAction extends ActionAbstract implements ActionInterface
 {
@@ -28,7 +30,14 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	public function arrange()
 	{
 		$this->dispatcher->handle(SMSEvents::CREATED, function ($event) {
+			$this->dispatchNow(new CreateContact($event->getSMS()->from));
+			// CreateContact::dispatch($event->getSMS()->from);
 		  	$this->txtcmdr->execute($event->getSMS()->message);
 		});
+	}
+
+	public function getRequest()
+	{
+		return $this->request;
 	}
 }

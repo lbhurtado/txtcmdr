@@ -4,11 +4,14 @@ namespace App\App\CommandBus\Contracts;
 
 use Illuminate\Http\Request;
 use Opis\Events\EventDispatcher;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use App\App\CommandBus\Contracts\ActionInterface;
 use Joselfonseca\LaravelTactician\CommandBusInterface;
 
 abstract class ActionAbstract implements ActionInterface
 {
+	use DispatchesJobs;
+	
 	protected $txtcmdr;
 
 	protected $bus;
