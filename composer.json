@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "league/pipeline": "^1.0",
         "opis/events": "^5.0",
+        "opis/string": "^1.5",
         "prettus/l5-repository": "^2.6"
     },
     "require-dev": {

@@ -70,6 +70,7 @@ $keywords = optional(true, function (){
 });
 
 $txtcmdr->register("{tag={$keywords}} {name}", function (string $path, array $parameters) {
+	$parameters['command'] = 'register';
 	(new Pipeline)
 	    ->pipe(new UpdateContactStage)
 	    ->pipe(new GuessContextAreaStage)

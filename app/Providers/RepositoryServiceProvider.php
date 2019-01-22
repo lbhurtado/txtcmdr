@@ -25,6 +25,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         // $this->app->bind(\App\Missive\Domain\Repositories\ContactRepository::class, \App\Missive\Domain\Repositories\ContactRepositoryEloquent::class);
         $this->app->bind(\App\Charging\Domain\Repositories\AirtimeRepository::class, \App\Charging\Domain\Repositories\AirtimeRepositoryEloquent::class);
+        $this->app->bind(\App\Campaign\Domain\Repositories\GroupRepository::class, \App\Campaign\Domain\Repositories\GroupRepositoryEloquent::class);
         //:end-bindings:
     }
 }
