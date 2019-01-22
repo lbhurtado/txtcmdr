@@ -3,13 +3,13 @@
 namespace App\App\Stages;
 
 use League\Pipeline\StageInterface;
-use App\Missive\Jobs\UpdateContact;
 
-class UpdateContactStage implements StageInterface
+class NotifyHQStage implements StageInterface
 {
     public function __invoke($parameters)
     {
-    	UpdateContact::dispatch($parameters);
+    	\Log::info('NotifyHQStage::__invoke');
+    	\Log::info($parameters);
 
     	return $parameters;
     }
