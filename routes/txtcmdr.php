@@ -54,9 +54,9 @@ $groups = optional(app(GroupRepository::class), function ($groups) {
 
 $txtcmdr->register("{message?}{command=&}{group?={$groups}}", function (string $path, array $parameters) {
 	(new Pipeline)
-	    ->pipe(new UpdateContactGroupStage)
+	    ->pipe(new UpdateContactGroupStage) //done
 	    ->pipe(new NotifyHQStage)
-	    ->pipe(new NotifyCommanderStage)
+	    ->pipe(new NotifyCommanderStage) 
 	    ->process($parameters)
 	    ;
 });

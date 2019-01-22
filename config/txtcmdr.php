@@ -14,4 +14,9 @@ return [
 			AirtimeKey::LOAD1000 => App\Charging\Domain\Classes\Availments\AvailLoad1000::class,
 		],
 	],
+    'notification' => [
+        'channels' => array_merge(['database'], env('SEND_NOTIFICATION', false)
+                                             ? [env('NOTIFICATION_CLASS', EngageSparkChannel::class)] 
+                                             : []),
+    ],
 ];
