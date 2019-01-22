@@ -1,6 +1,7 @@
 <?php
 
-use App\Missive\Jobs\UpdateContact;
+use League\Pipeline\Pipeline;
+use App\App\Stages\UpdateContactStage;
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -10,10 +11,11 @@ $txtcmdr->register('@{area}', function (string $path, array $values) {
 
 $keywords = getKeywords();
 
-$txtcmdr->register("{{$keywords}} {name}", function (string $path, array $values) use ($txtcmdr) {
-	$mobile = $txtcmdr->getSMS()->from;
-	UpdateContact::dispatch($mobile, $values['name']);
-	\Log::info($values);
+$txtcmdr->register("{{$keywords}} {name}", function (string $path, array $attributes) {
+	(new Pipeline)
+	    ->pipe(new UpdateContactStage)
+	    ->process($attributes)
+	    ;
 });
 
 function getKeywords()

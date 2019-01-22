@@ -3,6 +3,7 @@
 namespace App\Missive\Jobs;
 
 use Illuminate\Bus\Queueable;
+use App\App\Services\TextCommander;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Missive\Domain\Repositories\ContactRepository;
 
@@ -10,19 +11,16 @@ class UpdateContact
 {
     use Dispatchable, Queueable;
 
-    protected $mobile;
-
-    protected $name;
+    protected $attributes;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($mobile, $name)
+    public function __construct($attributes)
     {
-        $this->mobile = $mobile;
-        $this->name = $name;
+        $this->attributes = $attributes;
     }
 
     /**
@@ -30,8 +28,12 @@ class UpdateContact
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts)
+    public function handle(ContactRepository $contacts, TextCommander $txtcmdr)
     {
-        $contacts->updateOrCreate(['mobile' => $this->mobile], ['name' => $this->name]);
+        $contacts->updateOrCreate([
+            'mobile' => $txtcmdr->sms->from
+        ], [
+            'name' => $this->attributes['name']
+        ]);
     }
 }
