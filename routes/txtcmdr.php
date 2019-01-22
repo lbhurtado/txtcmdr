@@ -13,6 +13,7 @@ use App\App\Stages\GuessContextGroupStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\OnboardCommanderStage;
+use App\Campaign\Domain\Repositories\GroupRepository;
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -47,7 +48,11 @@ $txtcmdr->register("{campaign?={$campaigns}}{command=#}{tag?}", function (string
 	    ;
 });
 
-$txtcmdr->register('{message?}{command=&}{group?}', function (string $path, array $parameters) {
+$groups = optional(app(GroupRepository::class), function ($groups) {
+	return implode($groups->pluck('name')->toArray(), '|');
+});
+
+$txtcmdr->register("{message?}{command=&}{group?={$groups}}", function (string $path, array $parameters) {
 	(new Pipeline)
 	    ->pipe(new UpdateContactGroupStage)
 	    ->pipe(new NotifyHQStage)
@@ -56,7 +61,7 @@ $txtcmdr->register('{message?}{command=&}{group?}', function (string $path, arra
 	    ;
 });
 
-$txtcmdr->register('{message?}{command=@}{area?}', function (string $path, array $parameters) {
+$txtcmdr->register("{message?}{command=@}{area?}", function (string $path, array $parameters) {
 	(new Pipeline)
 	    ->pipe(new UpdateContactAreaStage)
 	    ->pipe(new NotifyHQStage)

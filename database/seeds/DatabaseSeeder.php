@@ -12,5 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AirtimeSeeder::class);
+        $this->call(GroupSeeder::class);
     }
 }
