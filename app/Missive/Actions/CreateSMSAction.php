@@ -2,12 +2,10 @@
 
 namespace App\Missive\Actions;
 
-use App\Charging\{
-		Jobs\ChargeAirtime,
-		Domain\Classes\AirtimeKey
-};
+use App\App\Facades\TxtCmdr;
 use App\App\Jobs\ProcessCommand;
 use App\Missive\Jobs\CreateContact;
+use App\Charging\Jobs\ChargeAirtime;
 use App\Missive\{
 		Responders\CreateSMSResponder,
 		Domain\Validators\CreateSMSValidator,
@@ -34,10 +32,12 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	{
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
-				$this->getService()->setMobile($sms->from);
-				$this->dispatchNow(new CreateContact($sms->from));
-				$this->dispatch(new ProcessCommand($sms->message));	
-				$this->dispatch(new ChargeAirtime($sms, AirtimeKey::SMS));			
+
+				TxtCmdr::setSMS($sms);
+
+				$this->dispatchNow(new CreateContact());
+				$this->dispatch(new ProcessCommand());	
+				$this->dispatch(new ChargeAirtime());			
 			});
 		});
 	}

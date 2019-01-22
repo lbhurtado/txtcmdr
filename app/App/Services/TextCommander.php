@@ -3,14 +3,16 @@
 namespace App\App\Services;
 
 use Opis\Pattern\RegexBuilder;
+use App\Missive\Domain\Models\SMS;
 use Psr\Container\ContainerInterface;
 
 class TextCommander {
-    protected $mobile;
 
     protected $builder;
 
     protected $routes = [];
+
+    public $sms;
 
     public function __construct()
     {
@@ -28,8 +30,10 @@ class TextCommander {
         return $this;
     }
 
-    public function execute(string $path)
+    public function execute(string $path = null)
     {
+        $path = $path ?? $this->sms->message;
+
         // We reverse the routes order, so the last registered
         // is the first called
         $ordered_routes = array_reverse($this->routes, true);
@@ -57,15 +61,15 @@ class TextCommander {
         return false;
     }
 
-    public function getMobile()
+    public function setSMS(SMS $sms)
     {
-        return $this->mobile;
-    }
-
-    public function setMobile($mobile)
-    {
-        $this->mobile = $mobile;
+        $this->sms = $sms;
 
         return $this;
+    }
+
+    public function getSMS()
+    {
+        return $this->sms;
     }
 }

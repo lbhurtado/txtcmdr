@@ -38,5 +38,8 @@ class TextCommanderServiceProvider extends ServiceProvider
 
             });
         });
+        $this->app->singleton(TextCommander::class, function ($app) {
+            return $app->make('txtcmdr');
+        });
     }
 }

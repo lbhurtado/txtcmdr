@@ -8,10 +8,15 @@ $txtcmdr->register('@{area}', function (string $path, array $values) {
 	\Log::info("area = {$values['area']}");
 });
 
-$regex = "keyword=abc|def";
-// $txtcmdr->register("{keyword=abc|def} {name}", function (string $path, array $values) use ($txtcmdr) {
-$txtcmdr->register("{{$regex}} {name}", function (string $path, array $values) use ($txtcmdr) {
-	$mobile = $txtcmdr->getMobile();
+$keywords = getKeywords();
+
+$txtcmdr->register("{{$keywords}} {name}", function (string $path, array $values) use ($txtcmdr) {
+	$mobile = $txtcmdr->getSMS()->from;
 	UpdateContact::dispatch($mobile, $values['name']);
 	\Log::info($values);
 });
+
+function getKeywords()
+{
+	return "keyword=abc|def";
+}
