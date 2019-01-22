@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Missive\Domain\{Models\SMS, Observers\SMSObserver};
 use App\Missive\Domain\Repositories\{SMSRepository, SMSRepositoryEloquent};
 use App\Missive\Domain\Repositories\{ContactRepository, ContactRepositoryEloquent};
-use App\Missive\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloquent};
+use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloquent};
 
 class TextCommanderServiceProvider extends ServiceProvider
 {

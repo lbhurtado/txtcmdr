@@ -2,6 +2,10 @@
 
 namespace App\Missive\Actions;
 
+use App\Charging\{
+		Jobs\ChargeAirtime,
+		Domain\Classes\AirtimeKey
+};
 use App\App\Jobs\ProcessCommand;
 use App\Missive\Jobs\CreateContact;
 use App\Missive\{
@@ -10,9 +14,8 @@ use App\Missive\{
 		Domain\Services\Handlers\CreateSMSHandler,
 		Domain\Services\Commands\CreateSMSCommand
 };
-use App\App\CommandBus\Contracts\{ActionInterface, ActionAbstract};
-use Opis\Events\{Event,EventDispatcher};
 use App\Missive\Domain\Events\{SMSEvent, SMSEvents};
+use App\App\CommandBus\Contracts\{ActionInterface, ActionAbstract};
 
 class CreateSMSAction extends ActionAbstract implements ActionInterface
 {
@@ -25,7 +28,6 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 	protected $middlewares = [
     	CreateSMSValidator::class,
     	CreateSMSResponder::class,
-    	// CreateSMSLogger::class,
 	];
 
 	public function setup()
@@ -34,7 +36,8 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 			tap($event->getSMS(), function ($sms) {
 				$this->getService()->setMobile($sms->from);
 				$this->dispatchNow(new CreateContact($sms->from));
-				$this->dispatch(new ProcessCommand($sms->message));				
+				$this->dispatch(new ProcessCommand($sms->message));	
+				$this->dispatch(new ChargeAirtime($sms, AirtimeKey::SMS));			
 			});
 		});
 	}

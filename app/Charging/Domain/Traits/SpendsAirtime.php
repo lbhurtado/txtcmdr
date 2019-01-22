@@ -4,12 +4,11 @@ namespace App\Charging\Domain\Traits;
 
 use Exception;
 use App\Charging\Domain\Models\Airtime;
-use App\Charging\Domain\Classes\AirtimeKey;
 use App\Charging\Domain\Formatters\CreditsFormatter;
 
 trait SpendsAirtime
 {
-	public function spendAirtime(AirtimeKey $availment)
+	public function spendAirtime($availment)
 	{
 		$airtime = optional($this->getMode($availment), function ($mode) {
 			return $mode->getAirtime();
@@ -41,7 +40,7 @@ trait SpendsAirtime
 		return (new CreditsFormatter($this->airtimes()->sum('credits')))->shorthand();
 	}
 
-	protected function getMode(AirtimeKey $availment)
+	protected function getMode($availment)
 	{
 		return (app(config('txtcmdr.airtime.availments')[$availment]));
 	}

@@ -4,9 +4,10 @@ namespace App\Charging\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Missive\Domain\Models\SMS;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Charging\Domain\Classes\AirtimeKey;
+// use App\Charging\Domain\Classes\AirtimeKey;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Missive\Domain\Repositories\ContactRepository;
@@ -17,6 +18,8 @@ class ChargeAirtime implements ShouldQueue
 
     protected $sms;
 
+    protected $contacts;
+
     protected $availment;
 
     /**
@@ -24,7 +27,7 @@ class ChargeAirtime implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(SMS $sms, AirtimeKey $availment)
+    public function __construct(SMS $sms, $availment)
     {
         $this->sms = $sms;
         $this->availment = $availment;
@@ -37,6 +40,8 @@ class ChargeAirtime implements ShouldQueue
      */
     public function handle(ContactRepository $contacts)
     {
+        $this->contacts = $contacts;
+
         tap($this->getOrigin(), function ($origin) {
             $origin->spendAirtime($this->availment);
         });
@@ -46,6 +51,6 @@ class ChargeAirtime implements ShouldQueue
     {
         $mobile = $this->sms->from;
 
-        return $this->contacts->withMobile($mobile);
+        return $this->contacts->findByField('mobile', $mobile)->first();
     }
 }
