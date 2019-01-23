@@ -2,6 +2,8 @@
 
 namespace App\App\Stages;
 
+use Log;
+use TxtCmdr;
 use Illuminate\Support\Arr;
 use League\Pipeline\StageInterface;
 use Opis\String\UnicodeString as wstring;
@@ -32,7 +34,7 @@ abstract class BaseStage implements StageInterface
 
     protected function getCommander()
     {
-        return \TxtCmdr::commander();
+        return TxtCmdr::commander();
     }
 
     protected function getNotification()
@@ -43,15 +45,15 @@ abstract class BaseStage implements StageInterface
     public function __invoke($parameters)
     {
     	$this->setParameters($parameters);
-
-    	$this->execute();
         
-        \Log::info(wstring::from(static::class)
+        Log::info(wstring::from(static::class)
                                 ->append('::')
                                 ->append(__METHOD__)
                                 ->append(json_encode($this->getParameters()))
         );
 
+    	$this->execute();
+        
     	return $this->getParameters();
     }
 

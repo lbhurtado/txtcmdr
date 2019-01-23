@@ -2,9 +2,13 @@
 
 namespace App\App\Services;
 
+use DB;
+use Log;
+use Exception;
 use Opis\Pattern\RegexBuilder;
 use App\Missive\Domain\Models\SMS;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Process\Exception\LogicException;
 
 class TextCommander {
 
@@ -45,7 +49,8 @@ class TextCommander {
                 $values = $this->builder->getValues($regex, $path);
 
                 // Invoke the action
-                $data = $action($path, $values);
+                // $data = $action($path, $values);      
+                $data = $this->do($action, $path, $values);  
                 
                 // If the action returned false, 
                 // we continue to search for another route
@@ -59,6 +64,29 @@ class TextCommander {
 
         // Nothing matched
         return false;
+    }
+
+    protected function do($action, $path, $values)
+    {
+        $data = false;
+
+        DB::beginTransaction();
+        try {
+            $data = $action($path, $values);
+        }
+        // catch (LogicException $e) {
+        //     DB::rollBack();
+        //     Log::error("TextCommander::execute::LogicException");
+        //     Log::error($e);
+        // }
+        catch (Exception $e) {
+            DB::rollBack();
+            Log::error("TextCommander::execute::Exception");
+            Log::error($e);
+        }
+        DB::commit();
+
+        return $data;
     }
 
     public function setSMS(SMS $sms)

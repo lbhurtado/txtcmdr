@@ -17,7 +17,7 @@ use App\App\Stages\UpdateCommanderCampaignStage;
 use App\App\Stages\SanitizeAreaStage;
 use App\Campaign\Domain\Repositories\AreaRepository;
 use App\Campaign\Domain\Repositories\GroupRepository;
-use Symfony\Component\Process\Exception\LogicException;
+
 use Opis\String\UnicodeString as wstring;
 
 $txtcmdr = resolve('txtcmdr');
@@ -74,9 +74,6 @@ $areas = optional(app(AreaRepository::class), function ($areas) {
 });
 
 $txtcmdr->register("{message?}{command=@}{area?={$areas}}", function (string $path, array $parameters) {
-	DB::beginTransaction();
-	try 
-	{
 		(new Pipeline)
 		    ->pipe(new SanitizeAreaStage) //done 
 		    ->pipe(new UpdateContactAreaStage) //done
@@ -84,12 +81,6 @@ $txtcmdr->register("{message?}{command=@}{area?={$areas}}", function (string $pa
 		    ->pipe(new NotifyUplineStage)
 		    ->process($parameters)
 		    ;
-	} 
-	catch (LogicException $e) {
-		DB::rollBack();
-    	\Log::error('Error::LogicException');
-	};
-	DB::commit();
 });
 
 $keywords = optional(true, function (){
