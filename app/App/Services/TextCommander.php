@@ -68,8 +68,13 @@ class TextCommander {
         return $this;
     }
 
-    public function getSMS()
+    public function sms()
     {
         return $this->sms;
+    }
+
+    public function commander()
+    {
+        return $this->sms->origin;
     }
 }

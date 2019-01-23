@@ -10,6 +10,7 @@ use App\Missive\Domain\Repositories\{SMSRepository, SMSRepositoryEloquent};
 use App\Missive\Domain\Repositories\{ContactRepository, ContactRepositoryEloquent};
 use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{GroupRepository, GroupRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{AreaRepository, AreaRepositoryEloquent};
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         $this->app->bind(ContactRepository::class, ContactRepositoryEloquent::class);
         $this->app->bind(AirtimeRepository::class, AirtimeRepositoryEloquent::class);
         $this->app->bind(GroupRepository::class, GroupRepositoryEloquent::class);
+        $this->app->bind(AreaRepository::class, AreaRepositoryEloquent::class);
 
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {

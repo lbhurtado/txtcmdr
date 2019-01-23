@@ -2,7 +2,6 @@
 
 namespace App\Missive\Actions;
 
-use App\App\Facades\TxtCmdr;
 use App\App\Jobs\ProcessCommand;
 use App\Missive\Jobs\CreateContact;
 use App\Charging\Jobs\ChargeAirtime;
@@ -33,7 +32,7 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
 
-				TxtCmdr::setSMS($sms);
+				\TxtCmdr::setSMS($sms);
 
 				$this->dispatchNow(new CreateContact());
 				$this->dispatch(new ProcessCommand());	

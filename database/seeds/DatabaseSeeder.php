@@ -13,5 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AirtimeSeeder::class);
         $this->call(GroupSeeder::class);
+        $this->call(AreaSeeder::class);
+
     }
 }

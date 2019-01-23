@@ -15,4 +15,14 @@ class SMS extends Model implements Transformable
     	'to',
     	'message',
     ];
+
+    public function origin()
+    {
+    	return $this->belongsTo(Contact::class, 'from', 'mobile');
+    }
+
+    public function destination()
+    {
+    	return $this->belongsTo(Contact::class, 'to', 'mobile');
+    }
 }

@@ -2,15 +2,12 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
+use App\Campaign\Jobs\UpdateContactArea;
 
-class UpdateContactAreaStage implements StageInterface
+class UpdateContactAreaStage extends BaseStage
 {
-    public function __invoke($parameters)
+    public function execute()
     {
-    	\Log::info('UpdateContactAreaStage::__invoke');
-    	\Log::info($parameters);
-    	
-    	return $parameters;
+       	UpdateContactArea::dispatch($this->getParameters());
     }
 }

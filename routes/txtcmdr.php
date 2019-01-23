@@ -1,19 +1,24 @@
 <?php
 
 use League\Pipeline\Pipeline;
-use App\App\Stages\UpdateContactStage;
-use App\App\Stages\UpdateContactAreaStage;
-use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\NotifyHQStage;
-use App\App\Stages\UpdateContactGroupStage;
-use App\App\Stages\UpdateCommanderTagStage;
-use App\App\Stages\UpdateCommanderCampaignStage;
+use App\App\Stages\NotifyUplineStage;
+use App\App\Stages\UpdateContactStage;
+use App\App\Stages\NotifyCommanderStage;
+use App\App\Stages\OnboardCommanderStage;
 use App\App\Stages\GuessContextAreaStage;
 use App\App\Stages\GuessContextGroupStage;
 use App\App\Stages\NotifyContextAreaStage;
+use App\App\Stages\UpdateContactAreaStage;
+use App\App\Stages\UpdateContactGroupStage;
 use App\App\Stages\NotifyContextGroupStage;
-use App\App\Stages\OnboardCommanderStage;
+use App\App\Stages\UpdateCommanderTagStage;
+use App\App\Stages\UpdateCommanderCampaignStage;
+use App\App\Stages\SanitizeAreaStage;
+use App\Campaign\Domain\Repositories\AreaRepository;
 use App\Campaign\Domain\Repositories\GroupRepository;
+use Symfony\Component\Process\Exception\LogicException;
+use Opis\String\UnicodeString as wstring;
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -55,19 +60,36 @@ $groups = optional(app(GroupRepository::class), function ($groups) {
 $txtcmdr->register("{message?}{command=&}{group?={$groups}}", function (string $path, array $parameters) {
 	(new Pipeline)
 	    ->pipe(new UpdateContactGroupStage) //done
-	    ->pipe(new NotifyHQStage)
-	    ->pipe(new NotifyCommanderStage) 
+	    ->pipe(new NotifyCommanderStage)  //done
+	    ->pipe(new NotifyUplineStage)
 	    ->process($parameters)
 	    ;
 });
 
-$txtcmdr->register("{message?}{command=@}{area?}", function (string $path, array $parameters) {
-	(new Pipeline)
-	    ->pipe(new UpdateContactAreaStage)
-	    ->pipe(new NotifyHQStage)
-	    ->pipe(new NotifyCommanderStage)
-	    ->process($parameters)
-	    ;
+$areas = optional(app(AreaRepository::class), function ($areas) {
+	$names = implode($areas->pluck('name')->toArray(), '|');
+	$ids = implode($areas->pluck('id')->toArray(), '|'); 
+
+	return wstring::from($names)->append('||')->append($ids);
+});
+
+$txtcmdr->register("{message?}{command=@}{area?={$areas}}", function (string $path, array $parameters) {
+	DB::beginTransaction();
+	try 
+	{
+		(new Pipeline)
+		    ->pipe(new SanitizeAreaStage) //done 
+		    ->pipe(new UpdateContactAreaStage) //done
+		    ->pipe(new NotifyCommanderStage) //done
+		    ->pipe(new NotifyUplineStage)
+		    ->process($parameters)
+		    ;
+	} 
+	catch (LogicException $e) {
+		DB::rollBack();
+    	\Log::error('Error::LogicException');
+	};
+	DB::commit();
 });
 
 $keywords = optional(true, function (){
