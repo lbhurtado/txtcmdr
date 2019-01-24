@@ -2,15 +2,12 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
+use App\Campaign\Jobs\UpdateCommanderTag;
 
-class UpdateCommanderTagStage implements StageInterface
+class UpdateCommanderTagStage extends BaseStage
 {
-    public function __invoke($parameters)
+    public function execute()
     {
-    	\Log::info('UpdateCommanderTagStage::__invoke');
-    	\Log::info($parameters);
-    	
-    	return $parameters;
+       	UpdateCommanderTag::dispatch($this->getParameters());
     }
 }

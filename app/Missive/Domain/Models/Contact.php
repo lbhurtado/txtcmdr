@@ -9,7 +9,7 @@ use App\Charging\Domain\Traits\SpendsAirtime;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Missive\Domain\Contracts\MobileInterface;
-use App\Campaign\Domain\Traits\{HasGroups, HasAreas};
+use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
 
 /**
  * Class Contact.
@@ -18,7 +18,7 @@ use App\Campaign\Domain\Traits\{HasGroups, HasAreas};
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags;
 
     /**
      * The attributes that are mass assignable.

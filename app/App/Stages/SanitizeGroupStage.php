@@ -3,22 +3,22 @@
 namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateContactArea;
-use App\Campaign\Domain\Repositories\AreaRepository;
+use App\Campaign\Domain\Repositories\GroupRepository;
 
-class SanitizeAreaStage extends BaseStage
+class SanitizeGroupStage extends BaseStage
 {
     public function execute()
     {
-		$input_area = $this->getParameters()['area'];
+		$input_group = $this->getParameters()['group'];
 
-		$sanitized_area = $this->getSanitizedArea($input_area);
+		$sanitized_group = $this->getSanitizedGroup($input_group);
 
-		array_set($this->parameters, 'area', $sanitized_area ?? $this->halt());
+		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
     }
 
-    protected function getSanitizedArea($input):string
+    protected function getSanitizedGroup($input):string
     {
-		return app(AreaRepository::class)
+		return app(GroupRepository::class)
 				->pluck('name', 'id')
 				->first(function($value, $key) use ($input) {
 					//there's no easy way to search case-insensitive in database

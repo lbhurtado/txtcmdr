@@ -6,11 +6,11 @@ use BenSampo\Enum\Enum;
 
 final class CommandKey extends Enum
 {
-    const       PIN = 'pin';
-    const       TAG = 'tag';
-    const      AREA = 'area';
-    const     GROUP = 'group';
-    const   COMMAND = 'command';
-    const   MESSAGE = 'message';
-    const  CAMPAIGN = 'campaign';
+    const       TAG = 'Tag';
+    const      AREA = 'Area';
+    const      SEND = 'Message';
+    const     GROUP = 'Group';
+    const     OPTIN = 'Opt-in';
+    const  REGISTER = 'Registration';
+    const BROADCAST = 'Broadcast';
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Charging\Domain\Classes\AirtimeKey;
+use App\Campaign\Domain\Classes\CommandKey;
 
 return [
 	'airtime' => [
@@ -18,5 +19,35 @@ return [
         'channels' => array_merge(['database'], env('SEND_NOTIFICATION', false)
                                              ? [env('NOTIFICATION_CLASS', EngageSparkChannel::class)] 
                                              : []),
+    ],
+    'commands' => [
+    	CommandKey::OPTIN => [
+    		'cmd' => env('OPTIN_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\OptinCommand::class,
+    	],
+    	CommandKey::TAG => [
+    		'cmd' => env('TAG_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\TagCommand::class,
+    	],
+    	CommandKey::AREA => [
+    		'cmd' => env('AREA_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\AreaCommand::class,	
+    	],
+    	CommandKey::GROUP => [
+    		'cmd' => env('GROUP_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\GroupCommand::class,	
+    	],
+    	CommandKey::SEND => [
+    		'cmd' => env('SEND_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\SendCommand::class,
+    	],
+    	CommandKey::REGISTER => [
+    		'cmd' => env('REGISTER_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\RegisterCommand::class,
+    	],
+    	CommandKey::BROADCAST => [
+    		'cmd' => env('BROADCAST_COMMAND'),
+    		'class' => App\Campaign\Domain\Classes\BroadcastCommand::class,
+    	],
     ],
 ];

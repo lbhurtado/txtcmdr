@@ -27,6 +27,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Charging\Domain\Repositories\AirtimeRepository::class, \App\Charging\Domain\Repositories\AirtimeRepositoryEloquent::class);
         $this->app->bind(\App\Campaign\Domain\Repositories\GroupRepository::class, \App\Campaign\Domain\Repositories\GroupRepositoryEloquent::class);
         $this->app->bind(\App\Campaign\Domain\Repositories\AreaRepository::class, \App\Campaign\Domain\Repositories\AreaRepositoryEloquent::class);
+        $this->app->bind(\App\Campaign\Domain\Repositories\CampaignRepository::class, \App\Campaign\Domain\Repositories\CampaignRepositoryEloquent::class);
+        $this->app->bind(\App\Campaign\Domain\Repositories\TagRepository::class, \App\Campaign\Domain\Repositories\TagRepositoryEloquent::class);
         //:end-bindings:
     }
 }
