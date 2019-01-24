@@ -5,7 +5,7 @@ namespace App\Missive\Jobs;
 use Illuminate\Bus\Queueable;
 use App\App\Services\TextCommander;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
+use App\Campaign\Domain\Repositories\TagRepository;
 
 class UpdateContact
 {
@@ -28,12 +28,8 @@ class UpdateContact
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts, TextCommander $txtcmdr)
+    public function handle(TagRepository $tags, TextCommander $txtcmdr)
     {
-        $contacts->updateOrCreate([
-            'mobile' => $txtcmdr->sms->from
-        ], [
-            'name' => $this->attributes['name']
-        ]);
+        tap($txtcmdr->commander())->update(array_only($this->attributes, 'name'))->save();
     }
 }

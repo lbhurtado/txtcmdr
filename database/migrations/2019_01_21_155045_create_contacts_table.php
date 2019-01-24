@@ -19,6 +19,8 @@ class CreateContactsTable extends Migration
             $table->increments('id');
             $table->string('mobile')->unique();
             $table->string('name')->nullable()->index();
+            $table->nullableMorphs('upline');
+            $table->schemalessAttributes('extra_attributes');
             $table->timestamps();
 		});
 	}

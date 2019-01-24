@@ -34,7 +34,7 @@ class ContactTest extends TestCase
     }
 
     /** @test */
-    public function contact_can_create_just_one_and_remove_it()
+    public function contact_can_create_just_one_tag_and_remove_it()
     {
         $code = $this->faker->word;
         $contact = factory(Contact::class)->create();
@@ -48,5 +48,22 @@ class ContactTest extends TestCase
 
         $this->expectException(\Illuminate\Database\QueryException::class);
         $contact->tag()->create(['code' => $this->faker->word]);
+    }
+
+    /** @test */
+    public function contact_can_have_an_upline()
+    {
+        $commander = factory(Contact::class)->create();
+        $recruiter = factory(Contact::class)->create();
+
+        $commander->upline()->associate($recruiter)->save();
+
+        $this->assertEquals($commander->upline->mobile, $recruiter->mobile);
+        
+        $this->assertDatabaseHas('contacts', [
+            'id' => $commander->id,
+            'upline_id' => $recruiter->id,
+            'upline_type' => get_class($recruiter)
+        ]);
     }
 }

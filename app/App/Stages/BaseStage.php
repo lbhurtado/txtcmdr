@@ -52,7 +52,7 @@ abstract class BaseStage implements StageInterface
                                 ->append(json_encode($this->getParameters()))
         );
 
-    	$this->execute();
+    	optional($this->enabled(), $this->execute());
         
     	return $this->getParameters();
     }
@@ -60,6 +60,11 @@ abstract class BaseStage implements StageInterface
     public function halt()
     {
         throw new LogicException();
+    }
+
+    protected function enabled()
+    {
+        return true;
     }
 
     abstract function execute();

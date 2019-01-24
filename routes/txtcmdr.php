@@ -15,6 +15,7 @@ use App\App\Stages\UpdateContactAreaStage;
 use App\App\Stages\UpdateContactGroupStage;
 use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\UpdateCommanderTagStage;
+use App\App\Stages\UpdateCommanderUplineStage;
 use App\App\Stages\UpdateCommanderCampaignStage;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 
@@ -82,6 +83,7 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		$parameters['command'] = $cmd->CMD;
 		(new Pipeline)
 		    ->pipe(new UpdateContactStage) //done
+		    ->pipe(new UpdateCommanderUplineStage)
 		    ->pipe(new GuessContextAreaStage)
 		    ->pipe(new GuessContextGroupStage)
 		    ->pipe(new NotifyCommanderStage)
