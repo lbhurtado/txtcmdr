@@ -52,7 +52,9 @@ abstract class BaseStage implements StageInterface
                                 ->append(json_encode($this->getParameters()))
         );
 
-    	optional($this->enabled(), $this->execute());
+        $this->enabled() && $this->execute();
+        
+    	// optional($this->enabled(), $this->execute());
         
     	return $this->getParameters();
     }

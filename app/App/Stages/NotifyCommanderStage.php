@@ -2,16 +2,16 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Notifications\ContactAreaUpdated;
-use App\Campaign\Notifications\ContactGroupUpdated;
 use App\Campaign\Notifications\CommanderTagUpdated;
+use App\Campaign\Notifications\CommanderAreaUpdated;
+use App\Campaign\Notifications\CommanderGroupUpdated;
 
 class NotifyCommanderStage extends BaseStage
 {
     protected $notifications = [
-        '@' => ContactAreaUpdated::class,
-        '&' => ContactGroupUpdated::class,
         '#' => CommanderTagUpdated::class,
+        '@' => CommanderAreaUpdated::class,
+        '&' => CommanderGroupUpdated::class,
     ];
 
     public function execute()

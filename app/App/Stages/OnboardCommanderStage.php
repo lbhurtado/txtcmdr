@@ -2,15 +2,10 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
-
-class OnboardCommanderStage implements StageInterface
+class OnboardCommanderStage  extends BaseStage
 {
-    public function __invoke($parameters)
+    public function execute()
     {
-    	\Log::info('OnboardCommanderStage::__invoke');
-    	\Log::info($parameters);
-
-    	return $parameters;
+    	\Log::info('OnboardCommanderStage::execute');
     }
 }

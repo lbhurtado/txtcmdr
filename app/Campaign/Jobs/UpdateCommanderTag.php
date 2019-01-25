@@ -8,22 +8,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
+// use App\Missive\Domain\Repositories\ContactRepository;
 
 class UpdateCommanderTag implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $parameters;
+    protected $code;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct($parameters)
+    // *
+    //  * Create a new job instance.
+    //  *
+    //  * @return void
+     
+    public function __construct($code)
     {
-        $this->parameters = $parameters;
+        $this->code = $code;
     }
 
     /**
@@ -31,12 +31,8 @@ class UpdateCommanderTag implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts, TextCommander $txtcmdr)
+    public function handle(TextCommander $txtcmdr)
     {
-        $mobile = $txtcmdr->sms->from;
-
-        tap($contacts->findByField('mobile', $mobile)->first(), function($contact) {
-            $contact->syncTag($this->parameters['tag']);
-        });
+        $txtcmdr->commander()->syncTag($this->code);
     }
 }

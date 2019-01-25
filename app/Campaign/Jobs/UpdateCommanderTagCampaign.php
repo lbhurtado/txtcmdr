@@ -8,23 +8,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
-use App\Campaign\Domain\Repositories\CampaignRepository;
 
 class UpdateCommanderTagCampaign implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $parameters;
+    protected $campaign;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($parameters)
+    public function __construct($campaign)
     {
-        $this->parameters = $parameters;
+        $this->campaign = $campaign;
     }
 
     /**
@@ -32,14 +30,8 @@ class UpdateCommanderTagCampaign implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts, CampaignRepository $campaigns, TextCommander $txtcmdr)
+    public function handle(TextCommander $txtcmdr)
     {
-        optional($campaigns->findByField('name', $this->parameters['campaign'])->first(), function ($campaign) use ($contacts, $txtcmdr) {
-            optional($contacts->findByField('mobile', $txtcmdr->sms->from)->first(), function($contact) use ($campaign) {
-                optional($contact->tag, function ($tag) use ($campaign) {
-                    $tag->setCampaign($campaign);                
-                });
-            });
-        });
+        $txtcmdr->commander()->tag->setCampaign($this->campaign, true);
     }
 }

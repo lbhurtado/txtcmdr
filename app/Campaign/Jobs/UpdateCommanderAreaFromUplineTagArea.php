@@ -9,20 +9,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class UpdateCommanderUpline implements ShouldQueue
+class UpdateCommanderAreaFromUplineTagArea implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $tagger;
+    protected $area;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($tagger)
+    public function __construct($area)
     {
-        $this->tagger = $tagger;
+        $this->area = $area;
     }
 
     /**
@@ -32,6 +32,6 @@ class UpdateCommanderUpline implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->upline()->associate($this->tagger)->save();
+        $txtcmdr->commander()->syncAreas($this->area);
     }
 }

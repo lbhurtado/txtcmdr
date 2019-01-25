@@ -8,7 +8,6 @@ use App\App\Stages\SanitizeGroupStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\OnboardCommanderStage;
-use App\App\Stages\GuessContextAreaStage;
 use App\App\Stages\GuessContextGroupStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
@@ -17,8 +16,10 @@ use App\App\Stages\UpdateCommanderAreaStage;
 use App\App\Stages\UpdateCommanderGroupStage;
 use App\App\Stages\UpdateCommanderUplineStage;
 use App\App\Stages\UpdateCommanderTagAreaStage;
+use App\App\Stages\UpdateCommanderTagGroupStage;
 use App\App\Stages\UpdateCommanderTagCampaignStage;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
+use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -60,6 +61,7 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 		(new Pipeline)
 			->pipe(new SanitizeGroupStage) //done 
 		    ->pipe(new UpdateCommanderGroupStage) //done
+			->pipe(new UpdateCommanderTagGroupStage) //done
 		    ->pipe(new NotifyCommanderStage)  //done
 		    ->pipe(new NotifyUplineStage)
 		    ->process($parameters)
@@ -72,7 +74,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 			(new Pipeline)
 			    ->pipe(new SanitizeAreaStage) //done 
 			    ->pipe(new UpdateCommanderAreaStage) //done
-			    ->pipe(new UpdateCommanderTagAreaStage)
+			    ->pipe(new UpdateCommanderTagAreaStage) //done
 			    ->pipe(new NotifyCommanderStage) //done
 			    ->pipe(new NotifyUplineStage)
 			    ->process($parameters)
@@ -86,9 +88,9 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		(new Pipeline)
 		    ->pipe(new UpdateCommanderStage) //done
 		    ->pipe(new UpdateCommanderUplineStage) //done
-		    ->pipe(new GuessContextAreaStage)
-		    ->pipe(new GuessContextGroupStage)
-		    ->pipe(new NotifyCommanderStage)
+		    ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
+		    // ->pipe(new GuessContextGroupStage) //change name UpdateCommanderAreaFromUplineTagAreaStage
+		    // ->pipe(new NotifyCommanderStage)
 		    ->process($parameters)
 		    ;
 	});

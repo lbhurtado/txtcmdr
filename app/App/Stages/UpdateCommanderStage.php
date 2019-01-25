@@ -2,15 +2,23 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
 use App\Missive\Jobs\UpdateContact;
 
-class UpdateCommanderStage implements StageInterface
+class UpdateCommanderStage extends BaseStage
 {
-    public function __invoke($parameters)
-    {
-    	UpdateContact::dispatch($parameters);
+	protected $name;
 
-    	return $parameters;
+    protected function enabled()
+    {
+    	$this->name = array_get($this->parameters,'name');
+
+    	return optional($this->getCommander(), function ($commander) {
+    		return $commander->name != $this->name;  
+    	});
+    }
+
+    public function execute()
+    {
+    	UpdateContact::dispatch($this->getCommander(), $this->name);
     }
 }

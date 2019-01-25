@@ -8,22 +8,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
 
 class UpdateCommanderGroup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $parameters;
+    protected $group;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($parameters)
+    public function __construct($group)
     {
-        $this->parameters = $parameters;
+        $this->group = $group;
     }
 
     /**
@@ -31,12 +30,8 @@ class UpdateCommanderGroup implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts, TextCommander $txtcmdr)
+    public function handle(TextCommander $txtcmdr)
     {
-        $mobile = $txtcmdr->sms->from;
-
-        tap($contacts->findByField('mobile', $mobile)->first(), function($contact) {
-            $contact->syncGroups($this->parameters['group']);
-        });
+        $txtcmdr->commander()->syncGroups($this->group);
     }
 }

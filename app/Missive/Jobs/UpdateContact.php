@@ -3,24 +3,25 @@
 namespace App\Missive\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Campaign\Domain\Repositories\TagRepository;
 
 class UpdateContact
 {
     use Dispatchable, Queueable;
 
-    protected $attributes;
+    protected $contact;
+
+    protected $name;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($attributes)
+    public function __construct($contact, $name)
     {
-        $this->attributes = $attributes;
+        $this->contact = $contact;
+        $this->name = $name;
     }
 
     /**
@@ -28,8 +29,8 @@ class UpdateContact
      *
      * @return void
      */
-    public function handle(TagRepository $tags, TextCommander $txtcmdr)
+    public function handle()
     {
-        tap($txtcmdr->commander())->update(array_only($this->attributes, 'name'))->save();
+        tap($this->contact)->update(['name' => $this->name])->save();
     }
 }

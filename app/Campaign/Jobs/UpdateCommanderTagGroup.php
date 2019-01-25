@@ -8,21 +8,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Campaign\Domain\Repositories\AreaRepository;
 
-class UpdateCommanderArea implements ShouldQueue
+class UpdateCommanderTagGroup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $parameters;
+    protected $group;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($parameters)
+    public function __construct($group)
     {
-        $this->parameters = $parameters;
+        $this->group = $group;
     }
 
     /**
@@ -32,6 +33,6 @@ class UpdateCommanderArea implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->syncAreas($this->parameters['area']);
+        $txtcmdr->commander()->tag->setGroup($this->group, true);
     }
 }
