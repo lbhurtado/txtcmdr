@@ -56,8 +56,12 @@ class Tag extends Model implements Transformable
         return $this;
     }
 
-    public function setCampaign(Campaign $campaign)
+    public function setCampaign(Campaign $campaign, $detach = false)
     {
+        if ($detach == true) {
+            $this->campaigns()->detach();
+        }
+        
         $this->campaigns()->save($campaign);
 
         return $this;

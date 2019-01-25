@@ -8,9 +8,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
 
-class UpdateContactGroup implements ShouldQueue
+class UpdateCommanderArea implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,12 +30,8 @@ class UpdateContactGroup implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ContactRepository $contacts, TextCommander $txtcmdr)
+    public function handle(TextCommander $txtcmdr)
     {
-        $mobile = $txtcmdr->sms->from;
-
-        tap($contacts->findByField('mobile', $mobile)->first(), function($contact) {
-            $contact->syncGroups($this->parameters['group']);
-        });
+        $txtcmdr->commander()->syncAreas($this->parameters['area']);
     }
 }

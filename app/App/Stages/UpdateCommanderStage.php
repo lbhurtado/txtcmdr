@@ -5,7 +5,7 @@ namespace App\App\Stages;
 use League\Pipeline\StageInterface;
 use App\Missive\Jobs\UpdateContact;
 
-class UpdateContactStage implements StageInterface
+class UpdateCommanderStage implements StageInterface
 {
     public function __invoke($parameters)
     {

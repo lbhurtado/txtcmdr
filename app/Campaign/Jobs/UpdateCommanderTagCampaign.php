@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Missive\Domain\Repositories\ContactRepository;
 use App\Campaign\Domain\Repositories\CampaignRepository;
 
-class UpdateCommanderCampaign implements ShouldQueue
+class UpdateCommanderTagCampaign implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

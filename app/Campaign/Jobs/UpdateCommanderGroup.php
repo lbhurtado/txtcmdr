@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Missive\Domain\Repositories\ContactRepository;
 
-class UpdateContactArea implements ShouldQueue
+class UpdateCommanderGroup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -36,7 +36,7 @@ class UpdateContactArea implements ShouldQueue
         $mobile = $txtcmdr->sms->from;
 
         tap($contacts->findByField('mobile', $mobile)->first(), function($contact) {
-            $contact->syncAreas($this->parameters['area']);
+            $contact->syncGroups($this->parameters['group']);
         });
     }
 }
