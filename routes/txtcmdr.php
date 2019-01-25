@@ -8,7 +8,6 @@ use App\App\Stages\SanitizeGroupStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\OnboardCommanderStage;
-use App\App\Stages\GuessContextGroupStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\UpdateCommanderTagStage;
@@ -20,6 +19,7 @@ use App\App\Stages\UpdateCommanderTagGroupStage;
 use App\App\Stages\UpdateCommanderTagCampaignStage;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
+use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -89,7 +89,7 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		    ->pipe(new UpdateCommanderStage) //done
 		    ->pipe(new UpdateCommanderUplineStage) //done
 		    ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
-		    // ->pipe(new GuessContextGroupStage) //change name UpdateCommanderAreaFromUplineTagAreaStage
+		    ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
 		    // ->pipe(new NotifyCommanderStage)
 		    ->process($parameters)
 		    ;
