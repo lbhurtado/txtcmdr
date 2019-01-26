@@ -33,6 +33,6 @@ class UpdateCommanderTagGroup implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->tag->setGroup($this->group, true);
+        $txtcmdr->commander()->tags->setGroup($this->group, true);
     }
 }

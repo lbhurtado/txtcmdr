@@ -32,6 +32,6 @@ class UpdateCommanderTagCampaign implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->tag->setCampaign($this->campaign, true);
+        $txtcmdr->commander()->tags->setCampaign($this->campaign, true);
     }
 }

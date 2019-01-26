@@ -38,16 +38,16 @@ class ContactTest extends TestCase
     {
         $code = $this->faker->word;
         $contact = factory(Contact::class)->create();
-        $this->assertEquals($contact->tag()->count(), 0);
+        $this->assertEquals($contact->tags()->count(), 0);
 
-        $tag = $contact->tag()->create(compact('code'));
+        $tag = $contact->tags()->create(compact('code'));
         
-        $this->assertEquals($contact->tag()->count(), 1);
+        $this->assertEquals($contact->tags()->count(), 1);
         $this->assertEquals($code, $tag->code);
         $this->assertEquals($contact->id, $tag->tagger->id);
 
         $this->expectException(\Illuminate\Database\QueryException::class);
-        $contact->tag()->create(['code' => $this->faker->word]);
+        $contact->tags()->create(['code' => $this->faker->word]);
     }
 
     /** @test */

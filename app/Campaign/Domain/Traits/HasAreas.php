@@ -89,15 +89,7 @@ trait HasAreas
     {
         $this->areas()->detach();
 
-        $retval = $this->assignArea($areas);
-
-        // if ($this instanceof Contact){
-        //     $event = new ContactEvent($this);
-        //     $event->setArea($areas[0]);
-        //     event(ContactEvents::AREA_SYNCED, $event);
-        // }
-
-        return $retval;
+        return $this->assignArea($areas);
     }
 
     /**

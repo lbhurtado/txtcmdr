@@ -7,15 +7,15 @@ use App\Campaign\Domain\Models\Tag;
 
 trait HasTags
 {
-    public function tag()
+    public function tags()
     {
         return $this->morphOne(Tag::class, 'tagger');
     }
 
     public function syncTag($code)
     {
-        $this->tag()->delete();
-        $this->tag()->create(compact('code'));
+        $this->tags()->delete();
+        $this->tags()->create(compact('code'));
     }
 
     // public function removeTags()

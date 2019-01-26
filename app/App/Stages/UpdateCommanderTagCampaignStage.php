@@ -11,11 +11,18 @@ class UpdateCommanderTagCampaignStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->campaign = app(CampaignRepository::class)->findByField('name', $this->parameters['campaign'])->first();
+        return $this->campaign = $this->getCampaign();
     }
 
     public function execute()
     {
        	UpdateCommanderTagCampaign::dispatch($this->campaign);
+    }
+
+    public function getCampaign()
+    {
+    	$name = array_get($this->parameters, 'campaign');
+
+    	return app(CampaignRepository::class)->findByField(compact('name'))->first();
     }
 }

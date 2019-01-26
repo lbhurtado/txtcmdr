@@ -33,6 +33,6 @@ class UpdateCommanderTagArea implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->tag->setArea($this->area, true);
+        $txtcmdr->commander()->tags->setArea($this->area, true);
     }
 }

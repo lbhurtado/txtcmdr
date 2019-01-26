@@ -10,7 +10,9 @@ class UpdateCommanderTagGroupStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->group = $this->getCommander()->groups()->first();
+    	$this->group = $this->getCommander()->groups()->first();
+
+        return $this->group && $this->getCommander()->tags()->count();
     }
 
     public function execute()

@@ -2,15 +2,15 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
-
-class NotifyUplineStage implements StageInterface
+class NotifyUplineStage extends BaseStage
 {
-    public function __invoke($parameters)
+    protected function enabled()
     {
-    	\Log::info('NotifyUplineStage::__invoke');
-    	\Log::info($parameters);
+        return true;
+    }
+    
+    public function execute()
+    {
 
-    	return $parameters;
     }
 }

@@ -21,6 +21,8 @@ use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 
+use App\App\Stages\UpdateCommanderCampaignParametersStage;
+
 $txtcmdr = resolve('txtcmdr');
 
 tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
@@ -50,6 +52,8 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 		(new Pipeline)
 		    ->pipe(new UpdateCommanderTagStage) //done
 		    ->pipe(new UpdateCommanderTagCampaignStage) //done
+			->pipe(new UpdateCommanderTagAreaStage) //done
+			->pipe(new UpdateCommanderTagGroupStage) //done
 		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
@@ -76,7 +80,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 			    ->pipe(new UpdateCommanderAreaStage) //done
 			    ->pipe(new UpdateCommanderTagAreaStage) //done
 			    ->pipe(new NotifyCommanderStage) //done
-			    ->pipe(new NotifyUplineStage)
+			    // ->pipe(new NotifyUplineStage)
 			    ->process($parameters)
 			    ;
 	});
@@ -90,7 +94,10 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		    ->pipe(new UpdateCommanderUplineStage) //done
 		    ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
 		    ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
-		    // ->pipe(new NotifyCommanderStage)
+		    ->pipe(new UpdateCommanderTagStage) //done
+		    ->pipe(new UpdateCommanderCampaignParametersStage) //nandito ka na 
+			->pipe(new UpdateCommanderTagCampaignStage) //done
+		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
 	});
