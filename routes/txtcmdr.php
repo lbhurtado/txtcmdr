@@ -67,7 +67,7 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 		    ->pipe(new UpdateCommanderGroupStage) //done
 			->pipe(new UpdateCommanderTagGroupStage) //done
 		    ->pipe(new NotifyCommanderStage)  //done
-		    ->pipe(new NotifyUplineStage)
+		    ->pipe(new NotifyUplineStage) //done
 		    ->process($parameters)
 		    ;
 	});
@@ -80,7 +80,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 			    ->pipe(new UpdateCommanderAreaStage) //done
 			    ->pipe(new UpdateCommanderTagAreaStage) //done
 			    ->pipe(new NotifyCommanderStage) //done
-			    // ->pipe(new NotifyUplineStage)
+			    ->pipe(new NotifyUplineStage) //donw
 			    ->process($parameters)
 			    ;
 	});
@@ -95,8 +95,10 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		    ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
 		    ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
 		    ->pipe(new UpdateCommanderTagStage) //done
-		    ->pipe(new UpdateCommanderCampaignParametersStage) //nandito ka na 
+		    ->pipe(new UpdateCommanderCampaignParametersStage) //done 
 			->pipe(new UpdateCommanderTagCampaignStage) //done
+			->pipe(new UpdateCommanderTagAreaStage) //done
+			->pipe(new UpdateCommanderTagGroupStage) //done
 		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
