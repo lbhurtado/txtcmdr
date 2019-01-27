@@ -3,30 +3,40 @@
 namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateContactArea;
-use App\Campaign\Domain\Repositories\AreaRepository;
+use App\Campaign\Domain\Repositories\{AreaRepository, GroupRepository};
 
 class SanitizeContextStage extends BaseStage
 {
     public function execute()
     {
-		$input_area = array_get($this->getParameters(), 'context');
+		$context = array_get($this->getParameters(), 'context');
 
-		$sanitized_area = $this->getSanitizedArea($input_area);
+		$sanitized_context = $this->getSanitizedContext($context) ?? 'DEFAULT';
 
-		array_set($this->parameters, 'context', $sanitized_area ?? $this->halt());
-
-		//you are here
-		//apply to groups
+		array_set($this->parameters, 'context', $sanitized_context ?? $this->halt());
     }
 
-    protected function getSanitizedArea($input):string
+    protected function getSanitizedContext($input)
     {
-		return app(AreaRepository::class)
+		$area =  app(AreaRepository::class)
 				->pluck('name', 'id')
 				->first(function($value, $key) use ($input) {
 					//there's no easy way to search case-insensitive in database
 					//better in the collection
-					return strtoupper($value) == strtoupper($input) or $key == $input;
-				});
+					return strtoupper($value) == strtoupper($input);
+				})
+				;
+
+
+		$group = app(GroupRepository::class)
+				->pluck('name', 'id')
+				->first(function($value, $key) use ($input) {
+					//there's no easy way to search case-insensitive in database
+					//better in the collection
+					return strtoupper($value) == strtoupper($input);
+				})
+				;
+
+		return $area ?? $group;
     }
 }

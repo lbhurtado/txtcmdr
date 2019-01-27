@@ -2,7 +2,6 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Domain\Classes\Command;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderSendToArea;
 use App\Campaign\Domain\Repositories\AreaRepository;
@@ -22,7 +21,12 @@ class NotifyContextAreaStage extends NotifyStage
 
     protected function getArea()
     {
-    	return $this->getContextArea() ?? $this->getCommander()->areas()->first();
+        $context = array_get($this->getParameters(), 'context');
+
+        return $context 
+               ? $this->getContextArea() 
+               : $this->getCommander()->areas()->first()
+               ;
     }
 
     protected function getContextArea()

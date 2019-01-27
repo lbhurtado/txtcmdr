@@ -39,13 +39,11 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{context?={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+	$txtcmdr->register("{context={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
 		(new Pipeline)
-			    ->pipe(new SanitizeContextStage)
-		    // ->pipe(new GuessContextAreaStage)
-		    // ->pipe(new GuessContextGroupStage)
+			->pipe(new SanitizeContextStage) //done
 		    ->pipe(new NotifyContextAreaStage) //done
-		    // ->pipe(new NotifyContextGroupStage) //done
+		    ->pipe(new NotifyContextGroupStage) //done
 		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;

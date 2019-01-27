@@ -7,7 +7,7 @@ use App\Campaign\Domain\Repositories\{AreaRepository, GroupRepository};
 
 class SendCommand extends Command
 {
-	const DEFAULT_CMD = '>';
+	const DEFAULT_CMD = ':';
 	
 	protected $areas;
 
