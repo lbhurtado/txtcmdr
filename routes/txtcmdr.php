@@ -6,6 +6,7 @@ use App\App\Stages\SanitizeAreaStage;
 use App\App\Stages\NotifyUplineStage;
 use App\App\Stages\SanitizeGroupStage;
 use Illuminate\Support\Facades\Schema;
+use App\App\Stages\NotifyDownlineStage;
 use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
@@ -33,6 +34,7 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) {
 		(new Pipeline)
 		    ->pipe(new OnboardCommanderStage)
+		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
 	});	
@@ -45,6 +47,26 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 		    ->pipe(new NotifyContextAreaStage) //done
 		    ->pipe(new NotifyContextGroupStage) //done
 		    ->pipe(new NotifyCommanderStage) //done
+		    ->process($parameters)
+		    ;
+	});	
+});
+
+tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+		(new Pipeline)
+		    ->pipe(new NotifyDownlineStage)
+		    ->pipe(new NotifyCommanderStage)
+		    ->process($parameters)
+		    ;
+	});	
+});
+
+tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+		(new Pipeline)
+		    ->pipe(new NotifyUplineStage)
+		    ->pipe(new NotifyCommanderStage)
 		    ->process($parameters)
 		    ;
 	});	

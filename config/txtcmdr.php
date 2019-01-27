@@ -41,6 +41,14 @@ return [
     		'cmd' => env('SEND_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\SendCommand::class,
     	],
+        CommandKey::ANNOUNCE => [
+            'cmd' => env('ANNOUNCE_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\AnnounceCommand::class,
+        ],
+        CommandKey::REPORT => [
+            'cmd' => env('REPORT_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\ReportCommand::class,
+        ],
     	CommandKey::REGISTER => [
     		'cmd' => env('REGISTER_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\RegisterCommand::class,

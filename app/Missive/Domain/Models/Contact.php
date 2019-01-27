@@ -40,4 +40,9 @@ class Contact extends Model implements Transformable, Mobile
     {
         return $this->morphTo();
     }
+
+    public function downlines()
+    {
+        return $this->morphOne(Contact::class, 'upline');
+    }
 }

@@ -11,6 +11,8 @@ final class CommandKey extends Enum
     const      SEND = 'Message';
     const     GROUP = 'Group';
     const     OPTIN = 'Opt-in';
+     const   REPORT = 'Report';
+    const  ANNOUNCE = 'Announce';
     const  REGISTER = 'Registration';
     const BROADCAST = 'Broadcast';
 }

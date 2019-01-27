@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use App\Campaign\Notifications\UplineReportUpdated;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\Campaign\Notifications\CommanderTagUplineUpdated;
 use App\Campaign\Notifications\CommanderAreaUplineUpdated;
@@ -14,6 +15,7 @@ class NotifyUplineStage extends NotifyStage
         CommandKey::TAG      => CommanderTagUplineUpdated::class,
         CommandKey::AREA     => CommanderAreaUplineUpdated::class,
         CommandKey::GROUP    => CommanderGroupUplineUpdated::class,
+        CommandKey::REPORT   => UplineReportUpdated::class,
         CommandKey::REGISTER => CommanderRegistrationUplineUpdated::class,
     ];
 
