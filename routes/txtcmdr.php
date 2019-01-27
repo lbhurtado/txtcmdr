@@ -5,6 +5,7 @@ use App\App\Stages\NotifyHQStage;
 use App\App\Stages\SanitizeAreaStage;
 use App\App\Stages\NotifyUplineStage;
 use App\App\Stages\SanitizeGroupStage;
+use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\OnboardCommanderStage;
@@ -35,13 +36,14 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{context?}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+	$txtcmdr->register("{context?={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
 		(new Pipeline)
-		    ->pipe(new GuessContextAreaStage)
-		    ->pipe(new NotifyContextAreaStage)
-		    ->pipe(new GuessContextGroupStage)
-		    ->pipe(new NotifyContextGroupStage)
-		    ->pipe(new NotifyCommanderStage)
+			    ->pipe(new SanitizeContextStage)
+		    // ->pipe(new GuessContextAreaStage)
+		    // ->pipe(new GuessContextGroupStage)
+		    ->pipe(new NotifyContextAreaStage) //done
+		    // ->pipe(new NotifyContextGroupStage) //done
+		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
 	});	

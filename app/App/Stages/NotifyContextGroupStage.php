@@ -2,15 +2,19 @@
 
 namespace App\App\Stages;
 
-use League\Pipeline\StageInterface;
+use App\Campaign\Domain\Classes\CommandKey;
+use App\Campaign\Notifications\CommanderSendToGroup;
 
-class NotifyContextGroupStage implements StageInterface
+class NotifyContextGroupStage extends NotifyStage
 {
-    public function __invoke($parameters)
+    protected $notifications = [
+        CommandKey::SEND => CommanderSendToGroup::class,
+    ];
+
+    protected function getNotifiable()
     {
-    	\Log::info('NotifyContextAreaStage::__invoke');
-    	\Log::info($parameters);
-    	
-    	return $parameters;
+        return optional($this->getCommander()->groups()->first(), function ($group) {
+        	return $group->contacts()->where('id', '!=', $this->getCommander()->id)->get();
+        });
     }
 }
