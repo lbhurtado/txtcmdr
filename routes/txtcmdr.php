@@ -1,5 +1,6 @@
 <?php
 
+use Schema;
 use League\Pipeline\Pipeline;
 use App\App\Stages\NotifyHQStage;
 use App\App\Stages\SanitizeAreaStage;
@@ -23,6 +24,8 @@ use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 
 use App\App\Stages\UpdateCommanderCampaignParametersStage;
+
+if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 
 $txtcmdr = resolve('txtcmdr');
 
