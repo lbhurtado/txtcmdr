@@ -1,11 +1,11 @@
 <?php
 
-use Schema;
 use League\Pipeline\Pipeline;
 use App\App\Stages\NotifyHQStage;
 use App\App\Stages\SanitizeAreaStage;
 use App\App\Stages\NotifyUplineStage;
 use App\App\Stages\SanitizeGroupStage;
+use Illuminate\Support\Facades\Schema;
 use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;

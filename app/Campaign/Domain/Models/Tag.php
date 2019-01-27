@@ -66,7 +66,19 @@ class Tag extends Model implements Transformable
 
         return $this;
     }
-    
+
+    public function getOriginalCodeAttribute()
+    {
+        return $this->extra_attributes['original_code'];
+    }
+
+    public function setOriginalCodeAttribute($value)
+    {
+        $this->extra_attributes['original_code'] = $value;
+
+        return $this;
+    }
+
     public function groups()
     {
         return $this->morphedByMany(Group::class, 'taggable')->withTimestamps();

@@ -14,7 +14,7 @@ class UpdateCommanderTagStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderTag::dispatch($this->getCode());
+       	UpdateCommanderTag::dispatch($this->getCode(), $this->getUplineTag());
     }
 
     protected function getCode()
@@ -34,7 +34,11 @@ class UpdateCommanderTagStage extends BaseStage
 
     protected function getUplineTag()
     {
-        return $this->getCommander()->upline->tags()->first()->code;
+        return optional($this->getCommander()->upline, function ($upline) {
+            return optional($upline->tags()->first(), function ($tag) {
+                return $tag->originalCode;
+            });
+        });
     }
     protected function getRandomSuffix()
     {

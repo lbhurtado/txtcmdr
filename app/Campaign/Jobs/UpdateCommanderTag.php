@@ -16,14 +16,17 @@ class UpdateCommanderTag implements ShouldQueue
 
     protected $code;
 
+    protected $originalCode;
+
     // *
     //  * Create a new job instance.
     //  *
     //  * @return void
      
-    public function __construct($code)
+    public function __construct($code, $originalCode = null)
     {
         $this->code = $code;
+        $this->originalCode = $originalCode ?? $code;
     }
 
     /**
@@ -33,6 +36,8 @@ class UpdateCommanderTag implements ShouldQueue
      */
     public function handle(TextCommander $txtcmdr)
     {
-        $txtcmdr->commander()->syncTag($this->code);
+        tap($txtcmdr->commander()->syncTag($this->code), function ($tag) {
+            $tag->originalCode = $this->originalCode;
+        })->save();
     }
 }

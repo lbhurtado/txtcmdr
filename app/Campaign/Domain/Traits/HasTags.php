@@ -15,7 +15,8 @@ trait HasTags
     public function syncTag($code)
     {
         $this->tags()->delete();
-        $this->tags()->create(compact('code'));
+
+        return $this->tags()->create(compact('code'));
     }
 
     // public function removeTags()
