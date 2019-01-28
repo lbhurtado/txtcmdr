@@ -28,17 +28,14 @@ abstract class NotifyStage extends BaseStage
     protected function getNotification()
     {
         $cmd = array_get($this->getParameters(), 'command');
-        
         switch ($cmd) {
          case '?':
              $cmd = '\?';
              break;
-            
          default:
              # code...
              break;
         }
-
         $key = array_get(Command::$mappings, $cmd);
 
         return array_get($this->notifications, $key);

@@ -54,6 +54,10 @@ return [
             'cmd' => env('REPORT_COMMAND'),
             'class' => App\Campaign\Domain\Classes\ReportCommand::class,
         ],
+        CommandKey::STATUS => [
+            'cmd' => env('STATUS_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\StatusCommand::class,
+        ],
         CommandKey::ANNOUNCE => [
             'cmd' => env('ANNOUNCE_COMMAND'),
             'class' => App\Campaign\Domain\Classes\AnnounceCommand::class,

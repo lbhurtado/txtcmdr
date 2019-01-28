@@ -11,6 +11,7 @@ use App\Campaign\Notifications\CommanderGroupUpdated;
 use App\Campaign\Notifications\CommanderAlertUpdated;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\Campaign\Notifications\CommanderReportUpdated;
+use App\Campaign\Notifications\CommanderStatusUpdated;
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
 use App\Campaign\Notifications\CommanderAnnouncementUpdated;
 
@@ -25,6 +26,7 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::ALERT    => CommanderAlertUpdated::class,
         CommandKey::OPTIN    => CommanderOptinUpdated::class,
         CommandKey::REPORT   => CommanderReportUpdated::class,
+        CommandKey::STATUS   => CommanderStatusUpdated::class,
         CommandKey::REGISTER => CommanderRegistrationUpdated::class,
         CommandKey::ANNOUNCE => CommanderAnnouncementUpdated::class,
     ];

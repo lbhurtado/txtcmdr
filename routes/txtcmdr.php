@@ -149,6 +149,16 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
+tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{key?}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
+		(new Pipeline)
+			->pipe(new NotifyUplineStage)
+		    ->pipe(new NotifyCommanderStage)
+		    ->process($parameters)
+		    ;
+	});	
+});
+
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}} {pin?=[\d]+} {message}", function (string $path, array $parameters) {
 		(new Pipeline)
