@@ -17,9 +17,10 @@ class CreateGlobeSMSCommand implements CommandInterface
     public function __construct($inboundSMSMessageList)
     {
         $data = $inboundSMSMessageList['inboundSMSMessage'][0];
- 		$this->from = PhoneNumber::make(wstring::from($data['senderAddress'])->replace('tel:', ''))->ofCountry('PH')->formatE164();
- 		$this->to = wstring::from($data['destinationAddress'])->replace('tel:', '');
- 		$this->message = $data['message'];
+        
+ 		$this->from = $this->getOrigin($data);
+ 		$this->to = $this->getDestination($data);
+ 		$this->message = $this->getMessage($data);
     }
 
     public function getProperties():array
@@ -29,5 +30,22 @@ class CreateGlobeSMSCommand implements CommandInterface
     		'to' => $this->to,
     		'message' => $this->message,
     	];
+    }
+
+    protected function getOrigin($data)
+    {
+        $senderAddress = wstring::from($data['senderAddress'])->replace('tel:', '');
+
+        return PhoneNumber::make($senderAddress)->ofCountry('PH')->formatE164();
+    }
+
+    protected function getDestination($data)
+    {
+        return wstring::from($data['destinationAddress'])->replace('tel:', '');
+    }
+
+    protected function getMessage($data)
+    {
+        return $data['message'];
     }
 }

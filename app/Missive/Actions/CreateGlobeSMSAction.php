@@ -23,7 +23,7 @@ class CreateGlobeSMSAction extends ActionAbstract implements ActionInterface
 	protected $handler = CreateSMSHandler::class;
 
 	protected $middlewares = [
-    	// CreateSMSValidator::class,
+    	CreateSMSValidator::class,
     	CreateSMSResponder::class,
 	];
 

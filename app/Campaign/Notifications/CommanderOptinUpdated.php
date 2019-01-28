@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\GlobeLabs\Channels\{GlobeConnectMessage, GlobeConnectChannel};
 
 class CommanderOptinUpdated extends Notification implements ShouldQueue
 {
@@ -18,7 +19,7 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
@@ -29,6 +30,7 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
+        return [GlobeConnectChannel::class];
         return config('txtcmdr.notification.channels');
     }
 
@@ -57,5 +59,12 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
         return [
             'mobile' => $notifiable->mobile,
         ];
+    }
+
+    public function toGlobeConnect($notifiable)
+    {
+        return (new GlobeConnectMessage())
+            ->content('The quick brown fox.')
+            ;
     }
 }

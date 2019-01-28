@@ -54,6 +54,18 @@ return [
             'driver' => 'null',
         ],
 
+        'telerivet' => [
+            'driver' => 'telerivet',
+            'api_key' => env('TELERIVET_API_KEY'),
+            'project_id' => env('TELERIVET_PROJECT_ID'),
+            'service_id' => env('TELERIVET_SERVICE_ID'),
+        ],
+
+        'globeconnect' => [
+            'app_id' => env('GLOBECONNECT_APP_ID', 'jXeXUqMxGEu67Te958ixxzu8oX5KU4ad'),
+            'app_secret' => env('GLOBECONNECT_APP_SECRET', '37632fe0b295486ed8c8efca6'),
+            'sender' => env('GLOBECONNECT_SENDER', '21582402'),
+        ],
     ],
 
 ];

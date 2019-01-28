@@ -14,6 +14,9 @@ use App\Campaign\Domain\Repositories\{AreaRepository, AreaRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{TagRepository, TagRepositoryEloquent};
 
+use App\GlobeLabs\Channels\GlobeConnectChannel;
+use App\GlobeLabs\Services\GlobeConnect;
+
 class TextCommanderServiceProvider extends ServiceProvider
 {
     /**
@@ -24,6 +27,14 @@ class TextCommanderServiceProvider extends ServiceProvider
     public function boot()
     {
         SMS::observe(SMSObserver::class);
+
+        $this->app
+            ->when (GlobeConnectChannel::class)
+            ->needs(GlobeConnect::class)
+            ->give (function () {
+                return new GlobeConnect();
+            });
+
     }
 
     /**

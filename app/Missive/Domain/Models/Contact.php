@@ -37,6 +37,9 @@ class Contact extends Model implements Transformable, Mobile
         'extra_attributes' => 'array',
     ];
     
+    public $appends = [
+        'token',
+    ];
     public function upline(): MorphTo
     {
         return $this->morphTo();
