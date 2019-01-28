@@ -105,7 +105,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 			    ->pipe(new UpdateCommanderAreaStage) //done
 			    ->pipe(new UpdateCommanderTagAreaStage) //done
 			    ->pipe(new NotifyCommanderStage) //done
-			    ->pipe(new NotifyUplineStage) //donw
+			    ->pipe(new NotifyUplineStage) //done
 			    ->process($parameters)
 			    ;
 	});
@@ -128,6 +128,25 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 		    ->process($parameters)
 		    ;
 	});
+});
+
+tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
+		(new Pipeline)
+			->pipe(new NotifyUplineStage)
+		    ->pipe(new NotifyCommanderStage)
+		    ->process($parameters)
+		    ;
+	});	
+});
+
+tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
+		(new Pipeline)
+		    ->pipe(new NotifyCommanderStage)
+		    ->process($parameters)
+		    ;
+	});	
 });
 
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {

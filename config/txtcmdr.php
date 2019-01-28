@@ -21,10 +21,7 @@ return [
                                              : []),
     ],
     'commands' => [
-    	CommandKey::OPTIN => [
-    		'cmd' => env('OPTIN_COMMAND'),
-    		'class' => App\Campaign\Domain\Classes\OptinCommand::class,
-    	],
+
     	CommandKey::TAG => [
     		'cmd' => env('TAG_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\TagCommand::class,
@@ -33,21 +30,33 @@ return [
     		'cmd' => env('AREA_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\AreaCommand::class,	
     	],
+        CommandKey::SEND => [
+            'cmd' => env('SEND_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\SendCommand::class,
+        ],
+        CommandKey::INFO => [
+            'cmd' => env('INFO_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\InfoCommand::class,
+        ],
     	CommandKey::GROUP => [
     		'cmd' => env('GROUP_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\GroupCommand::class,	
     	],
-    	CommandKey::SEND => [
-    		'cmd' => env('SEND_COMMAND'),
-    		'class' => App\Campaign\Domain\Classes\SendCommand::class,
-    	],
-        CommandKey::ANNOUNCE => [
-            'cmd' => env('ANNOUNCE_COMMAND'),
-            'class' => App\Campaign\Domain\Classes\AnnounceCommand::class,
+        CommandKey::ALERT => [
+            'cmd' => env('ALERT_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\AlertCommand::class,
+        ],
+        CommandKey::OPTIN => [
+            'cmd' => env('OPTIN_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\OptinCommand::class,
         ],
         CommandKey::REPORT => [
             'cmd' => env('REPORT_COMMAND'),
             'class' => App\Campaign\Domain\Classes\ReportCommand::class,
+        ],
+        CommandKey::ANNOUNCE => [
+            'cmd' => env('ANNOUNCE_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\AnnounceCommand::class,
         ],
     	CommandKey::REGISTER => [
     		'cmd' => env('REGISTER_COMMAND'),

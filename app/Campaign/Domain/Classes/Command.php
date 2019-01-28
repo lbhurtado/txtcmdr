@@ -30,7 +30,7 @@ abstract class Command
 
 	protected function setCMD($cmd = null)
 	{
-		$this->CMD = $cmd ?? static::DEFAULT_CMD;
+		$this->CMD = stripslashes($cmd ?? static::DEFAULT_CMD);
 
 		self::$mappings[$this->CMD] = $this->key;
 
