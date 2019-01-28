@@ -70,5 +70,9 @@ return [
     		'cmd' => env('BROADCAST_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\BroadcastCommand::class,
     	],
+        CommandKey::ATTRIBUTE => [
+            'cmd' => env('ATTRIBUTE_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\AttributeCommand::class,
+        ],
     ],
 ];

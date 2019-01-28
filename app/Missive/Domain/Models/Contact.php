@@ -2,6 +2,7 @@
 
 namespace App\Missive\Domain\Models;
 
+use Spatie\ModelStatus\HasStatuses;
 use App\App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Model;
 use App\Missive\Domain\Contracts\Mobile;
@@ -20,7 +21,7 @@ use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses;
 
     /**
      * The attributes that are mass assignable.

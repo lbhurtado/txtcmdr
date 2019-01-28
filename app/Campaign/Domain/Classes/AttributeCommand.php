@@ -2,9 +2,9 @@
 
 namespace App\Campaign\Domain\Classes;
 
-class StatusCommand extends Command
+class AttributeCommand extends Command
 {
-	const DEFAULT_CMD = '%';
+	const DEFAULT_CMD = '=';
 
 	protected function go()
 	{

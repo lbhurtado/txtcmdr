@@ -17,8 +17,10 @@ use App\App\Stages\UpdateCommanderTagStage;
 use App\App\Stages\UpdateCommanderAreaStage;
 use App\App\Stages\UpdateCommanderGroupStage;
 use App\App\Stages\UpdateCommanderUplineStage;
+use App\App\Stages\UpdateCommanderStatusStage;
 use App\App\Stages\UpdateCommanderTagAreaStage;
 use App\App\Stages\UpdateCommanderTagGroupStage;
+use App\App\Stages\UpdateCommanderAttributeStage;
 use App\App\Stages\UpdateCommanderTagCampaignStage;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
@@ -150,10 +152,21 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{key?}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
+	$txtcmdr->register("{percent?}{command={$cmd->CMD}}{status}/{reason?}", function (string $path, array $parameters) {
 		(new Pipeline)
-			->pipe(new NotifyUplineStage)
-		    ->pipe(new NotifyCommanderStage)
+			->pipe(new UpdateCommanderStatusStage) //done
+			->pipe(new NotifyUplineStage) //done
+		    ->pipe(new NotifyCommanderStage) //done
+		    ->process($parameters)
+		    ;
+	});	
+});
+
+tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{key}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
+		(new Pipeline)
+			->pipe(new UpdateCommanderAttributeStage) //done
+		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
 	});	
