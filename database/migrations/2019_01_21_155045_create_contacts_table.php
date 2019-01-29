@@ -18,7 +18,7 @@ class CreateContactsTable extends Migration
 		Schema::create('contacts', function(Blueprint $table) {
             $table->increments('id');
             $table->string('mobile')->unique();
-            $table->string('name')->nullable()->index();
+            $table->string('handle')->nullable()->index();
             $table->nullableMorphs('upline');
             $table->schemalessAttributes('extra_attributes');
             $table->timestamps();

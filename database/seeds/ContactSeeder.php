@@ -12,11 +12,11 @@ class ContactSeeder extends Seeder
      */
     public function run()
     {
-        tap(Contact::create(['mobile' => '+639173011987', 'name' => 'Lester Hurtado']), function ($contact) {
+        tap(Contact::create(['mobile' => '+639173011987', 'handle' => 'Lester Hurtado']), function ($contact) {
         	$contact->token = 'HjvtzaRUyDDUANLR3bvcpqLeWQG_WpXsq7PJaxArctI';
         })->save();
 
-        tap(Contact::create(['mobile' => '+639166033598', 'name' => 'Chris Suguitan']), function ($contact) {
+        tap(Contact::create(['mobile' => '+639166033598', 'handle' => 'Chris Suguitan']), function ($contact) {
             $contact->token = 'wYe8ubCzFWZWKEZOXQ6rozwV9h8h_Hj47v3D4fOezKg';
         })->save();
     }

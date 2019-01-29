@@ -11,17 +11,17 @@ class UpdateContact
 
     protected $contact;
 
-    protected $name;
+    protected $handle;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($contact, $name)
+    public function __construct($contact, $handle)
     {
         $this->contact = $contact;
-        $this->name = $name;
+        $this->handle = $handle;
     }
 
     /**
@@ -31,6 +31,6 @@ class UpdateContact
      */
     public function handle()
     {
-        tap($this->contact)->update(['name' => $this->name])->save();
+        tap($this->contact)->update(['handle' => $this->handle])->save();
     }
 }

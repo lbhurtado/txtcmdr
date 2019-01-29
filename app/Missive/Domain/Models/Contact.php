@@ -30,7 +30,7 @@ class Contact extends Model implements Transformable, Mobile
      */
     protected $fillable = [
 		'mobile',
-		'name',
+		'handle',
 	];
 
     public $casts = [

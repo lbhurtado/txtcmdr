@@ -17,6 +17,8 @@ use App\Campaign\Domain\Repositories\{TagRepository, TagRepositoryEloquent};
 use App\GlobeLabs\Channels\GlobeConnectChannel;
 use App\GlobeLabs\Services\GlobeConnect;
 
+use App\Campaign\Notifications\BaseNotification;
+
 class TextCommanderServiceProvider extends ServiceProvider
 {
     /**
@@ -35,6 +37,12 @@ class TextCommanderServiceProvider extends ServiceProvider
                 return new GlobeConnect();
             });
 
+        $this->app
+            ->when (BaseNotification::class)
+            ->needs('$signature')
+            ->give (function () {
+                return config('txtcmdr.notification.signature');
+            });
     }
 
     /**

@@ -9,8 +9,7 @@ class CommanderAreaUpdated extends BaseNotification
     function params($notifiable)
     {
         $area = $notifiable->areas()->first()->qn;
-        $signature = config('txtcmdr.notification.signature');
 
-        return compact('area', 'signature');
+        return compact('area');
     }
 }

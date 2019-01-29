@@ -65,8 +65,12 @@ abstract class BaseNotification extends Notification implements ShouldQueue
 
     protected function getContent($notifiable)
     {
-        return once(function () use ($notifiable) {
-            return trans($this->template, $this->params($notifiable));
+        $signature = [
+            'signature' => config('txtcmdr.notification.signature'),
+        ];
+    
+        return once(function () use ($notifiable, $signature) {
+            return trans($this->template, \array_merge($signature, \array_filter($this->params($notifiable))));
         });
     }
 }
