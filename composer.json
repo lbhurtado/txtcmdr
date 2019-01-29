@@ -15,6 +15,7 @@
         "joselfonseca/laravel-tactician": "^0.5.0",
         "kalnoy/nestedset": "^4.3",
         "laravel/framework": "5.7.*",
+        "laravel/horizon": "^2.0",
         "laravel/tinker": "^1.0",
         "league/pipeline": "^1.0",
         "opis/events": "^5.0",
