@@ -2,6 +2,7 @@
 
 use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
+use App\GlobeLabs\Channels\GlobeConnectChannel;
 
 return [
 	'airtime' => [
@@ -17,8 +18,9 @@ return [
 	],
     'notification' => [
         'channels' => array_merge(['database'], env('SEND_NOTIFICATION', false)
-                                             ? [env('NOTIFICATION_CLASS', EngageSparkChannel::class)] 
+                                             ? [env('NOTIFICATION_CLASS', GlobeConnectChannel::class)] 
                                              : []),
+        'signature' => env('TXTCMDR_SIGNATURE', 'HQ'),
     ],
     'commands' => [
 

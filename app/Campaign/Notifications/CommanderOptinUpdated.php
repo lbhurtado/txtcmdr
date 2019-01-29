@@ -12,6 +12,7 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    protected $content;
     /**
      * Create a new notification instance.
      *
@@ -30,7 +31,6 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [GlobeConnectChannel::class];
         return config('txtcmdr.notification.channels');
     }
 
@@ -64,7 +64,15 @@ class CommanderOptinUpdated extends Notification implements ShouldQueue
     public function toGlobeConnect($notifiable)
     {
         return (new GlobeConnectMessage())
-            ->content('The quick brown fox.')
+            ->content($this->getContent($notifiable))
             ;
+    }
+
+    protected function getContent($notifiable)
+    {
+        $mobile = $notifiable->mobile;
+        $signature = config('txtcmdr.notification.signature');
+
+        return trans('txtcmdr.commander.optin', compact('mobile', 'signature'));
     }
 }
