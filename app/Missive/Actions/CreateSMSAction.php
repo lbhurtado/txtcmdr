@@ -35,7 +35,7 @@ class CreateSMSAction extends ActionAbstract implements ActionInterface
 				\TxtCmdr::setSMS($sms);
 
 				$this->dispatchNow(new CreateContact($sms));
-				// $this->dispatch(new ProcessCommand());	
+				$this->dispatch(new ProcessCommand());	
 				$this->dispatch(new ChargeAirtime($sms));			
 			});
 		});

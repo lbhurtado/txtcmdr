@@ -3,36 +3,30 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
+use App\Campaign\Domain\Models\Area;
 use Illuminate\Queue\SerializesModels;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Campaign\Domain\Repositories\AreaRepository;
 
 class UpdateCommanderTagArea implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $commander;
+
     protected $area;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct($area)
+    public function __construct(Contact $commander, Area $area)
     {
+        $this->commander = $commander;
         $this->area = $area;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(TextCommander $txtcmdr)
+    public function handle()
     {
-        $txtcmdr->commander()->tags->setArea($this->area, true);
+        // $txtcmdr->commander()->tags->setArea($this->area, true);
+        $this->commander->tags->setArea($this->area, true);
     }
 }
