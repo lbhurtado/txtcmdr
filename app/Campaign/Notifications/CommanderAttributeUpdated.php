@@ -4,7 +4,7 @@ namespace App\Campaign\Notifications;
 
 class CommanderAttributeUpdated extends BaseNotification
 {
-    protected $template = "txtcmdr.commander.alert";
+    protected $template = "txtcmdr.commander.attribute";
 
     function params($notifiable)
     {

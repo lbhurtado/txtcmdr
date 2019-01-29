@@ -9,5 +9,6 @@ return [
 		'registration' => ":handle, you have registered. \n-:signature",
 		'alert'		   => "You sent a :alert alert. \n-:signature",
 		'attribute'	   => "You changed a :attribute attribute. \n-:signature",
+		'status'	   => "Your status changed: :status. \n-:signature",
 	],
 ];
