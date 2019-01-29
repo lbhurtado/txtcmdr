@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12dbcdfe6537cda0b7d36d60ec1a5f7a",
+    "content-hash": "c073b2326b512e8b57a64031ea4543c1",
     "packages": [
         {
             "name": "bensampo/laravel-enum",
@@ -2981,6 +2981,59 @@
                 "spatie"
             ],
             "time": "2018-10-29T14:19:01+00:00"
+        },
+        {
+            "name": "spatie/once",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/once.git",
+                "reference": "a7170af0a984cfcb5004e426edd6799113eb7fcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/once/zipball/a7170af0a984cfcb5004e426edd6799113eb7fcc",
+                "reference": "a7170af0a984cfcb5004e426edd6799113eb7fcc",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "illuminate/support": "~5.3.0",
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Once\\": "src"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A magic memoization function",
+            "homepage": "https://github.com/spatie/once",
+            "keywords": [
+                "cache",
+                "callable",
+                "memozation",
+                "once",
+                "spatie"
+            ],
+            "time": "2018-12-27T15:11:46+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

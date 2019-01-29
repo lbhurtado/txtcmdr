@@ -18,6 +18,8 @@ class Area extends Model implements Transformable
 {
     use TransformableTrait, HasNestedTrait, HasSchemalessAttributes;
 
+    protected $default = false;
+
     /**
      * The attributes that are mass assignable.
      *
