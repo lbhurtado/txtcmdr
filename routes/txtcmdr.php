@@ -35,7 +35,7 @@ $txtcmdr = resolve('txtcmdr');
 tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) {
 		(new Pipeline)
-		    ->pipe(new OnboardCommanderStage)
+		    // ->pipe(new OnboardCommanderStage)
 		    ->pipe(new NotifyCommanderStage) //done
 		    ->process($parameters)
 		    ;
@@ -175,9 +175,9 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}} {pin?=[\d]+} {message}", function (string $path, array $parameters) {
 		(new Pipeline)
-		    ->pipe(new GuessContextAreaStage)
-		    ->pipe(new NotifyContextAreaStage)
-		    ->pipe(new NotifyCommanderStage)
+		    // ->pipe(new GuessContextAreaStage)
+		    // ->pipe(new NotifyContextAreaStage)
+		    // ->pipe(new NotifyCommanderStage)
 		    ->process($parameters)
 		    ;
 	});	

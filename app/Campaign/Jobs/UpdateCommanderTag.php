@@ -3,7 +3,7 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,29 +14,22 @@ class UpdateCommanderTag implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $commander;
+
     protected $code;
 
     protected $originalCode;
-
-    // *
-    //  * Create a new job instance.
-    //  *
-    //  * @return void
      
-    public function __construct($code, $originalCode = null)
+    public function __construct(Contact $commander, $code, $originalCode = null)
     {
+        $this->commander = $commander;
         $this->code = $code;
         $this->originalCode = $originalCode ?? $code;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(TextCommander $txtcmdr)
+    public function handle()
     {
-        tap($txtcmdr->commander()->syncTag($this->code), function ($tag) {
+        tap($this->commander->syncTag($this->code), function ($tag) {
             $tag->originalCode = $this->originalCode;
         })->save();
     }

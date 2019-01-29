@@ -3,7 +3,8 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
+use App\Campaign\Domain\Models\Group;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,25 +15,18 @@ class UpdateCommanderTagGroup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $commander;
+
     protected $group;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct($group)
+    public function __construct(Contact $commander, Group $group)
     {
+        $this->commander = $commander;
         $this->group = $group;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(TextCommander $txtcmdr)
+    public function handle()
     {
-        $txtcmdr->commander()->tags->setGroup($this->group, true);
+        $this->commander->tags->setGroup($this->group, true);
     }
 }

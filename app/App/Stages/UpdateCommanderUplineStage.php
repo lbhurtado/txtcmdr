@@ -20,6 +20,6 @@ class UpdateCommanderUplineStage extends BaseStage
 
     public function execute()
     {
-    	UpdateCommanderUpline::dispatch($this->tagger);
+    	UpdateCommanderUpline::dispatch($this->getCommander(), $this->tagger);
     }
 }

@@ -31,6 +31,6 @@ class UpdateCommanderStatusStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderStatus::dispatch($this->status, $this->reason);
+       	UpdateCommanderStatus::dispatch($this->getCommander(), $this->status, $this->reason);
     }
 }

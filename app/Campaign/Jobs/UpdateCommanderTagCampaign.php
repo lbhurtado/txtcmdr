@@ -3,7 +3,7 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,15 +13,13 @@ class UpdateCommanderTagCampaign implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $commander;
+
     protected $campaign;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct($campaign)
+    public function __construct(Contact $commander, $campaign)
     {
+        $this->commander = $commander;
         $this->campaign = $campaign;
     }
 
@@ -30,8 +28,8 @@ class UpdateCommanderTagCampaign implements ShouldQueue
      *
      * @return void
      */
-    public function handle(TextCommander $txtcmdr)
+    public function handle()
     {
-        $txtcmdr->commander()->tags->setCampaign($this->campaign, true);
+        $this->commander->tags->setCampaign($this->campaign, true);
     }
 }

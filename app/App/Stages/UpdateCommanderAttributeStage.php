@@ -21,6 +21,6 @@ class UpdateCommanderAttributeStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderAttribute::dispatch($this->key, $this->value);
+       	UpdateCommanderAttribute::dispatch($this->getCommander(), $this->key, $this->value);
     }
 }

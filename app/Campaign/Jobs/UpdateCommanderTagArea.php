@@ -4,8 +4,8 @@ namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Campaign\Domain\Models\Area;
-use Illuminate\Queue\SerializesModels;
 use App\Missive\Domain\Models\Contact;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,7 +26,6 @@ class UpdateCommanderTagArea implements ShouldQueue
 
     public function handle()
     {
-        // $txtcmdr->commander()->tags->setArea($this->area, true);
         $this->commander->tags->setArea($this->area, true);
     }
 }

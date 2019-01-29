@@ -20,6 +20,6 @@ class UpdateCommanderGroupFromUplineTagGroupStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderGroupFromUplineTagGroup::dispatch($this->group);
+       	UpdateCommanderGroupFromUplineTagGroup::dispatch($this->getCommander(), $this->group);
     }
 }

@@ -17,6 +17,6 @@ class UpdateCommanderTagGroupStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderTagGroup::dispatch($this->group);
+       	UpdateCommanderTagGroup::dispatch($this->getCommander(), $this->group);
     }
 }

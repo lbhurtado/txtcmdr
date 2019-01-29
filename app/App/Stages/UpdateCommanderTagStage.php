@@ -14,7 +14,7 @@ class UpdateCommanderTagStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderTag::dispatch($this->getCode(), $this->getUplineTag());
+       	UpdateCommanderTag::dispatch($this->getCommander(), $this->getCode(), $this->getUplineTag());
     }
 
     protected function getCode()

@@ -20,6 +20,6 @@ class UpdateCommanderAreaFromUplineTagAreaStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderAreaFromUplineTagArea::dispatch($this->area);
+       	UpdateCommanderAreaFromUplineTagArea::dispatch($this->getCommander(), $this->area);
     }
 }

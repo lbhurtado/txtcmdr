@@ -3,7 +3,9 @@
 namespace App\Missive\Jobs;
 
 use Illuminate\Bus\Queueable;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Foundation\Bus\Dispatchable;
+
 
 class UpdateContact
 {
@@ -13,7 +15,7 @@ class UpdateContact
 
     protected $handle;
 
-    public function __construct($contact, $handle)
+    public function __construct(Contact $contact, $handle)
     {
         $this->contact = $contact;
         $this->handle = $handle;

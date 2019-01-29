@@ -3,7 +3,7 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\App\Services\TextCommander;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,28 +13,21 @@ class UpdateCommanderStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $commander;
+
     protected $status;
 
     protected $reason;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct($status, $reason = null)
+    public function __construct(Contact $commander, $status, $reason = null)
     {
-        $this->status = $status;
-        $this->reason = $reason;
+        $this->commander = $commander;
+        $this->status    = $status;
+        $this->reason    = $reason;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle(TextCommander $txtcmdr)
+    public function handle()
     {
-        $txtcmdr->commander()->setStatus($this->status, $this->reason);
+        $this->commander->setStatus($this->status, $this->reason);
     }
 }
