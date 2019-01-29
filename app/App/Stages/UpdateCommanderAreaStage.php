@@ -11,11 +11,13 @@ class UpdateCommanderAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->area = app(AreaRepository::class)->findByField('name', $this->parameters['area'])->first();
+    	$name = $this->parameters['area'];
+
+        return $this->area = app(AreaRepository::class)->findByField(compact('name'))->first();
     }
 
     public function execute()
     {
-       	UpdateCommanderArea::dispatch($this->area);
+       	UpdateCommanderArea::dispatch($this->getCommander(), $this->area);
     }
 }

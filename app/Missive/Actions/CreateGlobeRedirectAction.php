@@ -3,7 +3,6 @@
 namespace App\Missive\Actions;
 
 use App\Charging\Jobs\ChargeAirtime;
-use App\Missive\Jobs\CreateGlobeContact;
 use App\Missive\{
 		Responders\CreateContactFromGlobeRedirectResponder,
 		Domain\Validators\CreateContactFromGlobeRedirectValidator,
@@ -30,11 +29,7 @@ class CreateGlobeRedirectAction extends ActionAbstract implements ActionInterfac
 	{
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
-
-				\TxtCmdr::setSMS($sms);
-
-				$this->dispatchNow(new CreateGlobeContact());
-				$this->dispatch(new ChargeAirtime());			
+				$this->dispatch(new ChargeAirtime($sms));			
 			});
 		});
 	}

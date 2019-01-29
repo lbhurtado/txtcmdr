@@ -3,7 +3,6 @@
 namespace App\Missive\Actions;
 
 use App\App\Jobs\ProcessCommand;
-use App\Missive\Jobs\CreateContact;
 use App\Charging\Jobs\ChargeAirtime;
 use App\Missive\{
 		Responders\CreateSMSResponder,
@@ -32,11 +31,10 @@ class CreateGlobeSMSAction extends ActionAbstract implements ActionInterface
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
 
-				\TxtCmdr::setSMS($sms);
+				$txtcmdr = \TxtCmdr::setSMS($sms);
 
-				$this->dispatchNow(new CreateContact());
-				$this->dispatch(new ProcessCommand());	
-				$this->dispatch(new ChargeAirtime());			
+				$this->dispatchNow(new ProcessCommand());	
+				$this->dispatch(new ChargeAirtime($sms));		
 			});
 		});
 	}

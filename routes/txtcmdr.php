@@ -105,9 +105,9 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 			(new Pipeline)
 			    ->pipe(new SanitizeAreaStage) //done 
 			    ->pipe(new UpdateCommanderAreaStage) //done
-			    ->pipe(new UpdateCommanderTagAreaStage) //done
-			    ->pipe(new NotifyCommanderStage) //done
-			    ->pipe(new NotifyUplineStage) //done
+			    // ->pipe(new UpdateCommanderTagAreaStage) //done
+			    // ->pipe(new NotifyCommanderStage) //done
+			    // ->pipe(new NotifyUplineStage) //done
 			    ->process($parameters)
 			    ;
 	});

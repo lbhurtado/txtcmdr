@@ -17,7 +17,9 @@ class CreateContactFromGlobeRedirectHandler implements HandlerInterface
 
     public function handle(CommandInterface $command)
     {
-        tap($this->contacts->updateOrCreate(['mobile' => $command->subscriber_number]), function ($contact) use ($command) {
+        $mobile = $command->subscriber_number;
+
+        tap($this->contacts->updateOrCreate(compact('mobile')), function ($contact) use ($command) {
             $contact->token = $command->access_token;
         })->save();
     }
