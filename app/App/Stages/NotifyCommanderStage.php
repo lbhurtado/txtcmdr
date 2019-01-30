@@ -2,14 +2,15 @@
 
 namespace App\App\Stages;
 
+use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderTagUpdated;
 use App\Campaign\Notifications\CommanderSendUpdated;
 use App\Campaign\Notifications\CommanderAreaUpdated;
 use App\Campaign\Notifications\CommanderInfoUpdated;
+use App\Campaign\Notifications\CommanderTestUpdated;
 use App\Campaign\Notifications\CommanderOptinUpdated;
 use App\Campaign\Notifications\CommanderGroupUpdated;
 use App\Campaign\Notifications\CommanderAlertUpdated;
-use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\Campaign\Notifications\CommanderReportUpdated;
 use App\Campaign\Notifications\CommanderStatusUpdated;
 use App\Campaign\Notifications\CommanderAttributeUpdated;
@@ -23,6 +24,7 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::SEND      => CommanderSendUpdated::class,
         CommandKey::AREA      => CommanderAreaUpdated::class,
         CommandKey::INFO      => CommanderInfoUpdated::class,
+        CommandKey::TEST      => CommanderTestUpdated::class,
         CommandKey::GROUP     => CommanderGroupUpdated::class,
         CommandKey::ALERT     => CommanderAlertUpdated::class,
         CommandKey::OPTIN     => CommanderOptinUpdated::class,

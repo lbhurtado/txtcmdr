@@ -40,6 +40,10 @@ return [
             'cmd' => env('INFO_COMMAND'),
             'class' => App\Campaign\Domain\Classes\InfoCommand::class,
         ],
+        CommandKey::TEST => [
+            'cmd' => env('TEST_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\TestCommand::class,
+        ],
     	CommandKey::GROUP => [
     		'cmd' => env('GROUP_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\GroupCommand::class,	

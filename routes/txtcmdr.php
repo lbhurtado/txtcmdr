@@ -182,3 +182,13 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 		    ;
 	});	
 });
+
+tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command=ping}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
+        (new Pipeline)
+            ->pipe(new NotifyCommanderStage)
+            ->process($parameters)
+        ;
+    });
+});
