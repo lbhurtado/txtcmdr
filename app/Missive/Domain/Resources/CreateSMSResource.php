@@ -9,8 +9,8 @@ class CreateSMSResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'from' => $this->from,
-            'to' => $this->to,
+               'from' => $this->from,
+                 'to' => $this->to,
             'message' => $this->message,
         ];
     }

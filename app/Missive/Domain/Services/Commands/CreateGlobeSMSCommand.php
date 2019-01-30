@@ -2,7 +2,6 @@
 
 namespace App\Missive\Domain\Services\Commands;
 
-use Opis\String\UnicodeString as wstring;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use App\App\CommandBus\Contracts\CommandInterface;
 
@@ -26,22 +25,25 @@ class CreateGlobeSMSCommand implements CommandInterface
     public function getProperties():array
     {
     	return [
-    		'from' => $this->from,
-    		'to' => $this->to,
+    	       'from' => $this->from,
+    		     'to' => $this->to,
     		'message' => $this->message,
     	];
     }
 
     protected function getOrigin($data)
     {
-        $senderAddress = wstring::from($data['senderAddress'])->replace('tel:', '');
+        $address = $data['senderAddress'];
+        $mobile = str_ireplace('tel:', '', $address);
 
-        return PhoneNumber::make($senderAddress)->ofCountry('PH')->formatE164();
+        return PhoneNumber::make($mobile)->ofCountry('PH')->formatE164();
     }
 
     protected function getDestination($data)
     {
-        return wstring::from($data['destinationAddress'])->replace('tel:', '');
+        $address = $data['destinationAddress'];
+
+        return str_ireplace('tel:', '', $address);
     }
 
     protected function getMessage($data)

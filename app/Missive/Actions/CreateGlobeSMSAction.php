@@ -2,6 +2,7 @@
 
 namespace App\Missive\Actions;
 
+use App\App\Facades\TxtCmdr;
 use App\App\Jobs\ProcessCommand;
 use App\Charging\Jobs\ChargeAirtime;
 use App\Missive\{
@@ -31,7 +32,7 @@ class CreateGlobeSMSAction extends ActionAbstract implements ActionInterface
 		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
 			tap($event->getSMS(), function ($sms) {
 
-				$txtcmdr = \TxtCmdr::setSMS($sms);
+				TxtCmdr::setSMS($sms);
 
 				$this->dispatchNow(new ProcessCommand());	
 				$this->dispatch(new ChargeAirtime($sms));		
