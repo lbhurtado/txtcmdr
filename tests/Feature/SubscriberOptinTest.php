@@ -17,7 +17,6 @@ class SubscriberOptinTest extends TestCase
     function setup()
     {
         parent::setUp();
-        $this->faker = $this->makeFaker('en_PH');
         $this->endpoint = $this->getEndpoint('redirect');
     }
 

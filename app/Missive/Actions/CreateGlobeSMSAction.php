@@ -33,7 +33,7 @@ class CreateGlobeSMSAction extends ActionAbstract implements ActionInterface
 			tap($event->getSMS(), function ($sms) {
 
 				TxtCmdr::setSMS($sms);
-
+				
 				$this->dispatchNow(new ProcessCommand());	
 				$this->dispatch(new ChargeAirtime($sms));		
 			});
