@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Charging\Jobs\ChargeAirtime;
+use Illuminate\Support\Facades\Queue;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,31 +18,27 @@ class SubscriberOptinTest extends TestCase
     {
         parent::setUp();
         $this->faker = $this->makeFaker('en_PH');
+        $this->endpoint = $this->getEndpoint('redirect');
     }
 
     /** @test */
-    function globe_connect_can_send_subscriber_data_to_redirect()
+    function globe_connect_can_send_subscriber_data_to_redirect_and_persist()
     {
-        $token = $this->faker->md5;
-        $mobile = $this->faker->mobileNumber;
+        $access_token = $this->faker->md5;
+        $subscriber_number = $this->generateMobile();
+        $data = compact('access_token', 'subscriber_number');
 
-        $response = $this->json('POST', 'api/webhook/redirect/globe', [
-            'access_token' => $token,
-            'subscriber_number' => $mobile
-        ]);
+        Queue::fake();
 
-        $response
+        $this->json('POST', $this->endpoint, $data)
             ->assertStatus(200)
-            ->assertJson([
-                'data' => [
-                    'subscriber_number' => $mobile = PhoneNumber::make($mobile)->ofCountry('PH')->formatE164(),
-                    'access_token' => $token,
-                ],
-            ]);
-
-        tap(app(ContactRepository::class), function ($contacts) use ($mobile, $token) {
-            $this->assertNotNull($contact = $contacts->findByField('mobile', $mobile)->first());
-            $this->assertEquals($contact->token, $token);
+            ->assertJson(compact('data'));
+        
+        tap(app(ContactRepository::class), function ($contacts) use ($subscriber_number, $access_token) {
+            $this->assertNotNull($contact = $contacts->findByField('mobile', $subscriber_number)->first());
+            $this->assertEquals($contact->token, $access_token);
         });
+
+        Queue::assertNotPushed(ChargeAirtime::class);
     }
 }

@@ -3,57 +3,49 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Propaganistas\LaravelPhone\PhoneNumber;
+use App\Charging\Jobs\ChargeAirtime;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Campaign\Notifications\CommanderTestUpdated;
+use Illuminate\Support\Facades\{Queue, Notification};
 use App\Missive\Domain\Repositories\ContactRepository;
-use App\Missive\Domain\Models\Contact;
 
 class SubscriberPingTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    protected $commander;
+
+    protected $destination;
+
     function setup()
     {
         parent::setUp();
         $this->faker = $this->makeFaker('en_PH');
-
         $this->artisan('db:seed',['--class' => 'AirtimeSeeder']);
+        $this->commander = factory(Contact::class)->create(['mobile' => $this->generateMobile()]);
+        $this->destination = $this->generateMobile();
+        $this->endpoint = $this->getEndpoint();
     }
 
     /** @test */
-    function globe_connect_can_send_subscriber_data_to_redirect()
+    function commander_can_send_test_command()
     {
+        $command = $message = 'ping';
+        $from = $this->commander->mobile;
+        $to = $this->destination;
 
-        $mobile = PhoneNumber::make($this->faker->mobileNumber)->ofCountry('PH')->formatE164();
+        Queue::fake();
+        Notification::fake();
+        Notification::assertNothingSent();
 
-        factory(Contact::class)->create(compact('mobile'));
-
-        $response = $this->json('POST', 'api/webhook/sms/globe', [
-            'inboundSMSMessageList' => [
-                'inboundSMSMessage' => [
-                    [
-                        'destinationAddress' => 'tel:21582402',
-                        'senderAddress' => $mobile,
-                        'message' => 'ping',
-                    ],
-                ],
-            ],
-        ]);
-
-        $response
+        $this->json('POST', $this->endpoint, $this->getJsonData($command, $from, $to))
             ->assertStatus(200)
-//            ->assertJson([
-//                'data' => [
-//                    'subscriber_number' => $mobile = PhoneNumber::make($mobile)->ofCountry('PH')->formatE164(),
-//                    'access_token' => $token,
-//                ],
-//            ])
-        ;
+            ->assertJson(['data' => compact('from', 'to', 'message')])
+            ;
 
-//        tap(app(ContactRepository::class), function ($contacts) use ($mobile, $token) {
-//            $this->assertNotNull($contact = $contacts->findByField('mobile', $mobile)->first());
-//            $this->assertEquals($contact->token, $token);
-//        });
+        Notification::assertSentTo($this->commander, CommanderTestUpdated::class);
+        Queue::assertPushed(ChargeAirtime::class); 
     }
 }
