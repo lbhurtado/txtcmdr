@@ -74,25 +74,6 @@ tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{tag={$cmd->LST}} {name}", function (string $path, array $parameters) use ($cmd) {
-		$parameters['command'] = $cmd->CMD;
-		(new Pipeline)
-		    ->pipe(new UpdateCommanderStage) //done
-		    ->pipe(new UpdateCommanderUplineStage) //done
-		    ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
-		    ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
-		    ->pipe(new UpdateCommanderTagStage) //done
-		    ->pipe(new UpdateCommanderCampaignParametersStage) //done 
-			->pipe(new UpdateCommanderTagCampaignStage) //done
-			->pipe(new UpdateCommanderTagAreaStage) //done
-			->pipe(new UpdateCommanderTagGroupStage) //done
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});
-});
-
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -121,6 +102,25 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 		    ->process($parameters)
 		    ;
 	});	
+});
+
+tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
+        (new Pipeline)
+            ->pipe(new UpdateCommanderStage) //done
+//            ->pipe(new UpdateCommanderUplineStage) //done
+//            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //done
+//            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
+//            ->pipe(new UpdateCommanderTagStage) //done
+//            ->pipe(new UpdateCommanderCampaignParametersStage) //done
+//            ->pipe(new UpdateCommanderTagCampaignStage) //done
+//            ->pipe(new UpdateCommanderTagAreaStage) //done
+//            ->pipe(new UpdateCommanderTagGroupStage) //done
+            ->pipe(new NotifyCommanderStage) //done
+            ->process($parameters)
+        ;
+    });
 });
 
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {

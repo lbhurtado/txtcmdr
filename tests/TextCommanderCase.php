@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Campaign\Domain\Models\Tag;
 use App\Campaign\Domain\Models\Area;
 use App\Campaign\Domain\Models\Group;
 use App\Missive\Domain\Models\Contact;
@@ -100,5 +101,15 @@ abstract class TextCommanderCase extends TestCase
     function conjureCampaigns($number)
     {
         return factory(Campaign::class, $number)->create();
+    }
+
+    function conjureTag()
+    {
+        return factory(Tag::class)->create();
+    }
+
+    function conjureTags($number)
+    {
+        return factory(Tag::class, $number)->create();
     }
 }

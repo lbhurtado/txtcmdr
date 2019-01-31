@@ -6,19 +6,20 @@ use App\Missive\Jobs\UpdateContact;
 
 class UpdateCommanderStage extends BaseStage
 {
-	protected $name;
+	protected $handle;
 
     protected function enabled()
     {
-    	$this->name = array_get($this->parameters,'name');
+    	$this->handle = array_get($this->parameters,'handle');
 
     	return optional($this->getCommander(), function ($commander) {
-    		return $commander->name != $this->name;  
+    		return $commander->name != $this->handle;
     	});
     }
 
     public function execute()
     {
-    	UpdateContact::dispatch($this->getCommander(), $this->name);
+        $this->dispatchNow(new UpdateContact($this->getCommander(), $this->handle));
+//    	UpdateContact::dispatch($this->getCommander(), $this->handle);
     }
 }

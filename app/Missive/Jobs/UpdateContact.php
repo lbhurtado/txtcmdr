@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-
 class UpdateContact
 {
     use Dispatchable, Queueable;

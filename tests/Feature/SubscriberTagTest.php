@@ -13,9 +13,8 @@ use App\Campaign\Jobs\UpdateCommanderTagArea;
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use App\Campaign\Jobs\UpdateCommanderTagCampaign;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderTagUpdated;
-
+use Illuminate\Support\Facades\{Queue, Notification};
 
 class SubscriberTagTest extends TestCase
 {
