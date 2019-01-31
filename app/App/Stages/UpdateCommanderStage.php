@@ -19,7 +19,6 @@ class UpdateCommanderStage extends BaseStage
 
     public function execute()
     {
-        $this->dispatchNow(new UpdateContact($this->getCommander(), $this->handle));
-//    	UpdateContact::dispatch($this->getCommander(), $this->handle);
+        $this->dispatch(new UpdateContact($this->getCommander(), $this->handle));
     }
 }

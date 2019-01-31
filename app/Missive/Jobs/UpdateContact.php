@@ -4,11 +4,14 @@ namespace App\Missive\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Missive\Domain\Models\Contact;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class UpdateContact
+class UpdateContact implements ShouldQueue
 {
-    use Dispatchable, Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $contact;
 
@@ -22,8 +25,6 @@ class UpdateContact
 
     public function handle()
     {
-        $handle = $this->handle;
-
-        tap($this->contact)->update(compact('handle'))->save();
+        $this->contact->update(['handle' => $this->handle]);
     }
 }

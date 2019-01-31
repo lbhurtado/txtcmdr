@@ -12,7 +12,6 @@ class UpdateCommanderUplineStage extends BaseStage
 	protected function enabled()
     {
     	$code = array_get($this->parameters, 'tag');
-
     	$this->tagger = app(TagRepository::class)->findByField(compact('code'))->first()->tagger;
 
         return $this->tagger && ! $this->getCommander()->upline;
@@ -20,6 +19,6 @@ class UpdateCommanderUplineStage extends BaseStage
 
     public function execute()
     {
-    	UpdateCommanderUpline::dispatch($this->getCommander(), $this->tagger);
+        $this->dispatch(new UpdateCommanderUpline($this->getCommander(), $this->tagger));
     }
 }
