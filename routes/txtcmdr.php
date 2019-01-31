@@ -87,32 +87,6 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 	});
 });
 
-tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{message?}{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
-		(new Pipeline)
-			->pipe(new SanitizeGroupStage) //done 
-		    ->pipe(new UpdateCommanderGroupStage) //done
-			->pipe(new UpdateCommanderTagGroupStage) //done
-		    ->pipe(new NotifyCommanderStage)  //done
-		    ->pipe(new NotifyUplineStage) //done
-		    ->process($parameters)
-		    ;
-	});
-});
-
-tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{message?}{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
-			(new Pipeline)
-			    ->pipe(new SanitizeAreaStage) //done 
-			    ->pipe(new UpdateCommanderAreaStage) //done
-			    ->pipe(new UpdateCommanderTagAreaStage) //done
-			    ->pipe(new NotifyCommanderStage) //done
-			    ->pipe(new NotifyUplineStage) //done
-			    ->process($parameters)
-			    ;
-	});
-});
-
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{tag={$cmd->LST}} {name}", function (string $path, array $parameters) use ($cmd) {
 		$parameters['command'] = $cmd->CMD;
@@ -181,6 +155,32 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 		    ->process($parameters)
 		    ;
 	});	
+});
+
+tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{message?}{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeAreaStage) //done
+            ->pipe(new UpdateCommanderAreaStage) //done
+            ->pipe(new UpdateCommanderTagAreaStage) //done
+            ->pipe(new NotifyCommanderStage) //done
+            ->pipe(new NotifyUplineStage) //done
+            ->process($parameters)
+        ;
+    });
+});
+
+tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{message?}{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeGroupStage) //done
+            ->pipe(new UpdateCommanderGroupStage) //done
+            ->pipe(new UpdateCommanderTagGroupStage) //done
+            ->pipe(new NotifyCommanderStage)  //done
+            ->pipe(new NotifyUplineStage) //done
+            ->process($parameters)
+        ;
+    });
 });
 
 tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {

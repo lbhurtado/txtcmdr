@@ -29,11 +29,11 @@ class CreateGlobeSMSAction extends ActionAbstract implements ActionInterface
 
 	public function setup()
 	{
-		$this->getDispatcher()->handle(SMSEvents::CREATED, function ($event) {
+		$this->getDispatcher()->handle(SMSEvents::CREATED, function (SMSEvent $event) {
 			tap($event->getSMS(), function ($sms) {
 
 				TxtCmdr::setSMS($sms);
-				
+
 				$this->dispatchNow(new ProcessCommand());	
 				$this->dispatch(new ChargeAirtime($sms));		
 			});

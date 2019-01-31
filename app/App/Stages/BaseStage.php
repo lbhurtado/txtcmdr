@@ -7,10 +7,14 @@ use TxtCmdr;
 use Illuminate\Support\Arr;
 use League\Pipeline\StageInterface;
 use Opis\String\UnicodeString as wstring;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Symfony\Component\Process\Exception\LogicException;
+
 
 abstract class BaseStage implements StageInterface
 {
+    use DispatchesJobs;
+
 	protected $parameters;
 
  	protected $notifications = [];

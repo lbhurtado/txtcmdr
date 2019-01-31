@@ -2,47 +2,60 @@
 
 namespace Tests\Feature;
 
-use Tests\TextCommanderCase as TestCase;
-use App\App\Jobs\ProcessCommand;
 use App\Charging\Jobs\ChargeAirtime;
+use Tests\TextCommanderCase as TestCase;
+use App\Campaign\Jobs\UpdateCommanderTag;
+use App\Campaign\Jobs\UpdateCommanderGroup;
+use App\Campaign\Jobs\UpdateCommanderUpline;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
-
-use App\Campaign\Jobs\UpdateCommanderGroup;
+use App\Campaign\Notifications\CommanderGroupUpdated;
+use App\Campaign\Notifications\CommanderGroupUplineUpdated;
 
 class SubscriberGroupTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    
+
+    protected $tagger;
+
     function setup()
     {
         parent::setUp();
-        $this->artisan('db:seed');        
-        // $this->artisan('db:seed',['--class' => 'AirtimeSeeder']);
-        // $this->artisan('db:seed',['--class' => 'GroupSeeder']);
+
+        //the ff: line is needed to make sure that CommanderGroupUplineUpdated notification is sent
+        $this->tagger = $this->persistUpline();
     }
 
     /** @test */
-    function commander_can_send_tag_command()
+    function commander_can_send_group_command()
     {
-        $command = $message = "&personnel";
-        $from = $this->commander->mobile;
-        $to = $this->destination;
+        /*** arrange ***/
+        $group = $this->conjureGroup();
+        $missive = "&{$group->name}";
 
+        /*** act ***/
+        $this->redefineRoutes();
         Queue::fake();
-        // Notification::fake();
-        // Notification::assertNothingSent();
+        Notification::fake();
+        //the ff: 2 lines are needed to make sure that UpdateCommanderTagGroup job is pushed
+        (new UpdateCommanderGroup($this->commander, $group))->handle();
+        (new UpdateCommanderTag($this->commander, $this->faker->word))->handle();
 
-        $this->json('POST', $this->endpoint, $this->getJsonData($command, $from, $to))
-            ->assertStatus(200)
-            ->assertJson(['data' => compact('from', 'to', 'message')])
-            ;
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderGroupUpdated::class);
+        Notification::assertSentTo($this->tagger, CommanderGroupUplineUpdated::class);
+        Queue::assertPushed(UpdateCommanderGroup::class);
+        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        Queue::assertPushed(ChargeAirtime::class);
+    }
 
-        // dd($this->commander->areas()->first());
-        // Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
-        
-        Queue::assertPushed(ProcessCommand::class); //not working
-        Queue::assertPushed(ChargeAirtime::class); 
+    function persistUpline()
+    {
+        return tap($this->conjureContact(), function ($contact) {
+            (new UpdateCommanderUpline($this->commander, $contact))->handle();
+        });
     }
 }

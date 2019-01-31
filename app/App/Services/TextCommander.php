@@ -41,7 +41,7 @@ class TextCommander {
         // We reverse the routes order, so the last registered
         // is the first called
         $ordered_routes = array_reverse($this->routes, true);
-        
+
         // Loop through all routes until one is matched
         foreach ($ordered_routes as $regex => $action) {
             if ($this->builder->matches($regex, $path)) {
@@ -72,6 +72,9 @@ class TextCommander {
 
         DB::beginTransaction();
         try {
+//            \Log::info($action);
+//            \Log::info($path);
+//            \Log::info($values);
             $data = $action($path, $values);
         }
         // catch (LogicException $e) {
@@ -99,6 +102,11 @@ class TextCommander {
     public function sms()
     {
         return $this->sms;
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 
     public function commander()
