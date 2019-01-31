@@ -15,7 +15,7 @@ class SubscriberAttributeTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function commander_can_attribute_area_command()
+    function commander_can_attribute_attribute_command()
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::ATTRIBUTE);

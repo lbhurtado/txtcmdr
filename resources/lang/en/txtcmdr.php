@@ -12,4 +12,7 @@ return [
 		'status'	   => "Your status changed: :status. \n-:signature",
         'test'	       => "PONG",
 	],
+    'upline' => [
+        'status'	   => "Downline status changed: :status. \n-:signature",
+    ],
 ];

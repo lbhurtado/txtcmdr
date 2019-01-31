@@ -125,27 +125,6 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{percent?}{command={$cmd->CMD}}{status}/{reason?}", function (string $path, array $parameters) {
-		(new Pipeline)
-			->pipe(new UpdateCommanderStatusStage) //done
-			->pipe(new NotifyUplineStage) //done
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});	
-});
-
-tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{key}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
-		(new Pipeline)
-			->pipe(new UpdateCommanderAttributeStage) //done
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}} {pin?=[\d]+} {message}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -157,14 +136,35 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
+tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{percent?}{command={$cmd->CMD}}{status}/{reason?}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new UpdateCommanderStatusStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyUplineStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
+tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{key}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new UpdateCommanderAttributeStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{message?}{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
-            ->pipe(new SanitizeAreaStage) //done
-            ->pipe(new UpdateCommanderAreaStage) //done
-            ->pipe(new UpdateCommanderTagAreaStage) //done
-            ->pipe(new NotifyCommanderStage) //done
-            ->pipe(new NotifyUplineStage) //done
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
     });
@@ -173,11 +173,11 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{message?}{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
-            ->pipe(new SanitizeGroupStage) //done
-            ->pipe(new UpdateCommanderGroupStage) //done
-            ->pipe(new UpdateCommanderTagGroupStage) //done
-            ->pipe(new NotifyCommanderStage)  //done
-            ->pipe(new NotifyUplineStage) //done
+            ->pipe(new SanitizeGroupStage) //tested
+            ->pipe(new UpdateCommanderGroupStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new NotifyCommanderStage)  //tested
+            ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
     });
@@ -187,7 +187,7 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command=ping}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
-            ->pipe(new NotifyCommanderStage)
+            ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
     });
