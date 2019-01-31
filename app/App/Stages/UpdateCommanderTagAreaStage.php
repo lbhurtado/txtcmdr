@@ -17,6 +17,6 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderTagArea::dispatch($this->getCommander(), $this->area);
+        $this->dispatch(new UpdateCommanderTagArea($this->getCommander(), $this->area));
     }
 }

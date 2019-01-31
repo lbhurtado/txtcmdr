@@ -6,7 +6,7 @@ use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderGroup;
-use App\Campaign\Jobs\UpdateCommanderUpline;
+use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,8 +32,9 @@ class SubscriberGroupTest extends TestCase
     function commander_can_send_group_command()
     {
         /*** arrange ***/
+        $command = $this->getCommand(CommandKey::GROUP);
         $group = $this->conjureGroup();
-        $missive = "&{$group->name}";
+        $missive = "{$command}{$group->name}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -50,12 +51,5 @@ class SubscriberGroupTest extends TestCase
         Queue::assertPushed(UpdateCommanderGroup::class);
         Queue::assertPushed(UpdateCommanderTagGroup::class);
         Queue::assertPushed(ChargeAirtime::class);
-    }
-
-    function persistUpline()
-    {
-        return tap($this->conjureContact(), function ($contact) {
-            (new UpdateCommanderUpline($this->commander, $contact))->handle();
-        });
     }
 }
