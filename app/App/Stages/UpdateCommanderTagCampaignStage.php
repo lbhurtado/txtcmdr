@@ -16,7 +16,7 @@ class UpdateCommanderTagCampaignStage extends BaseStage
 
     public function execute()
     {
-       	UpdateCommanderTagCampaign::dispatch($this->getCommander(), $this->campaign);
+        $this->dispatch(new UpdateCommanderTagCampaign($this->getCommander(), $this->campaign));
     }
 
     public function getCampaign()

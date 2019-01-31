@@ -74,19 +74,6 @@ tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{campaign?={$cmd->LST}}{command={$cmd->CMD}}{tag?}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    ->pipe(new UpdateCommanderTagStage) //done
-		    ->pipe(new UpdateCommanderTagCampaignStage) //done
-			->pipe(new UpdateCommanderTagAreaStage) //done
-			->pipe(new UpdateCommanderTagGroupStage) //done
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});
-});
-
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{tag={$cmd->LST}} {name}", function (string $path, array $parameters) use ($cmd) {
 		$parameters['command'] = $cmd->CMD;
@@ -134,6 +121,19 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 		    ->process($parameters)
 		    ;
 	});	
+});
+
+tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{campaign?={$cmd->LST}}{command={$cmd->CMD}}{tag?}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+            ->pipe(new NotifyCommanderStage) //test
+            ->process($parameters)
+        ;
+    });
 });
 
 tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {

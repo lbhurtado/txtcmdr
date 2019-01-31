@@ -8,6 +8,7 @@ use App\Missive\Domain\Models\Contact;
 use App\Charging\Domain\Models\Airtime;
 use App\Providers\RouteServiceProvider;
 use App\Campaign\Domain\Classes\Command;
+use App\Campaign\Domain\Models\Campaign;
 use App\Charging\Domain\Classes\AirtimeKey;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderUpline;
@@ -89,5 +90,15 @@ abstract class TextCommanderCase extends TestCase
     function conjureContacts($number)
     {
         return factory(Contact::class, $number)->create();
+    }
+
+    function conjureCampaign()
+    {
+        return factory(Campaign::class)->create();
+    }
+
+    function conjureCampaigns($number)
+    {
+        return factory(Campaign::class, $number)->create();
     }
 }

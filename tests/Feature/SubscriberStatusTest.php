@@ -24,7 +24,7 @@ class SubscriberStatusTest extends TestCase
     }
 
     /** @test */
-    function commander_can_attribute_attribute_command()
+    function commander_can_send_status_command()
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::STATUS);
