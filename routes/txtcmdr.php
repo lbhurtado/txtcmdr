@@ -111,13 +111,13 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderStage) //tested
             ->pipe(new UpdateCommanderUplineStage) //tested
             ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
-            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //done
-            ->pipe(new UpdateCommanderTagStage) //done
+            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
             ->pipe(new UpdateCommanderCampaignParametersStage) //done
-            ->pipe(new UpdateCommanderTagCampaignStage) //done
-//            ->pipe(new UpdateCommanderTagAreaStage) //done
-//            ->pipe(new UpdateCommanderTagGroupStage) //done
-            ->pipe(new NotifyCommanderStage) //done
+            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
     });
