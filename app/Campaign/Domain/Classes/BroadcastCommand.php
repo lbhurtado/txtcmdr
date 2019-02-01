@@ -4,7 +4,7 @@ namespace App\Campaign\Domain\Classes;
 
 class BroadcastCommand extends Command
 {
-	const DEFAULT_CMD = 'broadcast';
+	const DEFAULT_CMD = '>>';
 
 	protected function go()
 	{

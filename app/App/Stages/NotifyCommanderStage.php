@@ -14,6 +14,7 @@ use App\Campaign\Notifications\CommanderAlertUpdated;
 use App\Campaign\Notifications\CommanderReportUpdated;
 use App\Campaign\Notifications\CommanderStatusUpdated;
 use App\Campaign\Notifications\CommanderAttributeUpdated;
+use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
 use App\Campaign\Notifications\CommanderAnnouncementUpdated;
 
@@ -33,6 +34,7 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::REGISTER  => CommanderRegistrationUpdated::class,
         CommandKey::ANNOUNCE  => CommanderAnnouncementUpdated::class,
         CommandKey::ATTRIBUTE => CommanderAttributeUpdated::class,
+        CommandKey::BROADCAST => CommanderBroadcastUpdated::class,
     ];
 
     protected function getNotifiable()

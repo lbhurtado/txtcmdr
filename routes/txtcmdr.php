@@ -11,6 +11,7 @@ use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\OnboardCommanderStage;
+use App\App\Stages\NotifyDescendantsStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\UpdateCommanderTagStage;
@@ -83,21 +84,20 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}} {pin?=[\d]+} {message}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    // ->pipe(new GuessContextAreaStage)
-		    // ->pipe(new NotifyContextAreaStage)
-		    // ->pipe(new NotifyCommanderStage)
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
-            ->pipe(new NotifyDownlineStage)
+            ->pipe(new NotifyDownlineStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
+tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyDescendantsStage)
             ->pipe(new NotifyCommanderStage)
             ->process($parameters)
         ;

@@ -2,17 +2,19 @@
 
 namespace Tests\Feature;
 
-use App\Campaign\Jobs\UpdateCommanderUpline;
-use App\Campaign\Notifications\CommanderAnnouncementUpdated;
 use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Campaign\Jobs\UpdateCommanderUpline;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\DownlineAnnouncementUpdated;
+use App\Campaign\Notifications\DescendantsBroadcastUpdated;
+use App\Campaign\Notifications\CommanderAnnouncementUpdated;
 
-class SubscriberAnnounceTest extends TestCase
+class SubscriberMessagingTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
@@ -45,11 +47,10 @@ class SubscriberAnnounceTest extends TestCase
         (new UpdateCommanderUpline($this->downline4, $this->downline2))->handle();
         (new UpdateCommanderUpline($this->downline5, $this->downline3))->handle();
         (new UpdateCommanderUpline($this->downline6, $this->downline4))->handle();
-
     }
 
     /** @test */
-    function commander_can_send_announce_command()
+    function commander_can_send_announcement_to_downline()
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::ANNOUNCE);
@@ -71,6 +72,31 @@ class SubscriberAnnounceTest extends TestCase
         Notification::assertNotSentTo($this->downline4, DownlineAnnouncementUpdated::class);
         Notification::assertNotSentTo($this->downline5, DownlineAnnouncementUpdated::class);
         Notification::assertNotSentTo($this->downline6, DownlineAnnouncementUpdated::class);
+        Queue::assertPushed(ChargeAirtime::class);
+    }
+
+    /** @test */
+    function commander_can_send_broadcast_to_descendants()
+    {
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::BROADCAST);
+        $message = $this->faker->sentence;
+        $missive = "{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline1, DescendantsBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline2, DescendantsBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline3, DescendantsBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline4, DescendantsBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline5, DescendantsBroadcastUpdated::class);
+        Notification::assertSentTo($this->downline6, DescendantsBroadcastUpdated::class);
         Queue::assertPushed(ChargeAirtime::class);
     }
 }

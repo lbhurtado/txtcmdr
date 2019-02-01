@@ -2,9 +2,10 @@
 
 namespace App\Campaign\Notifications;
 
-class DownlineAnnouncementUpdated extends BaseNotification
+
+class CommanderBroadcastUpdated extends BaseNotification
 {
-    protected $template = "txtcmdr.downline.announcement";
+    protected $template = "txtcmdr.commander.broadcast";
 
     function params($notifiable)
     {
