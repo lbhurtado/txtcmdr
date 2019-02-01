@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Campaign\Notifications\CommanderReportUpdated;
+use App\Campaign\Notifications\UplineReportUpdated;
 use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
@@ -64,6 +66,8 @@ class SubscriberMessagingTest extends TestCase
         $this->downline5->syncGroups($this->group2);
         $this->downline6->syncGroups($this->group2);
 
+        $this->tagger = $this->persistUpline();
+
         (new UpdateCommanderUpline($this->downline1, $this->commander))->handle();
         (new UpdateCommanderUpline($this->downline2, $this->commander))->handle();
         (new UpdateCommanderUpline($this->downline3, $this->downline1))->handle();
@@ -87,7 +91,6 @@ class SubscriberMessagingTest extends TestCase
 
         /*** assert ***/
         $this->assertCommandIssued($missive);
-
         Notification::assertSentTo($this->commander, CommanderAnnouncementUpdated::class);
         Notification::assertSentTo($this->downline1, DownlineAnnouncementUpdated::class);
         Notification::assertSentTo($this->downline2, DownlineAnnouncementUpdated::class);
@@ -211,5 +214,25 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertSentTo($this->downline4, CommanderSendToGroup::class);
         Notification::assertSentTo($this->downline5, CommanderSendToGroup::class);
         Notification::assertSentTo($this->downline6, CommanderSendToGroup::class);
+    }
+
+    /** @test */
+    function commander_can_send_report_to_upline()
+    {
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::REPORT);
+        $message = $this->faker->sentence;
+        $missive = "{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderReportUpdated::class);
+        Notification::assertSentTo($this->tagger, UplineReportUpdated::class);
+        Queue::assertPushed(ChargeAirtime::class);
     }
 }

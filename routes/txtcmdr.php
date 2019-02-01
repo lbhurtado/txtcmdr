@@ -72,6 +72,16 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
+tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{context={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
