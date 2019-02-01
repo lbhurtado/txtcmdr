@@ -9,17 +9,26 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Notifications\CommanderInfoUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Domain\Classes\InfoKey;
 
 class SubscriberInfoTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    function setup()
+    {
+        parent::setUp();
+
+        $this->infoCommand = $this->getCommand(CommandKey::INFO) == '\?' ? '?' : $this->getCommand(CommandKey::INFO);
+        $this->randomKeywords = $this->faker->randomElement(InfoKey::getKeys());
+    }
+
     /** @test */
     function commander_can_send_info_command()
     {
         /*** arrange ***/
-        $command = $this->getCommand(CommandKey::INFO) == '\?' ? '?' : $this->getCommand(CommandKey::INFO);
-        $keyword = $this->faker->word;
+        $command = $this->infoCommand;
+        $keyword = $this->randomKeywords;
         $missive = "{$command}{$keyword}";
 
         /*** act ***/

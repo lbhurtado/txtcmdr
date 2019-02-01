@@ -58,7 +58,7 @@ tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
+	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
 		    ->pipe(new NotifyCommanderStage) //tested
 		    ->process($parameters)
