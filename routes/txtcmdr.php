@@ -43,18 +43,8 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    ->pipe(new NotifyUplineStage)
-		    ->pipe(new NotifyCommanderStage)
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
+	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
 			->pipe(new NotifyUplineStage)
 		    ->pipe(new NotifyCommanderStage)
@@ -66,7 +56,7 @@ tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?}", function (string $path, array $parameters) {
 		(new Pipeline)
-		    ->pipe(new NotifyCommanderStage)
+		    ->pipe(new NotifyCommanderStage) //tested
 		    ->process($parameters)
 		    ;
 	});	

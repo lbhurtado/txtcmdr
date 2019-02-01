@@ -5,9 +5,11 @@ namespace App\Campaign\Domain\Models;
 use App\App\Traits\HasNestedTrait;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
+use App\Campaign\Domain\Traits\HasAlerts;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+
 
 /**
  * Class Group.
@@ -16,7 +18,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Group extends Model implements Transformable
 {
-    use TransformableTrait, HasNestedTrait, HasSchemalessAttributes;
+    use TransformableTrait, HasNestedTrait, HasSchemalessAttributes, HasAlerts;
 
     protected $glue = ':';
 

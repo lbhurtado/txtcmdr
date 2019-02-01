@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Campaign\Domain\Models\Tag;
 use App\Campaign\Domain\Models\Area;
+use App\Campaign\Domain\Models\Alert;
 use App\Campaign\Domain\Models\Group;
 use App\Missive\Domain\Models\Contact;
 use App\Charging\Domain\Models\Airtime;
@@ -111,5 +112,15 @@ abstract class TextCommanderCase extends TestCase
     function conjureTags($number)
     {
         return factory(Tag::class, $number)->create();
+    }
+
+    function conjureAlert()
+    {
+        return factory(Alert::class)->create();
+    }
+
+    function conjureAlerts($number)
+    {
+        return factory(Alert::class, $number)->create();
     }
 }

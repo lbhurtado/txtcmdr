@@ -5,19 +5,18 @@ namespace App\App\Providers;
 use Opis\Events\EventDispatcher;
 use App\App\Services\TextCommander;
 use Illuminate\Support\ServiceProvider;
+use App\GlobeLabs\Services\GlobeConnect;
+use App\GlobeLabs\Channels\GlobeConnectChannel;
+use App\Campaign\Notifications\BaseNotification;
 use App\Missive\Domain\{Models\SMS, Observers\SMSObserver};
 use App\Missive\Domain\Repositories\{SMSRepository, SMSRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{TagRepository, TagRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{AreaRepository, AreaRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{AlertRepository, AlertRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{GroupRepository, GroupRepositoryEloquent};
 use App\Missive\Domain\Repositories\{ContactRepository, ContactRepositoryEloquent};
 use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloquent};
-use App\Campaign\Domain\Repositories\{GroupRepository, GroupRepositoryEloquent};
-use App\Campaign\Domain\Repositories\{AreaRepository, AreaRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloquent};
-use App\Campaign\Domain\Repositories\{TagRepository, TagRepositoryEloquent};
-
-use App\GlobeLabs\Channels\GlobeConnectChannel;
-use App\GlobeLabs\Services\GlobeConnect;
-
-use App\Campaign\Notifications\BaseNotification;
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -59,6 +58,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         $this->app->bind(AreaRepository::class, AreaRepositoryEloquent::class);
         $this->app->bind(CampaignRepository::class, CampaignRepositoryEloquent::class);
         $this->app->bind(TagRepository::class, TagRepositoryEloquent::class);
+        $this->app->bind(AlertRepository::class, AlertRepositoryEloquent::class);
 
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {
