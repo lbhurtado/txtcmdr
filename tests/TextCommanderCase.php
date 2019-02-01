@@ -28,7 +28,7 @@ abstract class TextCommanderCase extends TestCase
     {
         parent::setUp();
 
-        factory(Airtime::class)->create(['key' => AirtimeKey::SMS]);
+//        factory(Airtime::class)->create(['key' => AirtimeKey::SMS]);
 
         $this->commander = factory(Contact::class)->create(['mobile' => $this->generateMobile()]);
         $this->destination = $this->generateMobile();

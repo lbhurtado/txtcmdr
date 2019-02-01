@@ -13,6 +13,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 use App\Missive\Domain\Contracts\MobileInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
+use Illuminate\Support\Collection;
 
 /**
  * Class Contact.
@@ -48,5 +49,17 @@ class Contact extends Model implements Transformable, Mobile
     public function downlines()
     {
         return $this->morphOne(Contact::class, 'upline');
+    }
+
+    public function descendants ()
+    {
+        $sections = new Collection();
+
+        foreach ($this->downlines()->get() as $section) {
+            $sections->push($section);
+            $sections = $sections->merge($section->descendants());
+        }
+
+        return $sections;
     }
 }

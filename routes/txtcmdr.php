@@ -54,16 +54,6 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    ->pipe(new NotifyDownlineStage)
-		    ->pipe(new NotifyCommanderStage)
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -102,6 +92,16 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
 		    ->process($parameters)
 		    ;
 	});	
+});
+
+tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyDownlineStage)
+            ->pipe(new NotifyCommanderStage)
+            ->process($parameters)
+        ;
+    });
 });
 
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
