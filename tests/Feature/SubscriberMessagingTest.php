@@ -8,6 +8,9 @@ use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderUpline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Campaign\Notifications\CommanderSendToArea;
+use App\Campaign\Notifications\CommanderSendToGroup;
+use App\Campaign\Notifications\CommanderSendUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\DownlineAnnouncementUpdated;
@@ -34,12 +37,32 @@ class SubscriberMessagingTest extends TestCase
     {
         parent::setUp();
 
+        $this->area1 = $this->conjureArea();
+        $this->area2 = $this->conjureArea();
+
+        $this->group1 = $this->conjureGroup();
+        $this->group2 = $this->conjureGroup();
+
         $this->downline1 = $this->conjureContact();
         $this->downline2 = $this->conjureContact();
         $this->downline3 = $this->conjureContact();
         $this->downline4 = $this->conjureContact();
         $this->downline5 = $this->conjureContact();
         $this->downline6 = $this->conjureContact();
+
+        $this->downline1->syncAreas($this->area1);
+        $this->downline2->syncAreas($this->area1);
+        $this->downline3->syncAreas($this->area1);
+        $this->downline4->syncAreas($this->area2);
+        $this->downline5->syncAreas($this->area2);
+        $this->downline6->syncAreas($this->area2);
+
+        $this->downline1->syncGroups($this->group1);
+        $this->downline2->syncGroups($this->group1);
+        $this->downline3->syncGroups($this->group1);
+        $this->downline4->syncGroups($this->group2);
+        $this->downline5->syncGroups($this->group2);
+        $this->downline6->syncGroups($this->group2);
 
         (new UpdateCommanderUpline($this->downline1, $this->commander))->handle();
         (new UpdateCommanderUpline($this->downline2, $this->commander))->handle();
@@ -98,5 +121,95 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertSentTo($this->downline5, DescendantsBroadcastUpdated::class);
         Notification::assertSentTo($this->downline6, DescendantsBroadcastUpdated::class);
         Queue::assertPushed(ChargeAirtime::class);
+    }
+
+    /** @test */
+    function commander_can_send_messages_to_an_area()
+    {
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::SEND);
+        $message = $this->faker->sentence;
+        $missive = "{$this->area1->name}{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderSendUpdated::class);
+        Notification::assertSentTo($this->downline1, CommanderSendToArea::class);
+        Notification::assertSentTo($this->downline2, CommanderSendToArea::class);
+        Notification::assertSentTo($this->downline3, CommanderSendToArea::class);
+        Notification::assertNotSentTo($this->downline4, CommanderSendToArea::class);
+        Notification::assertNotSentTo($this->downline5, CommanderSendToArea::class);
+        Notification::assertNotSentTo($this->downline6, CommanderSendToArea::class);
+        Queue::assertPushed(ChargeAirtime::class);
+
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::SEND);
+        $message = $this->faker->sentence;
+        $missive = "{$this->area2->name}{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderSendUpdated::class);
+        Notification::assertNotSentTo($this->downline1, CommanderSendToArea::class);
+        Notification::assertNotSentTo($this->downline2, CommanderSendToArea::class);
+        Notification::assertNotSentTo($this->downline3, CommanderSendToArea::class);
+        Notification::assertSentTo($this->downline4, CommanderSendToArea::class);
+        Notification::assertSentTo($this->downline5, CommanderSendToArea::class);
+        Notification::assertSentTo($this->downline6, CommanderSendToArea::class);
+    }
+
+    /** @test */
+    function commander_can_send_messages_to_a_group()
+    {
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::SEND);
+        $message = $this->faker->sentence;
+        $missive = "{$this->group1->name}{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderSendUpdated::class);
+        Notification::assertSentTo($this->downline1, CommanderSendToGroup::class);
+        Notification::assertSentTo($this->downline2, CommanderSendToGroup::class);
+        Notification::assertSentTo($this->downline3, CommanderSendToGroup::class);
+        Notification::assertNotSentTo($this->downline4, CommanderSendToGroup::class);
+        Notification::assertNotSentTo($this->downline5, CommanderSendToGroup::class);
+        Notification::assertNotSentTo($this->downline6, CommanderSendToGroup::class);
+        Queue::assertPushed(ChargeAirtime::class);
+
+        /*** arrange ***/
+        $command = $this->getCommand(CommandKey::SEND);
+        $message = $this->faker->sentence;
+        $missive = "{$this->group2->name}{$command}{$message}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Notification::assertSentTo($this->commander, CommanderSendUpdated::class);
+        Notification::assertNotSentTo($this->downline1, CommanderSendToGroup::class);
+        Notification::assertNotSentTo($this->downline2, CommanderSendToGroup::class);
+        Notification::assertNotSentTo($this->downline3, CommanderSendToGroup::class);
+        Notification::assertSentTo($this->downline4, CommanderSendToGroup::class);
+        Notification::assertSentTo($this->downline5, CommanderSendToGroup::class);
+        Notification::assertSentTo($this->downline6, CommanderSendToGroup::class);
     }
 }

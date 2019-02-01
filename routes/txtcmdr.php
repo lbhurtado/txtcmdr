@@ -43,18 +43,6 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{context={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-		(new Pipeline)
-			->pipe(new SanitizeContextStage) //done
-		    ->pipe(new NotifyContextAreaStage) //done
-		    ->pipe(new NotifyContextGroupStage) //done
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -84,6 +72,18 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
+tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{context={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeContextStage) //tested
+            ->pipe(new NotifyContextAreaStage) //tested
+            ->pipe(new NotifyContextGroupStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
 tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
@@ -97,8 +97,8 @@ tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
-            ->pipe(new NotifyDescendantsStage)
-            ->pipe(new NotifyCommanderStage)
+            ->pipe(new NotifyDescendantsStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
     });
