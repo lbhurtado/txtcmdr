@@ -2,9 +2,9 @@
 
 namespace App\Campaign\Notifications;
 
-class CommanderSendToGroup extends BaseNotification
+class CommanderAlertToGroup extends BaseNotification
 {
-    protected $template = "txtcmdr.send.group";
+    protected $template = "txtcmdr.alert.group";
 
     function params($notifiable)
     {

@@ -10,6 +10,7 @@ use App\App\Stages\NotifyDownlineStage;
 use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
+use App\App\Stages\NotifyGroupAlertStage;
 use App\App\Stages\OnboardCommanderStage;
 use App\App\Stages\NotifyDescendantsStage;
 use App\App\Stages\NotifyContextAreaStage;
@@ -23,6 +24,7 @@ use App\App\Stages\UpdateCommanderTagAreaStage;
 use App\App\Stages\UpdateCommanderTagGroupStage;
 use App\App\Stages\UpdateCommanderAttributeStage;
 use App\App\Stages\UpdateCommanderTagCampaignStage;
+use App\Campaign\Notifications\CommanderAlertToGroup;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
@@ -30,6 +32,7 @@ use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 use App\App\Stages\UpdateCommanderCampaignParametersStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
+if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
 
 $txtcmdr = resolve('txtcmdr');
 
@@ -46,8 +49,9 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
-			->pipe(new NotifyUplineStage)
-		    ->pipe(new NotifyCommanderStage)
+			->pipe(new NotifyUplineStage) //tested
+		    ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyGroupAlertStage) //tested
 		    ->process($parameters)
 		    ;
 	});	

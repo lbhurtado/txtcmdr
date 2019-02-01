@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use App\Campaign\Domain\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
@@ -27,4 +28,12 @@ class Alert extends Model implements Transformable
     public $casts = [
         'extra_attributes' => 'array',
     ];
+
+    /**
+     * Get all of the contacts that are assigned this area.
+     */
+    public function groups()
+    {
+        return $this->morphedByMany(Group::class, 'model', 'model_has_alerts');
+    }
 }
