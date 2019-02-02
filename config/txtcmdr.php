@@ -86,5 +86,6 @@ return [
         InfoKey::TAG => env('INFO_KEYWORD_AREA', 'TAG'),
         InfoKey::AREA => env('INFO_KEYWORD_AREA', 'AREA'),
         InfoKey::GROUP => env('INFO_KEYWORD_GROUP', 'GROUP'),
+        InfoKey::ALERT => env('INFO_KEYWORD_GROUP', 'ALERT'),
     ],
 ];

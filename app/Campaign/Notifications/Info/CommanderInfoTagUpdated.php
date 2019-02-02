@@ -5,14 +5,14 @@ namespace App\Campaign\Notifications\Info;
 use App\Missive\Domain\Models\Contact;
 use App\Campaign\Notifications\BaseNotification;
 
-class CommanderInfoAreaUpdated extends BaseNotification
+class CommanderInfoTagUpdated extends BaseNotification
 {
-    protected $template = "txtcmdr.commander.info.area";
+    protected $template = "txtcmdr.commander.info.tag";
 
     function params(Contact $notifiable)
     {
-        $area = $notifiable->areas()->first();
-        $data = $area ? "{$area->qn}" : 'none';
+        $tag = $notifiable->tags()->first();
+        $data = $tag ? "{$tag->code}" : 'none';
 
         return compact('data');
     }
