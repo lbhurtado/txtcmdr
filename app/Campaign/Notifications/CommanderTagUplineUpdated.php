@@ -2,60 +2,29 @@
 
 namespace App\Campaign\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use App\Missive\Domain\Models\Contact;
 
-class CommanderTagUplineUpdated extends Notification implements ShouldQueue
+class CommanderTagUplineUpdated extends BaseNotification
 {
-    use Queueable;
+    protected $downline;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $template = "txtcmdr.upline.tag";
+
+    public function __construct(Contact $downline)
     {
-        //
+        $this->downline = $downline;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    function params(Contact $notifiable)
     {
-        return config('txtcmdr.notification.channels');
-    }
+        $code = strtoupper($this->downline->tags()->first()->code);
+        $handle = $this->downline->handle;
+        $mobile = $this->downline->mobile;
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
         return [
-            'mobile' => $notifiable->mobile,
+            'handle' => $handle,
+            'mobile' => $mobile,
+            'code' => $code,
         ];
     }
 }

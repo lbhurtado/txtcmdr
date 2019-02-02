@@ -2,14 +2,19 @@
 
 namespace App\Campaign\Notifications;
 
+use App\Missive\Domain\Models\Contact;
+
 class CommanderTagUpdated extends BaseNotification
 {
     protected $template = "txtcmdr.commander.tag";
 
-    function params($notifiable)
+    function params(Contact $notifiable)
     {
-        $code = $notifiable->tags()->first()->code;
+        $code = strtoupper($notifiable->tags()->first()->code);
 
-        return compact('code');
+        return [
+            'code' => $code,
+            'next' => $code,
+        ];
     }
 }

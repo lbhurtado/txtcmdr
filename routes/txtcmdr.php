@@ -135,6 +135,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new UpdateCommanderTagAreaStage) //tested
             ->pipe(new NotifyCommanderStage) //test
+            ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
     });

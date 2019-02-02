@@ -16,12 +16,12 @@ use App\Campaign\Notifications\CommanderRegistrationUplineUpdated;
 class NotifyUplineStage extends NotifyStage
 {
     protected $notifications = [
-        CommandKey::TAG      => CommanderTagUplineUpdated::class,
-        CommandKey::AREA     => CommanderAreaUplineUpdated::class,
-        CommandKey::GROUP    => CommanderGroupUplineUpdated::class,
+        CommandKey::TAG      => CommanderTagUplineUpdated::class, //done
+        CommandKey::AREA     => CommanderAreaUplineUpdated::class, //done
+        CommandKey::GROUP    => CommanderGroupUplineUpdated::class, //done
         CommandKey::ALERT    => CommanderAlertUplineUpdated::class,
         CommandKey::REPORT   => UplineReportUpdated::class,
-        CommandKey::STATUS   => CommanderStatusUplineUpdated::class,
+        CommandKey::STATUS   => CommanderStatusUplineUpdated::class, //done
         CommandKey::REGISTER => CommanderRegistrationUplineUpdated::class,
     ];
 

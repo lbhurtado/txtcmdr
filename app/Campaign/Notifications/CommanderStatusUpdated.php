@@ -2,14 +2,20 @@
 
 namespace App\Campaign\Notifications;
 
+use App\Missive\Domain\Models\Contact;
+
 class CommanderStatusUpdated extends BaseNotification
 {
     protected $template = "txtcmdr.commander.status";
 
-    function params($notifiable)
+    function params(Contact $notifiable)
     {
-        $status = "custom";
+        $status = $notifiable->status;
+        $reason = $notifiable->status()->reason ?? 'no reason';
 
-        return compact('status');
+        return [
+            'status' => $status,
+            'reason' => $reason,
+        ];
     }
 }

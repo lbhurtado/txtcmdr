@@ -5,11 +5,11 @@ return [
 		'optin' 	        => "You have opted in using :mobile. \n\n-:signature",
 		'area'  	        => "You are now operating in :area. \n\n-:signature",
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
-		'tag'   	        => "You have a new keyword :code. \n\n-:signature",
+		'tag'   	        => "You have a new keyword: :code*\n\n*:next [name]\n\n-:signature",
 		'registration'      => ":handle, you have registered. \n\n-:signature",
 		'alert'		        => "You sent a :alert alert. \n\n-:signature",
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
-		'status'	        => "Your status changed: :status. \n\n-:signature",
+		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
         'test'	            => "PONG",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
@@ -25,7 +25,9 @@ return [
         ],
 	],
     'upline' => [
-        'group'             => "Your downline :handle [:mobile] is now attached to :group. \n\n-:signature",
-        'status'	        => "Downline status changed: :status. \n\n-:signature",
+        'tag'               => "Your downline :handle [:mobile] has a new keyword:\n\n:code\n\n-:signature",
+        'group'             => "Your downline :handle [:mobile] is now attached to :group.\n\n-:signature",
+        'area'              => "Your downline :handle [:mobile] is now operating in :area.\n\n-:signature",
+        'status'	        => "Your downline :handle [:mobile] has a new status: :status*\n\n*:reason\n\n-:signature",
     ],
 ];
