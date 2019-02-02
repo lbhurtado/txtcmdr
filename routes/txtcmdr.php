@@ -1,7 +1,6 @@
 <?php
 
 use League\Pipeline\Pipeline;
-use App\App\Stages\NotifyHQStage;
 use App\App\Stages\SanitizeAreaStage;
 use App\App\Stages\NotifyUplineStage;
 use App\App\Stages\SanitizeGroupStage;
@@ -25,12 +24,12 @@ use App\App\Stages\UpdateCommanderTagAreaStage;
 use App\App\Stages\UpdateCommanderTagGroupStage;
 use App\App\Stages\UpdateCommanderAttributeStage;
 use App\App\Stages\UpdateCommanderTagCampaignStage;
-use App\Campaign\Notifications\CommanderAlertToGroup;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
+use App\App\Stages\UpdateCommanderCampaignParametersStage;
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 
-use App\App\Stages\UpdateCommanderCampaignParametersStage;
+
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -62,7 +61,6 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
 		    ->pipe(new NotifyCommanderInfoStage)
-            // ->pipe(new NotifyCommanderStage) //tested
 		    ->process($parameters)
 		    ;
 	});	

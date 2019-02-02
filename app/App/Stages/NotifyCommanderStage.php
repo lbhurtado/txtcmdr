@@ -6,7 +6,6 @@ use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderTagUpdated;
 use App\Campaign\Notifications\CommanderSendUpdated;
 use App\Campaign\Notifications\CommanderAreaUpdated;
-use App\Campaign\Notifications\CommanderInfoUpdated;
 use App\Campaign\Notifications\CommanderTestUpdated;
 use App\Campaign\Notifications\CommanderOptinUpdated;
 use App\Campaign\Notifications\CommanderGroupUpdated;
@@ -24,7 +23,6 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::TAG       => CommanderTagUpdated::class,
         CommandKey::SEND      => CommanderSendUpdated::class,
         CommandKey::AREA      => CommanderAreaUpdated::class,
-        CommandKey::INFO      => CommanderInfoUpdated::class,
         CommandKey::TEST      => CommanderTestUpdated::class,
         CommandKey::GROUP     => CommanderGroupUpdated::class,
         CommandKey::ALERT     => CommanderAlertUpdated::class,
