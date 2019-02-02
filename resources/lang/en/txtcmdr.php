@@ -11,7 +11,9 @@ return [
 		'attribute'	   => "You changed a :attribute attribute. \n-:signature",
 		'status'	   => "Your status changed: :status. \n-:signature",
         'test'	       => "PONG",
-        'info'		   => "Info:\n:key=:value\n-:signature",
+        'info'		   => [
+        	'area' 	   => "Info:\n:data\n-:signature",
+        ],
 	],
     'upline' => [
         'status'	   => "Downline status changed: :status. \n-:signature",

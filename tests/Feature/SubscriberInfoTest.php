@@ -11,6 +11,8 @@ use App\Campaign\Notifications\CommanderInfoUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Domain\Classes\InfoKey;
 
+use App\Campaign\Notifications\Info\CommanderInfoAreaUpdated;
+
 class SubscriberInfoTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -29,6 +31,7 @@ class SubscriberInfoTest extends TestCase
         /*** arrange ***/
         $command = $this->infoCommand;
         $keyword = $this->randomKeywords;
+        $keyword = 'AREA';
         $missive = "{$command}{$keyword}";
 
         /*** act ***/
@@ -38,7 +41,8 @@ class SubscriberInfoTest extends TestCase
 
         /*** assert ***/
         $this->assertCommandIssued($missive);
-        Notification::assertSentTo($this->commander, CommanderInfoUpdated::class);
+        // Notification::assertSentTo($this->commander, CommanderInfoUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderInfoAreaUpdated::class);
         Queue::assertPushed(ChargeAirtime::class);
     }
 }

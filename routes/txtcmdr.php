@@ -11,13 +11,13 @@ use App\App\Stages\SanitizeContextStage;
 use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\NotifyGroupAlertStage;
-use App\App\Stages\LoadInfoKeyValueStage;
 use App\App\Stages\OnboardCommanderStage;
 use App\App\Stages\NotifyDescendantsStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\UpdateCommanderTagStage;
 use App\App\Stages\UpdateCommanderAreaStage;
+use App\App\Stages\NotifyCommanderInfoStage;
 use App\App\Stages\UpdateCommanderGroupStage;
 use App\App\Stages\UpdateCommanderUplineStage;
 use App\App\Stages\UpdateCommanderStatusStage;
@@ -61,8 +61,8 @@ tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
-		    ->pipe(new LoadInfoKeyValueStage)
-            ->pipe(new NotifyCommanderStage) //tested
+		    ->pipe(new NotifyCommanderInfoStage)
+            // ->pipe(new NotifyCommanderStage) //tested
 		    ->process($parameters)
 		    ;
 	});	

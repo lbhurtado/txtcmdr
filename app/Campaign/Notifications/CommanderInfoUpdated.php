@@ -8,12 +8,8 @@ class CommanderInfoUpdated extends BaseNotification
 
     function params($notifiable)
     {
+        $info = implode(array_values(config('txtcmdr.infokeys')),', ');
 
-        $payload = array_get($notifiable->extra_attributes, 'payload', ['AREA' => 'Magallanes']);
-        
-        $key = 'AREA';
-        $value = array_get($payload, $key, 'nowhere');
-
-        return compact('key', 'value');
+        return compact('info');
     }
 }

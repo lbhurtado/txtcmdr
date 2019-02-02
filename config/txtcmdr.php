@@ -1,5 +1,6 @@
 <?php
 
+use App\Campaign\Domain\Classes\InfoKey;
 use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\GlobeLabs\Channels\GlobeConnectChannel;
@@ -80,5 +81,10 @@ return [
             'cmd' => env('ATTRIBUTE_COMMAND'),
             'class' => App\Campaign\Domain\Classes\AttributeCommand::class,
         ],
+    ],
+    'infokeys' => [
+        InfoKey::TAG => env('INFO_KEYWORD_AREA', 'TAG'),
+        InfoKey::AREA => env('INFO_KEYWORD_AREA', 'AREA'),
+        InfoKey::GROUP => env('INFO_KEYWORD_GROUP', 'GROUP'),
     ],
 ];
