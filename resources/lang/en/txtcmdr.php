@@ -25,7 +25,7 @@ return [
         ],
 	],
     'upline' => [
-        'group'             => "Your downline :downline is now attached to :group. \n\n-:signature",
+        'group'             => "Your downline :handle [:mobile] is now attached to :group. \n\n-:signature",
         'status'	        => "Downline status changed: :status. \n\n-:signature",
     ],
 ];

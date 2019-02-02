@@ -7,6 +7,8 @@ use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 abstract class NotifyStage extends BaseStage
 {
+    public $params = ['downline' => null];
+
     protected $notifiable;
 
     protected $notifications = [];
@@ -19,7 +21,7 @@ abstract class NotifyStage extends BaseStage
     public function execute()
     {
         optional($this->getNotification(), function ($notification) {
-            Notification::send($this->notifiable, app($notification));
+            Notification::send($this->notifiable, app($notification, $this->params));
         });
     }
 
@@ -38,6 +40,13 @@ abstract class NotifyStage extends BaseStage
         }
         $key = array_get(Command::$mappings, $cmd);
 
+        $this->setup($key);
+
         return array_get($this->notifications, $key);
+    }
+
+    public function setup($key)
+    {
+
     }
 } 

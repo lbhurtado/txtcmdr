@@ -8,7 +8,7 @@ class CommanderGroupUplineUpdated extends BaseNotification
 {
     protected $downline;
 
-    protected $template = "txtcmdr.commander.group";
+    protected $template = "txtcmdr.upline.group";
 
     public function __construct(Contact $downline)
     {
@@ -17,11 +17,15 @@ class CommanderGroupUplineUpdated extends BaseNotification
 
     function params(Contact $notifiable)
     {
-        $group = $notifiable->groups()->first()->qn;
+        $group = $this->downline->groups()->first()->qn;
+        $handle = $this->downline->handle;
+        $mobile = $this->downline->mobile;
 
-        $downline = $this->downline->handle;
-
-        return compact('group','downline');
+        return [
+            'handle' => $handle,
+            'mobile' => $mobile,
+            'group' => $group,
+        ];
     }
 }
 

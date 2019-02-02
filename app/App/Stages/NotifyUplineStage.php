@@ -29,4 +29,9 @@ class NotifyUplineStage extends NotifyStage
     {
         return $this->getCommander()->upline;
     }
+
+    public function setup($key)
+    {
+        $this->params = ['downline' => $this->getCommander()];
+    }
 }

@@ -19,7 +19,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class TextCommanderCase extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+//    use RefreshDatabase, WithFaker;
 
     protected $commander;
 
