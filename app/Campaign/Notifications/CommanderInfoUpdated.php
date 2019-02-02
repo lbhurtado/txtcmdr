@@ -8,8 +8,12 @@ class CommanderInfoUpdated extends BaseNotification
 
     function params($notifiable)
     {
-        $info = "si vis pacem para bellum";
 
-        return compact('info');
+        $payload = array_get($notifiable->extra_attributes, 'payload', ['AREA' => 'Magallanes']);
+        
+        $key = 'AREA';
+        $value = array_get($payload, $key, 'nowhere');
+
+        return compact('key', 'value');
     }
 }
