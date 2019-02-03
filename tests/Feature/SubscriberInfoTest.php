@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Charging\Jobs\ChargeAirtime;
 use App\Campaign\Domain\Classes\InfoKey;
+use Illuminate\Validation\Rules\In;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Foundation\Testing\WithFaker;

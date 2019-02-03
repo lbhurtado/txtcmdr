@@ -9,11 +9,6 @@ class AlertCommand extends Command
 {
 	const DEFAULT_CMD = '!';
 
-//	protected function go()
-//	{
-//		return $this;
-//	}
-
     protected $alerts;
 
     public function __construct(AlertRepository $alerts)

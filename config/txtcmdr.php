@@ -45,6 +45,10 @@ return [
             'cmd' => env('TEST_COMMAND'),
             'class' => App\Campaign\Domain\Classes\TestCommand::class,
         ],
+        CommandKey::HELP => [
+            'cmd' => env('HELP_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\HelpCommand::class,
+        ],
     	CommandKey::GROUP => [
     		'cmd' => env('GROUP_COMMAND'),
     		'class' => App\Campaign\Domain\Classes\GroupCommand::class,	

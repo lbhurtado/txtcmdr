@@ -3,10 +3,10 @@
 namespace App\App\Stages;
 
 use App\Campaign\Domain\Classes\InfoKey;
-use App\Campaign\Notifications\Info\CommanderInfoAlertUpdated;
+use App\Campaign\Notifications\Info\CommanderInfoTagUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoAreaUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoGroupUpdated;
-use App\Campaign\Notifications\Info\CommanderInfoTagUpdated;
+use App\Campaign\Notifications\Info\CommanderInfoAlertUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoStatusUpdated;
 
 class NotifyCommanderInfoStage extends NotifyStage
