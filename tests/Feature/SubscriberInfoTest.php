@@ -13,6 +13,7 @@ use App\Campaign\Notifications\Info\CommanderInfoTagUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoAreaUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoGroupUpdated;
 use App\Campaign\Notifications\Info\CommanderInfoAlertUpdated;
+use App\Campaign\Notifications\Info\CommanderInfoStatusUpdated;
 
 class SubscriberInfoTest extends TestCase
 {
@@ -37,6 +38,7 @@ class SubscriberInfoTest extends TestCase
             InfoKey::AREA => CommanderInfoAreaUpdated::class,
             InfoKey::GROUP => CommanderInfoGroupUpdated::class,
             InfoKey::ALERT => CommanderInfoAlertUpdated::class,
+            InfoKey::STATUS => CommanderInfoStatusUpdated::class,
         ];
     }
 
