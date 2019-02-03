@@ -2,18 +2,19 @@
 
 namespace App\Missive\Domain\Models;
 
+use Illuminate\Support\Collection;
 use Spatie\ModelStatus\HasStatuses;
 use App\App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Model;
 use App\Missive\Domain\Contracts\Mobile;
+use App\Campaign\Domain\Traits\SendsAlert;
 use App\App\Traits\HasSchemalessAttributes;
 use App\Charging\Domain\Traits\SpendsAirtime;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use App\Missive\Domain\Contracts\MobileInterface;
+//use App\Missive\Domain\Contracts\MobileInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
-use Illuminate\Support\Collection;
 
 /**
  * Class Contact.
@@ -22,7 +23,7 @@ use Illuminate\Support\Collection;
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert;
 
     /**
      * The attributes that are mass assignable.

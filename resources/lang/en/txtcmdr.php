@@ -28,6 +28,7 @@ return [
         'tag'               => "Your downline :handle [:mobile] has a new keyword:\n\n:code\n\n-:signature",
         'group'             => "Your downline :handle [:mobile] is now attached to :group.\n\n-:signature",
         'area'              => "Your downline :handle [:mobile] is now operating in :area.\n\n-:signature",
+        'alert'	            => "Your downline :handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
         'status'	        => "Your downline :handle [:mobile] has a new status: :status*\n\n*:reason\n\n-:signature",
     ],
 ];

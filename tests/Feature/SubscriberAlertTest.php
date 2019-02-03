@@ -2,28 +2,27 @@
 
 namespace Tests\Feature;
 
-use App\Campaign\Notifications\CommanderAlertUpdated;
-use App\Campaign\Notifications\CommanderAlertUplineUpdated;
 use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
-use App\Campaign\Jobs\UpdateCommanderTag;
-use App\Campaign\Jobs\UpdateCommanderArea;
+use App\Campaign\Jobs\UpdateCommanderAlert;
 use App\Campaign\Domain\Classes\CommandKey;
-use App\Campaign\Jobs\UpdateCommanderTagArea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Campaign\Notifications\CommanderAreaUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderAlertToGroup;
-use App\Campaign\Notifications\CommanderAreaUplineUpdated;
-
-use App\Missive\Domain\Models\Contact;
-use App\Campaign\Domain\Models\Group;
+use App\Campaign\Notifications\CommanderAlertUpdated;
+use App\Campaign\Notifications\CommanderAlertUplineUpdated;
 
 class SubscriberAlertTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $alert;
+
+    protected $group;
+
     protected $tagger;
+
+    protected $contact1, $contact2, $contact3, $contact4;
 
     function setup()
     {
@@ -54,9 +53,12 @@ class SubscriberAlertTest extends TestCase
         $this->redefineRoutes();
         Queue::fake();
         Notification::fake();
+        (new UpdateCommanderAlert($this->commander, $this->alert))->handle();
 
         /*** assert ***/
         $this->assertCommandIssued($missive);
+        $this->assertEquals($this->commander->latest_alerts()->first()->name, $this->alert->name);
+        Queue::assertPushed(UpdateCommanderAlert::class);
         Notification::assertSentTo($this->commander, CommanderAlertUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderAlertUplineUpdated::class);
         Notification::assertSentTo($this->contact1, CommanderAlertToGroup::class);

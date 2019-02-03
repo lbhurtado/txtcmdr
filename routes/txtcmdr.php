@@ -17,6 +17,7 @@ use App\App\Stages\NotifyContextGroupStage;
 use App\App\Stages\UpdateCommanderTagStage;
 use App\App\Stages\UpdateCommanderAreaStage;
 use App\App\Stages\NotifyCommanderInfoStage;
+use App\App\Stages\UpdateCommanderAlertStage;
 use App\App\Stages\UpdateCommanderGroupStage;
 use App\App\Stages\UpdateCommanderUplineStage;
 use App\App\Stages\UpdateCommanderStatusStage;
@@ -49,6 +50,7 @@ tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
+            ->pipe(new UpdateCommanderAlertStage)
 			->pipe(new NotifyUplineStage) //tested
 		    ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyGroupAlertStage) //tested

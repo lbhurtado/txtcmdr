@@ -2,60 +2,31 @@
 
 namespace App\Campaign\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use App\Missive\Domain\Models\Contact;
 
-class CommanderAlertUplineUpdated extends Notification implements ShouldQueue
+class CommanderAlertUplineUpdated extends BaseNotification
 {
-    use Queueable;
+    protected $downline;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $template = "txtcmdr.upline.alert";
+
+    public function __construct(Contact $downline)
     {
-        //
+        $this->downline = $downline;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    function params(Contact $notifiable)
     {
-        return config('txtcmdr.notification.channels');
-    }
+        $alert = strtoupper(optional($this->downline->latest_alerts()->first())->name ?? 'no alert');
+        $area = optional($this->downline->areas()->first())->qn ?? 'no area';
+        $handle = $this->downline->handle;
+        $mobile = $this->downline->mobile;
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
         return [
-            'mobile' => $notifiable->mobile,
+            'handle' => $handle,
+            'mobile' => $mobile,
+            'alert' => $alert,
+            'area' => $area,
         ];
     }
 }
