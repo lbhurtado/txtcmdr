@@ -7,7 +7,7 @@ return [
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
 		'tag'   	        => "You have a new keyword: :code*\n\n*:next [name]\n\n-:signature",
 		'registration'      => ":handle, you have registered. \n\n-:signature",
-		'alert'		        => "You sent a :alert alert. \n\n-:signature",
+		'alert'		        => ":alert alert was issued to:\n:handle\n:groups \n\n-:signature",
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
         'test'	            => "PONG",
@@ -30,5 +30,8 @@ return [
         'area'              => "Your downline :handle [:mobile] is now operating in :area.\n\n-:signature",
         'alert'	            => "Your downline :handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
         'status'	        => "Your downline :handle [:mobile] has a new status: :status*\n\n*:reason\n\n-:signature",
+    ],
+    'group' => [
+        'alert'	            => ":handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
     ],
 ];

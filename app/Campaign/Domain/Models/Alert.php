@@ -2,7 +2,6 @@
 
 namespace App\Campaign\Domain\Models;
 
-use App\Campaign\Domain\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
@@ -30,7 +29,7 @@ class Alert extends Model implements Transformable
     ];
 
     /**
-     * Get all of the contacts that are assigned this area.
+     * Get all of the groups that are assigned this alert.
      */
     public function groups()
     {

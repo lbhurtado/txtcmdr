@@ -3,13 +3,13 @@
 namespace App\Campaign\Domain\Models;
 
 use App\App\Traits\HasNestedTrait;
+use App\Campaign\Domain\Models\Alert;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\Campaign\Domain\Traits\HasAlerts;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-
 
 /**
  * Class Group.

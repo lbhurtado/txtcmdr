@@ -5,7 +5,6 @@ namespace App\App\Stages;
 use App\Missive\Domain\Models\Contact;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderAlertToGroup;
-use App\Campaign\Domain\Repositories\AlertRepository;
 
 class NotifyGroupAlertStage extends NotifyStage
 {
@@ -25,5 +24,10 @@ class NotifyGroupAlertStage extends NotifyStage
     protected function getInputAlert()
     {
     	return array_get($this->getParameters(), 'alert');
+    }
+
+    public function setup($key)
+    {
+        $this->params = ['whistleBlower' => $this->getCommander()];
     }
 }
