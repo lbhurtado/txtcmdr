@@ -9,6 +9,7 @@ use App\Campaign\Jobs\UpdateCommanderCheckin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderCheckinUpdated;
+use App\Campaign\Notifications\CommanderCheckinUplineUpdated;
 
 class SubscriberCheckinTest extends TestCase
 {
@@ -39,6 +40,8 @@ class SubscriberCheckinTest extends TestCase
         /*** assert ***/
         $this->assertCommandIssued($missive);
         Notification::assertSentTo($this->commander, CommanderCheckinUpdated::class);
+        Notification::assertSentTo($this->tagger, CommanderCheckinUplineUpdated::class);
+
         Queue::assertPushed(UpdateCommanderCheckin::class);
         Queue::assertPushed(ChargeAirtime::class);
     }

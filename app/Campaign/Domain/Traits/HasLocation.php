@@ -3,6 +3,7 @@
 namespace App\Campaign\Domain\Traits;
 
 use App\Campaign\Domain\Models\Checkin;
+use App\Campaign\Domain\Classes\LatestCheckin;
 
 trait HasLocation
 {
@@ -20,5 +21,10 @@ trait HasLocation
         $checkin = $this->checkins()->create(compact('longitude', 'latitude'));
 
         return $checkin;
+    }
+
+    public function latestCheckin()
+    {
+        return $this->hasMany(LatestCheckin::class);
     }
 }

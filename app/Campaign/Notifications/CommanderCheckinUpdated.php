@@ -12,8 +12,17 @@ class CommanderCheckinUpdated extends BaseNotification
 
     function params(Contact $notifiable)
     {
-        $location = optional($notifiable->checkins()->first())->mapUrl ?? 'location not yet available';
+        $location = 'location not yet available';
+        $id = 0;
 
-        return compact('location');
+        optional($notifiable->latestCheckin()->first(), function ($checkin) use (&$location, &$id) {
+            $location = $checkin->mapUrl;
+            $id = $checkin->id;
+        });
+
+        return [
+            'id' => $id,
+            'location' => $location,
+        ];
     }
 }

@@ -11,6 +11,7 @@ use App\Campaign\Notifications\CommanderAreaUplineUpdated;
 use App\Campaign\Notifications\CommanderGroupUplineUpdated;
 use App\Campaign\Notifications\CommanderAlertUplineUpdated;
 use App\Campaign\Notifications\CommanderStatusUplineUpdated;
+use App\Campaign\Notifications\CommanderCheckinUplineUpdated;
 use App\Campaign\Notifications\CommanderRegistrationUplineUpdated;
 
 class NotifyUplineStage extends NotifyStage
@@ -21,6 +22,7 @@ class NotifyUplineStage extends NotifyStage
         CommandKey::GROUP    => CommanderGroupUplineUpdated::class, //done
         CommandKey::ALERT    => CommanderAlertUplineUpdated::class,
         CommandKey::REPORT   => UplineReportUpdated::class,
+        CommandKey::CHECKIN  => CommanderCheckinUplineUpdated::class,
         CommandKey::STATUS   => CommanderStatusUplineUpdated::class, //done
         CommandKey::REGISTER => CommanderRegistrationUplineUpdated::class,
     ];

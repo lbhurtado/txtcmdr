@@ -12,7 +12,7 @@ return [
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
         'test'	            => "PONG",
         'help'              => "Commands:\n\n:commands\n\n-:signature",
-        'checkin'	        => "You checked in: :location. \n\n-:signature",
+        'checkin'	        => "You checked in: [:id] :location. \n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",
@@ -32,6 +32,7 @@ return [
         'area'              => "Your downline :handle [:mobile] is now operating in :area.\n\n-:signature",
         'alert'	            => "Your downline :handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
         'status'	        => "Your downline :handle [:mobile] has a new status: :status*\n\n*:reason\n\n-:signature",
+        'checkin'	        => "Your downline :handle [:mobile] checked in: [:id] :location. \n\n-:signature",
     ],
     'group' => [
         'alert'	            => ":handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",

@@ -192,8 +192,9 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) use ($cmd) {
         (new Pipeline)
-            ->pipe(new UpdateCommanderCheckinStage)
-            ->pipe(new NotifyCommanderStage)
+            ->pipe(new UpdateCommanderCheckinStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
     });
