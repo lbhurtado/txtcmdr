@@ -30,22 +30,20 @@ use App\App\Stages\UpdateCommanderCampaignParametersStage;
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 
-
-
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
 
 $txtcmdr = resolve('txtcmdr');
 
-tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    // ->pipe(new OnboardCommanderStage)
-		    ->pipe(new NotifyCommanderStage) //done
-		    ->process($parameters)
-		    ;
-	});	
-});
+//tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
+//	$txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) {
+//		(new Pipeline)
+//		    // ->pipe(new OnboardCommanderStage)
+//		    ->pipe(new NotifyCommanderStage) //done
+//		    ->process($parameters)
+//		    ;
+//	});
+//});
 
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
@@ -195,6 +193,15 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
             ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
+tap(Command::using(CommandKey::HELP), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) use ($cmd) {
+        (new Pipeline)
+            ->pipe(new NotifyCommanderStage)
             ->process($parameters)
         ;
     });

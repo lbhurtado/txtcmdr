@@ -11,7 +11,7 @@ return [
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
         'test'	            => "PONG",
-        'help'              => "Commands:\n:data\n\n-:signature",
+        'help'              => "Commands:\n\n:commands\n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",
