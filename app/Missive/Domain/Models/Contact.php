@@ -14,7 +14,7 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 //use App\Missive\Domain\Contracts\MobileInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
+use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
 
 /**
  * Class Contact.
@@ -23,7 +23,7 @@ use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasTags};
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation;
 
     /**
      * The attributes that are mass assignable.

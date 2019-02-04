@@ -17,6 +17,7 @@ use App\Campaign\Domain\Repositories\{GroupRepository, GroupRepositoryEloquent};
 use App\Missive\Domain\Repositories\{ContactRepository, ContactRepositoryEloquent};
 use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloquent};
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -59,6 +60,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         $this->app->bind(CampaignRepository::class, CampaignRepositoryEloquent::class);
         $this->app->bind(TagRepository::class, TagRepositoryEloquent::class);
         $this->app->bind(AlertRepository::class, AlertRepositoryEloquent::class);
+        $this->app->bind(CheckinRepository::class, CheckinRepositoryEloquent::class);
 
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {

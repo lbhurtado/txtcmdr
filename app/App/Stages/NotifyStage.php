@@ -3,6 +3,7 @@
 namespace App\App\Stages;
 
 use Notification;
+use App\Campaign\Notifications\BaseNotification;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 abstract class NotifyStage extends BaseStage
@@ -21,7 +22,7 @@ abstract class NotifyStage extends BaseStage
     public function execute()
     {
         optional($this->getNotification(), function ($notification) {
-            Notification::send($this->notifiable, app($notification, $this->params));
+            Notification::send($this->notifiable, app($notification, $this->params)->onQueue('sms'));
         });
     }
 

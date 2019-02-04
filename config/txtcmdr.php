@@ -69,6 +69,10 @@ return [
             'cmd' => env('STATUS_COMMAND'),
             'class' => App\Campaign\Domain\Classes\StatusCommand::class,
         ],
+        CommandKey::CHECKIN => [
+            'cmd' => env('CHECKIN_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\CheckinCommand::class,
+        ],
         CommandKey::ANNOUNCE => [
             'cmd' => env('ANNOUNCE_COMMAND'),
             'class' => App\Campaign\Domain\Classes\AnnounceCommand::class,

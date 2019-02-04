@@ -12,6 +12,7 @@ return [
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
         'test'	            => "PONG",
         'help'              => "Commands:\n\n:commands\n\n-:signature",
+        'checkin'	        => "You checked in: :location. \n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",

@@ -4,6 +4,7 @@ namespace App\GlobeLabs\Services;
 
 use Globe\Connect\Sms;
 use Globe\Connect\Oauth;
+use Globe\Connect\Location;
 
 class GlobeConnect
 {
@@ -50,6 +51,23 @@ class GlobeConnect
             // throw CouldNotSendNotification::couldNotCommunicateWithSmsc($exception);
             throw $exception;
         }
+    }
+
+    public function locate($params)
+    {
+        $base = [
+
+        ];
+
+        $params = \array_merge($base, \array_filter($params));
+
+        $location = new Location(array_get($params, 'token'));
+        $location->setAddress(array_get($params, 'address'));
+        $location->setRequestedAccuracy(array_get($params, 'requested_accuracy'));
+
+        $response = $location->getLocation();
+
+        return $response;
     }
 
     public function getSender()

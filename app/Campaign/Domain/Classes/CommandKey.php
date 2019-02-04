@@ -17,6 +17,7 @@ final class CommandKey extends Enum
     const     OPTIN = 'Opt-in';
     const    REPORT = 'Report';
     const    STATUS = 'Status';
+    const   CHECKIN = 'Check-in';
     const  ANNOUNCE = 'Announce';
     const  REGISTER = 'Registration';
     const BROADCAST = 'Broadcast';
