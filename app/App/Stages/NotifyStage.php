@@ -35,15 +35,11 @@ abstract class NotifyStage extends BaseStage
          case '?':
              $cmd = '\?';
              break;
-//            case '^':
-//                $cmd = '\^';
-//                break;
          default:
              # code...
              break;
         }
         $key = array_get(Command::$mappings, $cmd);
-
         $this->setup($key);
 
         return array_get($this->notifications, $key);
