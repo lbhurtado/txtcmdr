@@ -22,7 +22,7 @@ abstract class NotifyStage extends BaseStage
     public function execute()
     {
         optional($this->getNotification(), function ($notification) {
-            Notification::send($this->notifiable, app($notification, $this->params)->onQueue('sms'));
+            Notification::send($this->notifiable, app($notification, $this->params));
         });
     }
 
@@ -35,6 +35,9 @@ abstract class NotifyStage extends BaseStage
          case '?':
              $cmd = '\?';
              break;
+//            case '^':
+//                $cmd = '\^';
+//                break;
          default:
              # code...
              break;

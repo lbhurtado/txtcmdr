@@ -4,15 +4,15 @@ namespace App\Campaign\Notifications;
 
 use App\Missive\Domain\Models\Contact;
 
-class CommanderLocationUpdated extends BaseNotification
+class CommanderCheckinUpdated extends BaseNotification
 {
     protected $template = "txtcmdr.commander.checkin";
 
+    public $queue = 'checkin';
+
     function params(Contact $notifiable)
     {
-//        $location = $notifiable->checkins()->first()->mapUrl;
-
-        $location = 'This is is the location';
+        $location = optional($notifiable->checkins()->first())->mapUrl ?? 'location not yet available';
 
         return compact('location');
     }

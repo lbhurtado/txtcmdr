@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class UpdateCommanderLocation implements ShouldQueue
+class UpdateCommanderCheckin implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -21,6 +21,7 @@ class UpdateCommanderLocation implements ShouldQueue
     public function __construct(Contact $commander)
     {
         $this->commander = $commander;
+        $this->onQueue('checkin');
     }
 
     public function handle(GlobeConnect $service)
@@ -32,8 +33,6 @@ class UpdateCommanderLocation implements ShouldQueue
         ];
 
         $json = json_decode($service->locate($params), true);
-
-        \Log::info('here');
 
         optional($json['terminalLocationList']['terminalLocation']['currentLocation'], function ($location) {
             \Log::info($location);
