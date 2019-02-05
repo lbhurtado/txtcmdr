@@ -10,9 +10,12 @@ class CommanderSendUpdated extends BaseNotification
 
     protected $message;
 
-    public function __construct($message)
+    protected $count;
+
+    public function __construct($message, $count)
     {
         $this->message = $message;
+        $this->count = $count;
     }
 
     function params(Contact $notifiable)
@@ -21,7 +24,7 @@ class CommanderSendUpdated extends BaseNotification
 
         return [
             'tease' => $tease,
-            'count' => '25',
+            'count' => $this->count,
         ];
     }
 }

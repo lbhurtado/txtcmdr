@@ -57,7 +57,7 @@ abstract class BaseStage implements StageInterface
         );
 
         $this->enabled() && $this->execute();
-        
+
     	return $this->getParameters();
     }
 

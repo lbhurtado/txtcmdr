@@ -36,5 +36,11 @@ class NotifyAreaStage extends NotifyStage
             'message' => array_get($this->getParameters(), 'message'),
             'area' => $this->getArea(),
         ];
+
+        array_set($this->parameters, 'args', [
+            'message' => array_get($this->getParameters(), 'message'),
+            'area' => $this->getArea(),
+            'count' => $this->getNotifiable()->count(),
+        ]);
     }
 }
