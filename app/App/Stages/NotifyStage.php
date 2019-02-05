@@ -25,6 +25,7 @@ abstract class NotifyStage extends BaseStage
             Notification::send($this->notifiable, app($notification, $this->params));
         });
     }
+    public function setup($key){}
 
     abstract protected function getNotifiable();
 
@@ -39,14 +40,16 @@ abstract class NotifyStage extends BaseStage
              # code...
              break;
         }
-        $key = array_get(Command::$mappings, $cmd);
+        $key = $this->getKey($cmd);
         $this->setup($key);
 
         return array_get($this->notifications, $key);
     }
 
-    public function setup($key)
+    protected function getKey($cmd)
     {
-
+        return array_first(Command::$mappings, function($v,$k) use ($cmd) {
+            return strtoupper($k) == strtoupper($cmd);
+        });
     }
 } 
