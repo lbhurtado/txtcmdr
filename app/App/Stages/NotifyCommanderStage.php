@@ -43,4 +43,11 @@ class NotifyCommanderStage extends NotifyStage
     {
         return $this->getCommander();
     }
+
+    public function setup($key)
+    {
+        $this->params = [
+            'message' => array_get($this->getParameters(), 'message')
+        ];
+    }
 }

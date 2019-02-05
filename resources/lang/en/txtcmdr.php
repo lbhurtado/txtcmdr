@@ -13,6 +13,9 @@ return [
         'test'	            => "PONG",
         'help'              => "Commands:\n\n:commands\n\n-:signature",
         'checkin'	        => "You checked in: [:id] :location. \n\n-:signature",
+        'announce'          => "Your announcement ':tease' was sent to :count downlines.\n\n-:signature",
+        'report'            => "Your report ':tease' was sent to :upline.\n\n-:signature",
+        'broadcast'         => "Your broadcast ':tease' was sent to :count descendants.\n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",
@@ -33,6 +36,13 @@ return [
         'alert'	            => "Your downline :handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
         'status'	        => "Your downline :handle [:mobile] has a new status: :status*\n\n*:reason\n\n-:signature",
         'checkin'	        => "Your downline :handle [:mobile] checked in: [:id] :location. \n\n-:signature",
+        'report'            => "Report:\n:message\n\n:downline",
+    ],
+    'downline' => [
+        'announce'          => "Announcement:\n:message\n\n:upline",
+    ],
+    'descendants' => [
+        'broadcast'         => "Broadcast:\n:message\n\n:origin",
     ],
     'group' => [
         'alert'	            => ":handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",

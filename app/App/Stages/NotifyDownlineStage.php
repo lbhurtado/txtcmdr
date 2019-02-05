@@ -17,4 +17,11 @@ class NotifyDownlineStage extends NotifyStage
     {
         return $this->getCommander()->downlines()->get();
     }
+
+    public function setup($key)
+    {
+        $this->params = [
+            'message' => array_get($this->getParameters(), 'message')
+        ];
+    }
 }

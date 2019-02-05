@@ -4,14 +4,17 @@ namespace App\Campaign\Notifications;
 
 use App\Missive\Domain\Models\Contact;
 
-class DownlineAnnouncementUpdated extends BaseNotification
+class CommanderReportUplineUpdated extends BaseNotification
 {
-    protected $template = "txtcmdr.downline.announce";
+    protected $template = "txtcmdr.upline.report";
+
+    protected $downline;
 
     protected $message;
 
-    public function __construct($message)
+    public function __construct(Contact $downline, $message)
     {
+        $this->downline = $downline;
         $this->message = $message;
     }
 
@@ -19,7 +22,7 @@ class DownlineAnnouncementUpdated extends BaseNotification
     {
         return [
             'message' => $this->message,
-            'upline' => $notifiable->upline->handle
+            'downline' => $this->downline->handle,
         ];
     }
 }

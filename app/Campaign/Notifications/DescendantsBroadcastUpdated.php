@@ -2,15 +2,27 @@
 
 namespace App\Campaign\Notifications;
 
+use App\Missive\Domain\Models\Contact;
 
 class DescendantsBroadcastUpdated extends BaseNotification
 {
     protected $template = "txtcmdr.descendants.broadcast";
 
-    function params($notifiable)
-    {
-        $message = "The quick brown fox...";
+    protected $origin;
 
-        return compact('message');
+    protected $message;
+
+    public function __construct(Contact $origin, $message)
+    {
+        $this->origin = $origin;
+        $this->message = $message;
+    }
+
+    function params(Contact $notifiable)
+    {
+        return [
+            'message' => $this->message,
+            'origin' => $this->origin->handle,
+        ];
     }
 }

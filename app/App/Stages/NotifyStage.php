@@ -25,6 +25,7 @@ abstract class NotifyStage extends BaseStage
             Notification::send($this->notifiable, app($notification, $this->params));
         });
     }
+
     public function setup($key){}
 
     abstract protected function getNotifiable();

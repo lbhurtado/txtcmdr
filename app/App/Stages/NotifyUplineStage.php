@@ -2,7 +2,7 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Notifications\UplineReportUpdated; //change the name
+use App\Campaign\Notifications\CommanderReportUplineUpdated; //change the name
 
 
 use App\Campaign\Domain\Classes\{Command, CommandKey};
@@ -21,7 +21,7 @@ class NotifyUplineStage extends NotifyStage
         CommandKey::AREA     => CommanderAreaUplineUpdated::class, //done
         CommandKey::GROUP    => CommanderGroupUplineUpdated::class, //done
         CommandKey::ALERT    => CommanderAlertUplineUpdated::class,
-        CommandKey::REPORT   => UplineReportUpdated::class,
+        CommandKey::REPORT   => CommanderReportUplineUpdated::class,
         CommandKey::CHECKIN  => CommanderCheckinUplineUpdated::class,
         CommandKey::STATUS   => CommanderStatusUplineUpdated::class, //done
         CommandKey::REGISTER => CommanderRegistrationUplineUpdated::class,
@@ -34,6 +34,9 @@ class NotifyUplineStage extends NotifyStage
 
     public function setup($key)
     {
-        $this->params = ['downline' => $this->getCommander()];
+        $this->params = [
+            'downline' => $this->getCommander(),
+            'message' => array_get($this->getParameters(), 'message'),
+        ];
     }
 }

@@ -2,15 +2,26 @@
 
 namespace App\Campaign\Notifications;
 
+use App\Missive\Domain\Models\Contact;
 
 class CommanderBroadcastUpdated extends BaseNotification
 {
     protected $template = "txtcmdr.commander.broadcast";
 
-    function params($notifiable)
-    {
-        $message = "The quick brown fox...";
+    protected $message;
 
-        return compact('message');
+    public function __construct($message)
+    {
+        $this->message = $message;
+    }
+
+    function params(Contact $notifiable)
+    {
+        $tease = string($this->message)->tease(10);
+
+        return [
+            'tease' => $tease,
+            'count' => $notifiable->descendants()->count(),
+        ];
     }
 }

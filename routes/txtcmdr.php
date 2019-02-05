@@ -46,6 +46,25 @@ $txtcmdr = resolve('txtcmdr');
 //	});
 //});
 
+tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
+        (new Pipeline)
+            ->pipe(new UpdateCommanderStage) //tested
+            ->pipe(new UpdateCommanderUplineStage) //tested
+            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
+            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderCampaignParametersStage) //done
+            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+    });
+});
+
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -67,61 +86,12 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	});	
 });
 
-tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->process($parameters)
-        ;
-    });
-});
-
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{context={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeContextStage) //tested
             ->pipe(new NotifyContextAreaStage) //tested
             ->pipe(new NotifyContextGroupStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->process($parameters)
-        ;
-    });
-});
-
-tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new NotifyDownlineStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->process($parameters)
-        ;
-    });
-});
-
-tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new NotifyDescendantsStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->process($parameters)
-        ;
-    });
-});
-
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
-        $parameters['command'] = $cmd->CMD;
-        (new Pipeline)
-            ->pipe(new UpdateCommanderStage) //tested
-            ->pipe(new UpdateCommanderUplineStage) //tested
-            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
-            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderCampaignParametersStage) //done
-            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-            ->pipe(new UpdateCommanderTagAreaStage) //tested
-            ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
@@ -139,6 +109,44 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
+    });
+
+    return true;
+});
+
+tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyDownlineStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new NotifyDescendantsStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->process($parameters)
+        ;
+
+        return true;
     });
 });
 

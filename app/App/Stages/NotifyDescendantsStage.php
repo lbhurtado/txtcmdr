@@ -15,4 +15,12 @@ class NotifyDescendantsStage extends NotifyStage
     {
         return $this->getCommander()->descendants();
     }
+
+    public function setup($key)
+    {
+        $this->params = [
+            'message' => array_get($this->getParameters(), 'message'),
+            'origin' => $this->getCommander(),
+        ];
+    }
 }

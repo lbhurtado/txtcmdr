@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Campaign\Notifications\CommanderReportUpdated;
-use App\Campaign\Notifications\UplineReportUpdated;
+use App\Campaign\Notifications\CommanderReportUplineUpdated;
 use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
@@ -232,7 +232,7 @@ class SubscriberMessagingTest extends TestCase
         /*** assert ***/
         $this->assertCommandIssued($missive);
         Notification::assertSentTo($this->commander, CommanderReportUpdated::class);
-        Notification::assertSentTo($this->tagger, UplineReportUpdated::class);
+        Notification::assertSentTo($this->tagger, CommanderReportUplineUpdated::class);
         Queue::assertPushed(ChargeAirtime::class);
     }
 }
