@@ -9,7 +9,8 @@ class SanitizeAreaStage extends BaseStage
 {
     public function execute()
     {
-		$input_area = $this->getParameters()['area'];
+//        $input_area = $this->getParameters()['area'];
+        $input_area = array_get($this->getParameters(), 'area');
 
 		$sanitized_area = $this->getSanitizedArea($input_area);
 

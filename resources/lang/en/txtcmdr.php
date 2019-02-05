@@ -28,6 +28,11 @@ return [
             'attribute'     => "Attribute:\n:data\n\n-:signature",
             'descendants'   => "Descendants:\n:data\n\n-:signature",
         ],
+        'send'              => [
+            'area'          => "Send:\n:message\n\ncc: :area\n\n-:signature",
+            'group'         => "Send:\n:message\ncc::group\n\n-:signature",
+            'feedback'      => "Your message ':tease' was sent to :count recipients.\n\n-:signature",
+        ],
 	],
     'upline' => [
         'tag'               => "Your downline :handle [:mobile] has a new keyword:\n\n:code\n\n-:signature",

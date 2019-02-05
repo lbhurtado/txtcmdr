@@ -27,5 +27,8 @@ class ContactSeeder extends Seeder
         tap(Contact::create(['mobile' => '+639175180722', 'handle' => 'Apple Hurtado']), function ($contact) {
             $contact->token = 'jvZpwhjqaqvr3oE_ar4m7se6cg2LfmEHjuHLTOaCqls';
         })->save();
+        tap(Contact::create(['mobile' => '+639178915975', 'handle' => 'Levi Baligod']), function ($contact) {
+            $contact->token = 'sGqcYEYY2Y3aWrYEhaMgSMlOQKSraa2hFMLuRVTluwY';
+        })->save();
     }
 }
