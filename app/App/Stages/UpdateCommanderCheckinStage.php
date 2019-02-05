@@ -8,8 +8,6 @@ class UpdateCommanderCheckinStage extends BaseStage
 {
     public function execute()
     {
-        \Log::info('here here');
-
         $this->dispatch((new UpdateCommanderCheckin($this->getCommander())));
     }
 }

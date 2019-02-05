@@ -34,8 +34,9 @@ class UpdateCommanderCheckin implements ShouldQueue
 
         $json = json_decode($service->locate($params), true);
 
-        optional($json['terminalLocationList']['terminalLocation']['currentLocation'], function ($location) {
-            \Log::info($location);
+        \Log::info($json);
+
+        optional($this->getLocationArray($json), function ($location) {
             $longitude = array_get($location, 'longitude');
             $latitude = array_get($location, 'latitude');
 
@@ -46,5 +47,15 @@ class UpdateCommanderCheckin implements ShouldQueue
                $checkin->extra_attributes['timestamp'] = $timestamp;
            })->save();
         });
+    }
+
+    protected function getLocationArray($json)
+    {
+        $keys = 'terminalLocationList.terminalLocation.currentLocation';
+
+        return array_has($json, $keys)
+            ? array_get($json,  $keys)
+            : null
+            ;
     }
 }
