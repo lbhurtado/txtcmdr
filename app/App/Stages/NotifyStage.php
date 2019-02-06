@@ -3,7 +3,6 @@
 namespace App\App\Stages;
 
 use Notification;
-use App\Campaign\Notifications\BaseNotification;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 abstract class NotifyStage extends BaseStage

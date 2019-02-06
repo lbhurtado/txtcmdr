@@ -25,6 +25,7 @@ class CreateAreasTable extends Migration
             $table->unsignedInteger('area_id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
+            $table->timestamps();
             $table->primary(['area_id', 'model_type', 'model_id']);
             $table->index(['model_id', 'model_type']);
             $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');

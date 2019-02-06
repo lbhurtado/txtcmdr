@@ -2,27 +2,27 @@
 
 namespace App\Campaign\Notifications;
 
-use App\Campaign\Domain\Models\Area;
 use App\Missive\Domain\Models\Contact;
+use App\Campaign\Domain\Contracts\CampaignContext;
 
 class CommanderSendToArea extends BaseNotification
 {
     protected $template = "txtcmdr.commander.send.area";
 
-    protected $area;
+    protected $context;
 
     protected $message;
 
-    public function __construct(Area $area, $message)
+    public function __construct(CampaignContext $context, $message)
     {
-        $this->area = $area;
+        $this->context = $context;
         $this->message = $message;
     }
 
     function params(Contact $notifiable)
     {
         return [
-            'area' => $this->area->qn,
+            'area' => $this->context->qn,
             'message' => $this->message,
         ];
     }

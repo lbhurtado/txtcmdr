@@ -10,13 +10,14 @@ use App\Campaign\Domain\Traits\HasAlerts;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use App\Campaign\Domain\Contracts\CampaignContext;
 
 /**
  * Class Group.
  *
  * @package namespace App\Campaign\Domain\Models;
  */
-class Group extends Model implements Transformable
+class Group extends Model implements Transformable, CampaignContext
 {
     use TransformableTrait, HasNestedTrait, HasSchemalessAttributes, HasAlerts;
 

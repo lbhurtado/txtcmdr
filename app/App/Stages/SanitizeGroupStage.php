@@ -9,11 +9,11 @@ class SanitizeGroupStage extends BaseStage
 {
     public function execute()
     {
-		$input_group = $this->getParameters()['group'];
-
+        $input_group = array_get($this->getParameters(), 'group');
 		$sanitized_group = $this->getSanitizedGroup($input_group);
 
 		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
+        array_set($this->parameters, 'context', $sanitized_group);
     }
 
     protected function getSanitizedGroup($input):string

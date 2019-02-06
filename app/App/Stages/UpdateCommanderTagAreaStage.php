@@ -12,7 +12,7 @@ class UpdateCommanderTagAreaStage extends BaseStage
     {
         $this->area = $this->getCommander()->areas()->first();
 
-        return $this->area && $this->getCommander()->tags()->count();
+        return $this->area;
     }
 
     public function execute()

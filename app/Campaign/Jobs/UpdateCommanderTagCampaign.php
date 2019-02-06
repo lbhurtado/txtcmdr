@@ -21,6 +21,8 @@ class UpdateCommanderTagCampaign implements ShouldQueue
     {
         $this->commander = $commander;
         $this->campaign = $campaign;
+
+        $this->onQueue('sms');
     }
 
     /**

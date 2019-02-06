@@ -20,7 +20,7 @@ trait HasAreas
             'model_has_areas'
             // 'model_id',
             // 'area_id'
-        );
+        )->withTimeStamps();
     }
 
     /**

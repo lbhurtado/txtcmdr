@@ -2,14 +2,29 @@
 
 namespace App\Campaign\Notifications;
 
+use App\Missive\Domain\Models\Contact;
+use App\Campaign\Domain\Contracts\CampaignContext;
+
 class CommanderSendToGroup extends BaseNotification
 {
-    protected $template = "txtcmdr.send.group";
+    protected $template = "txtcmdr.commander.send.group";
 
-    function params($notifiable)
+    protected $context;
+
+    protected $message;
+
+    public function __construct(CampaignContext $context, $message)
     {
-        $message = "The quick brown fox...";
+        $this->context = $context;
+        $this->message = $message;
+    }
 
-        return compact('message');
+    function params(Contact $notifiable)
+    {
+        return [
+            'group' => $this->context->qn,
+            'message' => $this->message,
+        ];
     }
 }
+

@@ -23,6 +23,8 @@ class UpdateCommanderTagGroup implements ShouldQueue
     {
         $this->commander = $commander;
         $this->group = $group;
+
+        $this->onQueue('sms');
     }
 
     public function handle()

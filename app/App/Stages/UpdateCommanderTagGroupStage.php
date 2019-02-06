@@ -12,7 +12,7 @@ class UpdateCommanderTagGroupStage extends BaseStage
     {
     	$this->group = $this->getCommander()->groups()->first();
 
-        return $this->group && $this->getCommander()->tags()->count();
+        return $this->group;
     }
 
     public function execute()

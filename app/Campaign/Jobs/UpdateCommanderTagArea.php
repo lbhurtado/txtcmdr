@@ -22,6 +22,8 @@ class UpdateCommanderTagArea implements ShouldQueue
     {
         $this->commander = $commander;
         $this->area = $area;
+
+        $this->onQueue('sms');
     }
 
     public function handle()

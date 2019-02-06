@@ -24,6 +24,8 @@ class UpdateCommanderTag implements ShouldQueue
         $this->commander = $commander;
         $this->code = $code;
         $this->originalCode = $originalCode ?? $code;
+
+        $this->onQueue('sms');
     }
 
     public function handle()

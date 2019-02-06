@@ -3,6 +3,7 @@
 namespace App\Campaign\Notifications;
 
 use App\Missive\Domain\Models\Contact;
+use App\Campaign\Domain\Contracts\CampaignContext;
 
 class CommanderSendUpdated extends BaseNotification
 {
@@ -12,19 +13,25 @@ class CommanderSendUpdated extends BaseNotification
 
     protected $count;
 
-    public function __construct($message, $count)
+    protected $context;
+
+    public function __construct($message, $count, CampaignContext $context)
     {
         $this->message = $message;
         $this->count = $count;
+        $this->context = $context;
     }
 
     function params(Contact $notifiable)
     {
         $tease = string($this->message)->tease(10);
 
+        $context = optional($this->context)->qn;
+
         return [
             'tease' => $tease,
             'count' => $this->count,
+            'context' => $context,
         ];
     }
 }

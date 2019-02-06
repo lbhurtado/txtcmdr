@@ -50,10 +50,6 @@ class NotifyCommanderStage extends NotifyStage
 
         array_set($this->params, 'message', array_get($this->getParameters(), 'message'));
         array_set($this->params, 'count', array_get($args, 'count', 1));
-
-//        $this->params = [
-//            'message' => array_get($this->getParameters(), 'message'),
-//            'count' => array_get($args, 'count', 1),
-//        ];
+        array_set($this->params, 'context', array_get($args, 'context'));
     }
 }

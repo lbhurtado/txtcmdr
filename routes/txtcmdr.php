@@ -30,7 +30,8 @@ use App\App\Stages\UpdateCommanderCampaignParametersStage;
 use App\App\Stages\UpdateCommanderAreaFromUplineTagAreaStage;
 use App\App\Stages\UpdateCommanderGroupFromUplineTagGroupStage;
 use App\App\Stages\UpdateCommanderCheckinStage;
-use App\App\Stages\NotifyAreaStage;
+use App\App\Stages\Notify\NotifyAreaStage;
+use App\App\Stages\Notify\NotifyGroupStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -66,18 +67,6 @@ $txtcmdr = resolve('txtcmdr');
 //    });
 //});
 
-tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
-		(new Pipeline)
-            ->pipe(new UpdateCommanderAlertStage)
-			->pipe(new NotifyUplineStage) //tested
-		    ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyGroupAlertStage) //tested
-		    ->process($parameters)
-		    ;
-	});	
-});
-
 tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
@@ -101,6 +90,18 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
     });
 
     return true;
+});
+
+tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new UpdateCommanderAlertStage)
+            ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyGroupAlertStage) //tested
+            ->process($parameters)
+        ;
+    });
 });
 
 tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
@@ -199,6 +200,19 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 //        return true;
 //    });
 //});
+
+tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("&{group={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeGroupStage)
+            ->pipe(new NotifyGroupStage)
+            ->pipe(new NotifyCommanderStage)
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("@{area={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {

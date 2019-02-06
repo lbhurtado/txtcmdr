@@ -31,7 +31,7 @@ return [
         'send'              => [
             'area'          => "Send:\n:message\n\ncc: :area\n\n-:signature",
             'group'         => "Send:\n:message\ncc::group\n\n-:signature",
-            'feedback'      => "Your message ':tease' was sent to :count recipients.\n\n-:signature",
+            'feedback'      => "Your message ':tease' was sent to :count recipients in :context.\n\n-:signature",
         ],
 	],
     'upline' => [
