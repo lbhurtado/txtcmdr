@@ -33,6 +33,9 @@ return [
             'group'         => "Send:\n:message\ncc::group\n\n-:signature",
             'feedback'      => "Your message ':tease' was sent to :count recipients in :context.\n\n-:signature",
         ],
+        'errors'            => [
+            'registration'  => "You have already registered.",
+        ],
 	],
     'upline' => [
         'tag'               => "Your downline :handle [:mobile] has a new keyword:\n\n:code\n\n-:signature",
@@ -51,5 +54,13 @@ return [
     ],
     'group' => [
         'alert'	            => ":handle [:mobile] issued an alert: :alert*\n\n*:area\n\n-:signature",
+    ],
+    'seeds' => [
+        'campaigns' => [
+            'default'       => env('CAMPAIGN_DEFAULT', "default message"),
+            'training'      => env('CAMPAIGN_TRAINING', "training message"),
+            'testing'       => env('CAMPAIGN_TESTING', "testing message"),
+            'deployment'    => env('CAMPAIGN_DEPLOYMENT', "testing message"),
+        ],
     ],
 ];

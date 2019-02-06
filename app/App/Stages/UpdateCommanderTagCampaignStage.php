@@ -7,6 +7,8 @@ use App\Campaign\Domain\Repositories\CampaignRepository;
 
 class UpdateCommanderTagCampaignStage extends BaseStage
 {
+    protected $defaultCampaign = 'default';
+
 	protected $campaign;
 
     protected function enabled()
@@ -21,7 +23,10 @@ class UpdateCommanderTagCampaignStage extends BaseStage
 
     public function getCampaign()
     {
-    	$name = array_get($this->parameters, 'campaign');
+    	$name = ! empty($name = trim(array_get($this->parameters, 'campaign')))
+            ? $name
+            : $this->defaultCampaign
+        ;
 
     	return app(CampaignRepository::class)->findByField(compact('name'))->first();
     }

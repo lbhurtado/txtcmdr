@@ -67,30 +67,30 @@ $txtcmdr = resolve('txtcmdr');
 //    });
 //});
 
-tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    ->pipe(new NotifyCommanderInfoStage)
-		    ->process($parameters)
-		    ;
-	});	
-});
+//tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
+//	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
+//		(new Pipeline)
+//		    ->pipe(new NotifyCommanderInfoStage)
+//		    ->process($parameters)
+//		    ;
+//	});
+//});
 
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{campaign?={$cmd->LST}}{command={$cmd->CMD}}{tag?}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-            ->pipe(new UpdateCommanderTagGroupStage) //tested
-            ->pipe(new UpdateCommanderTagAreaStage) //tested
-            ->pipe(new NotifyCommanderStage) //test
-            ->pipe(new NotifyUplineStage) //tested
-            ->process($parameters)
-        ;
-    });
-
-    return true;
-});
+//tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+//    $txtcmdr->register("{campaign?={$cmd->LST}}{command={$cmd->CMD}}{tag?}", function (string $path, array $parameters) {
+//        (new Pipeline)
+//            ->pipe(new UpdateCommanderTagStage) //tested
+//            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+//            ->pipe(new UpdateCommanderTagGroupStage) //tested
+//            ->pipe(new UpdateCommanderTagAreaStage) //tested
+//            ->pipe(new NotifyCommanderStage) //test
+//            ->pipe(new NotifyUplineStage) //tested
+//            ->process($parameters)
+//        ;
+//    });
+//
+//    return true;
+//});
 
 tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
@@ -162,7 +162,8 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{message?}{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
+//    $txtcmdr->register("{message?}{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
@@ -224,6 +225,20 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
         ;
 
         return true;
+    });
+});
+
+tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+            ->pipe(new NotifyCommanderStage) //test
+            ->process($parameters)
+        ;
     });
 });
 

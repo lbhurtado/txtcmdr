@@ -49,7 +49,7 @@ abstract class BaseStage implements StageInterface
     public function __invoke($parameters)
     {
     	$this->setParameters($parameters);
-        
+
         Log::info(wstring::from(static::class)
                                 ->append('::')
                                 ->append(__METHOD__)
@@ -59,6 +59,7 @@ abstract class BaseStage implements StageInterface
         $this->enabled() && $this->execute();
 
     	return $this->getParameters();
+
     }
 
     public function halt()

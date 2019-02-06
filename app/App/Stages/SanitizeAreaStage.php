@@ -7,10 +7,16 @@ use App\Campaign\Domain\Repositories\AreaRepository;
 
 class SanitizeAreaStage extends BaseStage
 {
+    protected $input_area;
+
+    protected function enabled()
+    {
+        return $this->input_area = trim(array_get($this->getParameters(), 'area'));
+    }
+
     public function execute()
     {
-        $input_area = array_get($this->getParameters(), 'area');
-		$sanitized_area = $this->getSanitizedArea($input_area);
+		$sanitized_area = $this->getSanitizedArea($this->input_area);
 
 		array_set($this->parameters, 'area', $sanitized_area ?? $this->halt());
         array_set($this->parameters, 'context', $sanitized_area);

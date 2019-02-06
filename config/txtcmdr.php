@@ -97,4 +97,5 @@ return [
         InfoKey::ALERT => env('INFO_KEYWORD_GROUP', 'ALERT'),
         InfoKey::STATUS => env('INFO_KEYWORD_STATUS', 'STATUS'),
     ],
+    'tag'  => env('TAG', 'JOIN'),
 ];

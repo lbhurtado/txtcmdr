@@ -14,36 +14,47 @@ class UpdateCommanderTagStage extends BaseStage
 
     public function execute()
     {
-        $this->dispatch(new UpdateCommanderTag($this->getCommander(), $this->getCode(), $this->getUplineTag()));
+        $this->dispatch(new UpdateCommanderTag($this->getCommander(), $this->getCode()));
     }
 
     protected function getCode()
     {
-        $command = array_get($this->getParameters(), 'command');
-
-        return Command::using(CommandKey::TAG)->CMD == $command 
-                ? $this->getTag()
-                : $this->getUplineTag() . $this->getRandomSuffix();
-                ;
+        $space = " ";
+        
+        return string($this->getTag())->concat($space)->concat($this->getSuffix())->toUpper();
     }
+//    protected function getCode()
+//    {
+//        $command = array_get($this->getParameters(), 'command');
+//
+//        return Command::using(CommandKey::TAG)->CMD == $command
+//                ? $this->getTag()
+//                : $this->getUplineTag() . $this->getRandomSuffix();
+//                ;
+//    }
 
     protected function getTag()
     {
-        return array_get($this->getParameters(), 'tag');
+        return array_get($this->getParameters(), 'tag') ?? config('txtcmdr.tag');
     }
 
-    protected function getUplineTag()
+    protected function getSuffix()
     {
-        return optional($this->getCommander()->upline, function ($upline) {
-            return optional($upline->tags()->first(), function ($tag) {
-                return $tag->originalCode;
-            });
-        });
+        return array_get($this->getParameters(), 'context');
     }
-    protected function getRandomSuffix()
-    {
-        //extend this -> floor ceiling from config
-
-        return rand(100, 999);
-    }
+//
+//    protected function getUplineTag()
+//    {
+//        return optional($this->getCommander()->upline, function ($upline) {
+//            return optional($upline->tags()->first(), function ($tag) {
+//                return $tag->originalCode;
+//            });
+//        });
+//    }
+//    protected function getRandomSuffix()
+//    {
+//        //extend this -> floor ceiling from config
+//
+//        return rand(100, 999);
+//    }
 }
