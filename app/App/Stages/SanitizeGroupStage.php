@@ -7,10 +7,16 @@ use App\Campaign\Domain\Repositories\GroupRepository;
 
 class SanitizeGroupStage extends BaseStage
 {
+    protected $input_group;
+
+    protected function enabled()
+    {
+        return $this->input_group = trim(array_get($this->getParameters(), 'group'));
+    }
+
     public function execute()
     {
-        $input_group = array_get($this->getParameters(), 'group');
-		$sanitized_group = $this->getSanitizedGroup($input_group);
+		$sanitized_group = $this->getSanitizedGroup($this->input_group);
 
 		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
         array_set($this->parameters, 'context', $sanitized_group);

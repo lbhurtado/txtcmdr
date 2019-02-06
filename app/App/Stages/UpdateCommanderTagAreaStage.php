@@ -11,7 +11,7 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return  $this->area = $this->getArea();
+        return $this->area = $this->getArea();
     }
 
     public function execute()
@@ -26,7 +26,7 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     protected function getAreaFromParameters()
     {
-        return $this->area = app(AreaRepository::class)
+        return app(AreaRepository::class)
             ->findByField([
                 'name' => array_get($this->parameters, 'area')
             ])->first();

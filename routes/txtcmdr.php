@@ -229,6 +229,20 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}} &{group={$cmd->GROUPS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeGroupStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+            ->pipe(new UpdateCommanderGroupStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new NotifyCommanderStage) //test
+            ->process($parameters)
+        ;
+    });
+});
+
+tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
