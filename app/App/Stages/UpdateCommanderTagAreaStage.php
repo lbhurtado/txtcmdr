@@ -11,7 +11,9 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->area = $this->getArea();
+        $this->area = $this->getArea();
+
+        return $this->existsCommanderTag() && $this->area;
     }
 
     public function execute()
@@ -35,5 +37,10 @@ class UpdateCommanderTagAreaStage extends BaseStage
     protected function getAreaFromCommander()
     {
         return $this->getCommander()->areas()->first();
+    }
+
+    protected function existsCommanderTag()
+    {
+        return $this->getCommander()->tags()->count() > 0;
     }
 }

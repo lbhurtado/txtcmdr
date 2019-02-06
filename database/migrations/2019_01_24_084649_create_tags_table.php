@@ -23,6 +23,13 @@ class CreateTagsTable extends Migration
             $table->unique(['tagger_id', 'tagger_type']);
             $table->timestamps();
 		});
+
+        Schema::create('taggables', function (Blueprint $table) {
+            $table->integer('tag_id')->unsigned()->index();
+            $table->morphs('taggable');
+            $table->timestamps();
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+        });
 	}
 
 	/**
@@ -32,6 +39,7 @@ class CreateTagsTable extends Migration
 	 */
 	public function down()
 	{
+        Schema::dropIfExists('taggables');
 		Schema::drop('tags');
 	}
 }

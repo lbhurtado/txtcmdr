@@ -7,10 +7,10 @@ use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 class UpdateCommanderTagStage extends BaseStage
 {
-    protected function enabled()
-    {
-        return $this->getCommander()->tags()->count() == 0;
-    }
+//    protected function enabled()
+//    {
+//        return $this->getCommander()->tags()->count() == 0;
+//    }
 
     public function execute()
     {
