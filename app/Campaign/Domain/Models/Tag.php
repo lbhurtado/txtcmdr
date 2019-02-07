@@ -90,13 +90,28 @@ class Tag extends Model implements Transformable
         return $this->morphedByMany(Group::class, 'taggable')->withTimestamps();
     }
 
+    public function getGroupAttribute()
+    {
+        return $this->groups()->first();
+    }
+
     public function areas()
     {
         return $this->morphedByMany(Area::class, 'taggable')->withTimestamps();
     }
 
+    public function getAreaAttribute()
+    {
+        return $this->areas()->first();
+    }
+
     public function campaigns()
     {
         return $this->morphedByMany(Campaign::class, 'taggable')->withTimestamps();
+    }
+
+    public function getCampaignAttribute()
+    {
+        return $this->campaigns()->first();
     }
 }
