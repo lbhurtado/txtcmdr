@@ -34,6 +34,8 @@ use App\App\Stages\Notify\NotifyAreaStage;
 use App\App\Stages\Notify\NotifyGroupStage;
 use App\App\Stages\UpdateCommanderUnTagAreaStage;
 use App\App\Stages\UpdateCommanderUnTagGroupStage;
+use App\App\Stages\Notify\NotifyCommanderTagAreaStage;
+use App\App\Stages\Notify\NotifyCommanderTagGroupStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -238,7 +240,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderGroupStage) //tested
             ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new UpdateCommanderUnTagAreaStage)
-            ->pipe(new NotifyCommanderStage) //test
+            ->pipe(new NotifyCommanderTagGroupStage)
             ->process($parameters)
         ;
     });
@@ -253,7 +255,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderAreaStage) //tested
             ->pipe(new UpdateCommanderTagAreaStage) //tested
             ->pipe(new UpdateCommanderUnTagGroupStage)
-            ->pipe(new NotifyCommanderStage) //test
+            ->pipe(new NotifyCommanderTagAreaStage)
             ->process($parameters)
         ;
     });

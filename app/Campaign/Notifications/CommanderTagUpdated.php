@@ -3,6 +3,7 @@
 namespace App\Campaign\Notifications;
 
 use App\Missive\Domain\Models\Contact;
+use App\Campaign\Domain\Contracts\CampaignContext;
 
 class CommanderTagUpdated extends BaseNotification
 {
@@ -10,13 +11,23 @@ class CommanderTagUpdated extends BaseNotification
 
     public $queue = 'sms';
 
+    protected $context;
+
+    public function __construct(CampaignContext $context)
+    {
+        $this->context = $context;
+    }
+
     function params(Contact $notifiable)
     {
         $code = strtoupper($notifiable->tag->code);
+        $globe = trans('txtcmdr.sms.telcos.globe');
+        $smart = trans('txtcmdr.sms.telcos.smart');
 
         return [
+            'context' => $this->context->title,
             'code' => $code,
-            'next' => $code,
+            'numbers' => "either \nGlobe ({$globe}) or \nSmart ({$smart})",
         ];
     }
 }

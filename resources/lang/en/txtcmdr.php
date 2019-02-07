@@ -5,7 +5,7 @@ return [
 		'optin' 	        => "You have opted in using :mobile. \n\n-:signature",
 		'area'  	        => "You are now operating in :area. \n\n-:signature",
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
-		'tag'   	        => "You have a new keyword: :code*\n\n*:next [name]\n\n-:signature",
+		'tag'   	        => "Registration procedure for :context:\n\nsend :code [first name] [last name] to :numbers\n\n-:signature",
 		'registration'      => ":handle, you have registered. \n\n-:signature",
 		'alert'		        => ":alert alert was issued to:\n:handle\n:groups \n\n-:signature",
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
@@ -61,6 +61,12 @@ return [
             'training'      => env('CAMPAIGN_TRAINING', "training message"),
             'testing'       => env('CAMPAIGN_TESTING', "testing message"),
             'deployment'    => env('CAMPAIGN_DEPLOYMENT', "testing message"),
+        ],
+    ],
+    'sms' => [
+        'telcos' => [
+            'globe' =>  env('GLOBE', '21582402'),
+            'smart' =>  env('SMART', '29290582402'),
         ],
     ],
 ];
