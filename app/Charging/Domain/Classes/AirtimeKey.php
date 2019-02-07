@@ -7,6 +7,7 @@ use BenSampo\Enum\Enum;
 final class AirtimeKey extends Enum
 {
     const SMS 	   = 'sms';
+    const LBS      = 'lbs';
     const LOAD10   = 'load-10';
     const LOAD20   = 'load-20';
     const LOAD50   = 'load-50';

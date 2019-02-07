@@ -18,7 +18,8 @@ class CreateAirtimesTable extends Migration
 		Schema::create('airtimes', function(Blueprint $table) {
             $table->increments('id');
             $table->string('key')->unique();
-            $table->integer('credits');
+//            $table->integer('credits');
+            $table->decimal('credits');
             $table->timestamps();
 		});
 	}

@@ -105,6 +105,8 @@ tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyGroupAlertStage) //tested
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 
@@ -152,6 +154,8 @@ tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 
@@ -162,6 +166,8 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 
@@ -183,11 +189,13 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage) //tested
             ->pipe(new UpdateCommanderGroupStage) //tested
-            ->pipe(new UpdateCommanderTagGroupStage) //tested
+//            ->pipe(new UpdateCommanderTagGroupStage) //tested, working but should not be
             ->pipe(new NotifyCommanderStage)  //tested
             ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 
