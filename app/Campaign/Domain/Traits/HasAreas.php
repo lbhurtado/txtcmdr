@@ -23,6 +23,11 @@ trait HasAreas
         )->withTimeStamps();
     }
 
+    public function getAreaAttribute()
+    {
+        return $this->areas()->first();
+    }
+
     /**
      * Assign the given area to the model.
      *

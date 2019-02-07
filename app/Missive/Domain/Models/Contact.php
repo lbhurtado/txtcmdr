@@ -16,6 +16,8 @@ use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
 
+use App\App\Traits\HasNestedTrait;
+
 /**
  * Class Contact.
  *
@@ -23,7 +25,7 @@ use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
  */
 class Contact extends Model implements Transformable, Mobile
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation, HasNestedTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -42,25 +44,31 @@ class Contact extends Model implements Transformable, Mobile
     public $appends = [
         'token',
     ];
-    public function upline(): MorphTo
+
+//    public function upline(): MorphTo
+//    {
+//        return $this->morphTo();
+//    }
+
+//    public function downlines()
+//    {
+//        return $this->morphOne(Contact::class, 'upline');
+//    }
+
+//    public function descendants ()
+//    {
+//        $sections = new Collection();
+//
+//        foreach ($this->downlines()->get() as $section) {
+//            $sections->push($section);
+//            $sections = $sections->merge($section->descendants());
+//        }
+//
+//        return $sections;
+//    }
+
+    public function scopeOrphan($query)
     {
-        return $this->morphTo();
-    }
-
-    public function downlines()
-    {
-        return $this->morphOne(Contact::class, 'upline');
-    }
-
-    public function descendants ()
-    {
-        $sections = new Collection();
-
-        foreach ($this->downlines()->get() as $section) {
-            $sections->push($section);
-            $sections = $sections->merge($section->descendants());
-        }
-
-        return $sections;
+        return $query->whereNull('upline_id')->orWhereNull('upline_type');
     }
 }

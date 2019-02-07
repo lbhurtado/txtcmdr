@@ -25,6 +25,7 @@ class UpdateCommanderUpline implements ShouldQueue
 
     public function handle()
     {
+        $this->commander->appendToNode($this->tagger)->save();
         $this->commander->upline()->associate($this->tagger)->save();
     }
 }

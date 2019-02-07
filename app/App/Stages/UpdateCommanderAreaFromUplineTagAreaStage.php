@@ -11,15 +11,22 @@ class UpdateCommanderAreaFromUplineTagAreaStage extends BaseStage
 
     protected function enabled()
     {
-        $code = array_get($this->parameters, 'tag');
+        $this->area = $this->getArea();
 
-        $this->area = app(TagRepository::class)->findByField(compact('code'))->first()->areas()->first();
-
-        return $this->area;
+        return $this->area && ($this->area->id != optional($this->getCommander()->area)->id);
     }
 
     public function execute()
     {
         $this->dispatch(new UpdateCommanderAreaFromUplineTagArea($this->getCommander(), $this->area));
+    }
+
+    protected function getArea()
+    {
+        $code = array_get($this->parameters, 'tag');
+
+        return optional(app(TagRepository::class)->findByField(compact('code'))->first(), function ($tag) {
+            return $tag->areas()->first();
+        });
     }
 }

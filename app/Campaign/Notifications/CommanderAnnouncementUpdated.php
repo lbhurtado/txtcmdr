@@ -21,7 +21,7 @@ class CommanderAnnouncementUpdated extends BaseNotification
 
         return [
             'tease' => $tease,
-            'count' => $notifiable->downlines()->count(),
+            'count' => $notifiable->children()->count(),
         ];
     }
 }

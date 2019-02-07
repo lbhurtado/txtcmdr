@@ -21,6 +21,11 @@ trait HasGroups
         )->withTimeStamps();
     }
 
+    public function getGroupAttribute()
+    {
+        return $this->groups()->first();
+    }
+
     /**
      * Assign the given group to the model.
      *

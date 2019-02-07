@@ -13,7 +13,7 @@ class NotifyDescendantsStage extends NotifyStage
 
     protected function getNotifiable()
     {
-        return $this->getCommander()->descendants();
+        return $this->getCommander()->descendants()->get();
     }
 
     public function setup($key)

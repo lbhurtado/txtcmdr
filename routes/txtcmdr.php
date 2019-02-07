@@ -56,16 +56,16 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
-//            ->pipe(new UpdateCommanderStage) //tested
-//            ->pipe(new UpdateCommanderUplineStage) //tested
-//            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
-//            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
+            ->pipe(new UpdateCommanderStage) //tested
+            ->pipe(new UpdateCommanderUplineStage) //tested
+            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
+            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
 //            ->pipe(new UpdateCommanderTagStage) //tested
 //            ->pipe(new UpdateCommanderCampaignParametersStage) //done
 //            ->pipe(new UpdateCommanderTagCampaignStage) //tested
 //            ->pipe(new UpdateCommanderTagAreaStage) //tested
 //            ->pipe(new UpdateCommanderTagGroupStage) //tested
-//            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
             ->process($parameters)
         ;
     });
@@ -206,7 +206,7 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 //});
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("&{group={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+    $txtcmdr->register("&{group={$cmd->GROUPS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage)
             ->pipe(new NotifyGroupStage)
@@ -219,7 +219,7 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("@{area={$cmd->LST}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+    $txtcmdr->register("@{area={$cmd->AREAS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new NotifyAreaStage)
@@ -243,6 +243,8 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyCommanderTagGroupStage)
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 
@@ -258,6 +260,8 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyCommanderTagAreaStage)
             ->process($parameters)
         ;
+
+        return true;
     });
 });
 

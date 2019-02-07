@@ -29,6 +29,6 @@ class UpdateCommanderTagGroup implements ShouldQueue
 
     public function handle()
     {
-        $this->commander->tag->setGroup($this->group, true);
+        optional($this->commander->tag)->setGroup($this->group, true);
     }
 }

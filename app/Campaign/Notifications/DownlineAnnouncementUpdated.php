@@ -19,7 +19,7 @@ class DownlineAnnouncementUpdated extends BaseNotification
     {
         return [
             'message' => $this->message,
-            'upline' => $notifiable->upline->handle
+            'upline' => $notifiable->parent->handle
         ];
     }
 }

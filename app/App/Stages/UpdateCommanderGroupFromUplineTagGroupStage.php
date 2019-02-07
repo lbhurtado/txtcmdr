@@ -11,15 +11,22 @@ class UpdateCommanderGroupFromUplineTagGroupStage extends BaseStage
 
     protected function enabled()
     {
-        $code = array_get($this->parameters, 'tag');
+        $this->group = $this->getGroup();
 
-        $this->group = app(TagRepository::class)->findByField(compact('code'))->first()->groups()->first();
-
-        return $this->group;
+        return $this->group && ($this->group->id != optional($this->getCommander()->group)->id);
     }
 
     public function execute()
     {
         $this->dispatch(new UpdateCommanderGroupFromUplineTagGroup($this->getCommander(), $this->group));
+    }
+
+    protected function getGroup()
+    {
+        $code = array_get($this->parameters, 'tag');
+
+        return optional(app(TagRepository::class)->findByField(compact('code'))->first(), function ($tag) {
+            return $tag->groups()->first();
+        });
     }
 }

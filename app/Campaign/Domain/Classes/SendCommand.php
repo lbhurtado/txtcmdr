@@ -2,30 +2,48 @@
 
 namespace App\Campaign\Domain\Classes;
 
-use Opis\String\UnicodeString as wstring;
 use App\Campaign\Domain\Repositories\{AreaRepository, GroupRepository};
 
 class SendCommand extends Command
 {
 	const DEFAULT_CMD = ':';
-	
-	protected $areas;
 
-	protected $groups;	
+    protected $areaRepository;
 
-	public function __construct(AreaRepository $areas, GroupRepository $groups)
+    protected $groupRepository;
+
+	public function __construct(AreaRepository $areaRepository, GroupRepository $groupRepository)
 	{
-		$this->areas = $areas;
-		$this->groups = $groups;
+        $this->areaRepository = $areaRepository;
+        $this->groupRepository = $groupRepository;
 	}
 
 	protected function go()
 	{
-		$areas = implode($this->areas->pluck('name')->toArray(), '|');
-		$groups = implode($this->groups->pluck('name')->toArray(), '|');
+	    $this->populateAreas()->populateGroups();
 
-		$this->LST = wstring::from($areas)->append('|')->append($groups);
+        $this->LST = string($this->AREAS)->concat('|')->concat($this->GROUPS); //remove this in the future
 
-		return $this;
+        return $this;
 	}
+
+    protected function populateAreas()
+    {
+        $names = implode($this->areaRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
+        $ids = implode($this->areaRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
+
+        $this->AREAS = string($names)->concat('|')->concat($ids);
+
+        return $this;
+    }
+
+    protected function populateGroups()
+    {
+        $names = implode($this->groupRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
+        $ids = implode($this->groupRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
+
+        $this->GROUPS = string($names)->concat('|')->concat($ids);
+
+        return $this;
+    }
 }

@@ -12,9 +12,7 @@ class UpdateCommanderStage extends BaseStage
     {
     	$this->handle = array_get($this->parameters,'handle');
 
-    	return optional($this->getCommander(), function ($commander) {
-    		return $commander->name != $this->handle;
-    	});
+    	return $this->handle != $this->getCommander()->handle;
     }
 
     public function execute()

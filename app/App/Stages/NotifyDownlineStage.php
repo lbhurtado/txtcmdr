@@ -10,12 +10,12 @@ class NotifyDownlineStage extends NotifyStage
 {
     protected $notifications = [
         CommandKey::ANNOUNCE => DownlineAnnouncementUpdated::class,
-        CommandKey::BROADCAST => DescendantsBroadcastUpdated::class,
+//        CommandKey::BROADCAST => DescendantsBroadcastUpdated::class,
     ];
 
     protected function getNotifiable()
     {
-        return $this->getCommander()->downlines()->get();
+        return $this->getCommander()->children()->get();
     }
 
     public function setup($key)
