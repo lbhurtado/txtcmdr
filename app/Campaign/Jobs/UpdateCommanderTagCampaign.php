@@ -32,6 +32,6 @@ class UpdateCommanderTagCampaign implements ShouldQueue
      */
     public function handle()
     {
-        $this->commander->tags->setCampaign($this->campaign, true);
+        $this->commander->tag->setCampaign($this->campaign, true);
     }
 }

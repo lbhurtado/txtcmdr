@@ -7,17 +7,36 @@ use App\Campaign\Domain\Models\Tag;
 
 trait HasTags
 {
-    public function tags()
+//    public function tags()
+//    {
+//        return $this->morphOne(Tag::class, 'tagger');
+//    }
+
+    public function tag()
     {
-        return $this->morphOne(Tag::class, 'tagger');
+        return $this->hasOne(Tag::class, 'contact_id');
     }
 
     public function syncTag($code)
     {
-        $this->tags()->delete();
+        $contact_id = $this->id;
 
-        return $this->tags()->create(compact('code'));
+        return $this->tag()->updateOrCreate(compact('contact_id'), compact('code'));
     }
+
+    public function setTag($code)
+    {
+        $this->syncTag($code);
+
+        return $this;
+    }
+
+//    public function syncTag($code)
+//    {
+//        $this->tags()->delete();
+//
+//        return $this->tags()->create(compact('code'));
+//    }
 
     // public function removeTags()
     // {

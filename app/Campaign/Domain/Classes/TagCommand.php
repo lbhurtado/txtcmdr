@@ -38,30 +38,30 @@ class TagCommand extends Command
 
 	protected function populateCampaigns()
     {
-        $names = implode($this->campaigns->pluck('name')->toArray(), '|');
-        $ids = implode($this->campaigns->pluck('id')->toArray(), '|');
+        $names = implode($this->campaigns->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
+        $ids = implode($this->campaigns->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
 
-        $this->LST = string($names)->concat('||')->concat($ids);
+        $this->LST = string($names)->concat('|')->concat($ids);
 
         return $this;
     }
 
 	protected function populateAreas()
     {
-        $names = implode($this->areaRepository->pluck('name')->toArray(), '|');
-        $ids = implode($this->areaRepository->pluck('id')->toArray(), '|');
+        $names = implode($this->areaRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
+        $ids = implode($this->areaRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
 
-        $this->AREAS = string($names)->concat('||')->concat($ids);
+        $this->AREAS = string($names)->concat('|')->concat($ids);
 
         return $this;
     }
 
     protected function populateGroups()
     {
-        $names = implode($this->groupRepository->pluck('name')->toArray(), '|');
-        $ids = implode($this->groupRepository->pluck('id')->toArray(), '|');
+        $names = implode($this->groupRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
+        $ids = implode($this->groupRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
 
-        $this->GROUPS = string($names)->concat('||')->concat($ids);
+        $this->GROUPS = string($names)->concat('|')->concat($ids);
 
         return $this;
     }

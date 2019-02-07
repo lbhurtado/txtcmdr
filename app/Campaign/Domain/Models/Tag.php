@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
@@ -29,9 +30,14 @@ class Tag extends Model implements Transformable
         'extra_attributes' => 'array',
     ];
 
+//    public function tagger()
+//    {
+//        return $this->morphTo();
+//    }
+
     public function tagger()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Contact::class, 'contact_id');
     }
 
     public function setGroup(Group $group, $detach = false)

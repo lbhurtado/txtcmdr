@@ -7,11 +7,6 @@ use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 class UpdateCommanderTagStage extends BaseStage
 {
-//    protected function enabled()
-//    {
-//        return $this->getCommander()->tags()->count() == 0;
-//    }
-
     public function execute()
     {
         $this->dispatch(new UpdateCommanderTag($this->getCommander(), $this->getCode()));
@@ -23,15 +18,6 @@ class UpdateCommanderTagStage extends BaseStage
         
         return string($this->getTag())->concat($space)->concat($this->getSuffix())->toUpper();
     }
-//    protected function getCode()
-//    {
-//        $command = array_get($this->getParameters(), 'command');
-//
-//        return Command::using(CommandKey::TAG)->CMD == $command
-//                ? $this->getTag()
-//                : $this->getUplineTag() . $this->getRandomSuffix();
-//                ;
-//    }
 
     protected function getTag()
     {
@@ -42,6 +28,17 @@ class UpdateCommanderTagStage extends BaseStage
     {
         return array_get($this->getParameters(), 'context');
     }
+
+
+//    protected function getCode()
+//    {
+//        $command = array_get($this->getParameters(), 'command');
+//
+//        return Command::using(CommandKey::TAG)->CMD == $command
+//                ? $this->getTag()
+//                : $this->getUplineTag() . $this->getRandomSuffix();
+//                ;
+//    }
 //
 //    protected function getUplineTag()
 //    {

@@ -166,7 +166,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
-            ->pipe(new UpdateCommanderTagAreaStage) //tested
+//            ->pipe(new UpdateCommanderTagAreaStage) //tested, working but should not be
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)

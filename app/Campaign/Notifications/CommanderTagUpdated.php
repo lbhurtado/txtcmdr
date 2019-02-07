@@ -12,7 +12,7 @@ class CommanderTagUpdated extends BaseNotification
 
     function params(Contact $notifiable)
     {
-        $code = strtoupper($notifiable->tags()->first()->code);
+        $code = strtoupper($notifiable->tag->code);
 
         return [
             'code' => $code,

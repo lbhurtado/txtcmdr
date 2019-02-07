@@ -28,6 +28,6 @@ class UpdateCommanderTagArea implements ShouldQueue
 
     public function handle()
     {
-        $this->commander->tags->setArea($this->area, true);
+        $this->commander->tag->setArea($this->area, true);
     }
 }

@@ -17,11 +17,11 @@ class CreateTagsTable extends Migration
 	{
 		Schema::create('tags', function(Blueprint $table) {
             $table->increments('id');
+            $table->integer('contact_id')->unsigned()->unique()->default(1);
             $table->string('code')->unique();
-            $table->morphs('tagger');
             $table->schemalessAttributes('extra_attributes');
-            $table->unique(['tagger_id', 'tagger_type']);
             $table->timestamps();
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
 		});
 
         Schema::create('taggables', function (Blueprint $table) {
