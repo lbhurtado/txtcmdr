@@ -36,6 +36,7 @@ use App\App\Stages\UpdateCommanderUnTagAreaStage;
 use App\App\Stages\UpdateCommanderUnTagGroupStage;
 use App\App\Stages\Notify\NotifyCommanderTagAreaStage;
 use App\App\Stages\Notify\NotifyCommanderTagGroupStage;
+use App\App\Stages\Charge\ChargeCommanderLBSStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -171,6 +172,7 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
     });
 });
 
+// TODO create a control for changing areas
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
@@ -184,6 +186,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
     });
 });
 
+// TODO create a control for changing groups
 tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
@@ -279,6 +282,7 @@ tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderCheckinStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new ChargeCommanderLBSStage)
             ->process($parameters)
         ;
 

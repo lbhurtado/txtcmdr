@@ -9,7 +9,8 @@ return [
 	'airtime' => [
 		'availments' => [
 			AirtimeKey::SMS 	 => App\Charging\Domain\Classes\Availments\AvailSMS::class,
-			AirtimeKey::LOAD10   => App\Charging\Domain\Classes\Availments\AvailLoad10::class,
+            AirtimeKey::LBS      => App\Charging\Domain\Classes\Availments\AvailLBS::class,
+            AirtimeKey::LOAD10   => App\Charging\Domain\Classes\Availments\AvailLoad10::class,
 			AirtimeKey::LOAD20   => App\Charging\Domain\Classes\Availments\AvailLoad20::class,
 			AirtimeKey::LOAD50   => App\Charging\Domain\Classes\Availments\AvailLoad50::class,
 			AirtimeKey::LOAD100  => App\Charging\Domain\Classes\Availments\AvailLoad100::class,
