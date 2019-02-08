@@ -66,6 +66,13 @@ return [
             'app_secret' => env('GLOBECONNECT_APP_SECRET', '37632fe0b295486ed8c8efca6'),
             'sender' => env('GLOBECONNECT_SENDER', '21582402'),
         ],
+
+        'telerivet' => [
+            'driver' => 'telerivet',
+            'api_key' => env('TELERIVET_API_KEY'),
+            'project_id' => env('TELERIVET_PROJECT_ID'),
+            'service_id' => env('TELERIVET_SERVICE_ID'),
+        ],
     ],
 
 ];

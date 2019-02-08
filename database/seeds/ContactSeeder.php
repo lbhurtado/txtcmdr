@@ -36,8 +36,12 @@ class ContactSeeder extends Seeder
             $contact->token = 'sGqcYEYY2Y3aWrYEhaMgSMlOQKSraa2hFMLuRVTluwY';
             $contact->save();
         });
-
-        $obbie->appendToNode($lester)->save();
-        $levi->appendToNode($obbie)->save();
+        $joan = tap(Contact::create(['mobile' => '+639175793359', 'handle' => 'Joan Cruz']), function ($contact) {
+            $contact->token = 'JBc5yuMukLuUt20JPSgrKK_Ha28VOz1zD1EGOmsknPY';
+            $contact->save();
+        });
+//        $obbie->appendToNode($lester)->save();
+//        $levi->appendToNode($obbie)->save();
+//        $joan->appendToNode($obbie)->save();
     }
 }

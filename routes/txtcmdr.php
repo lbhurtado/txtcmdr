@@ -37,6 +37,8 @@ use App\App\Stages\UpdateCommanderUnTagGroupStage;
 use App\App\Stages\Notify\NotifyCommanderTagAreaStage;
 use App\App\Stages\Notify\NotifyCommanderTagGroupStage;
 use App\App\Stages\Charge\ChargeCommanderLBSStage;
+use App\App\Stages\Charge\RegisterAirtimeTransferServiceStage;
+use App\App\Stages\Charge\AirtimeTransferStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -282,6 +284,8 @@ tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderCheckinStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new RegisterAirtimeTransferServiceStage)
+//            ->pipe(new AirtimeTransferStage)
             ->pipe(new ChargeCommanderLBSStage)
             ->process($parameters)
         ;

@@ -19,6 +19,9 @@ use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloque
 use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloquent};
 
+use App\Telerivet\Services\Telerivet;
+use Telerivet_API;
+
 class TextCommanderServiceProvider extends ServiceProvider
 {
     /**
@@ -70,6 +73,12 @@ class TextCommanderServiceProvider extends ServiceProvider
         });
         $this->app->singleton(TextCommander::class, function ($app) {
             return $app->make('txtcmdr');
+        });
+
+        $this->app->singleton(Telerivet::class, function ($app) {
+            $config = config('broadcasting.connections.telerivet');
+
+            return tap(new Telerivet(new Telerivet_API($config['api_key'])))->setProject($config['project_id']);
         });
     }
 }

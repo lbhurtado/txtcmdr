@@ -2,7 +2,6 @@
 
 namespace App\Missive\Domain\Models;
 
-use Illuminate\Support\Collection;
 use Spatie\ModelStatus\HasStatuses;
 use App\App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +11,6 @@ use App\App\Traits\HasSchemalessAttributes;
 use App\Charging\Domain\Traits\SpendsAirtime;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-//use App\Missive\Domain\Contracts\MobileInterface;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
 
 use App\App\Traits\HasNestedTrait;
@@ -67,8 +64,8 @@ class Contact extends Model implements Transformable, Mobile
 //        return $sections;
 //    }
 
-    public function scopeOrphan($query)
-    {
-        return $query->whereNull('upline_id')->orWhereNull('upline_type');
-    }
+//    public function scopeOrphan($query)
+//    {
+//        return $query->whereNull('upline_id')->orWhereNull('upline_type');
+//    }
 }

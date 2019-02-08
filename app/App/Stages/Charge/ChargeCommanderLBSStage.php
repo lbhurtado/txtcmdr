@@ -1,20 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: sofia
- * Date: 2019-02-08
- * Time: 06:25
- */
 
 namespace App\App\Stages\Charge;
 
 use App\App\Stages\BaseStage;
-use App\Campaign\Jobs\Charge\ChangeCommanderLBS;
+use App\Campaign\Jobs\Charge\ChargeCommanderLBS;
 
 class ChargeCommanderLBSStage extends BaseStage
 {
     public function execute()
     {
-        $this->dispatch(new ChangeCommanderLBS($this->getCommander()));
+        $this->dispatch(new ChargeCommanderLBS($this->getCommander()));
     }
 }

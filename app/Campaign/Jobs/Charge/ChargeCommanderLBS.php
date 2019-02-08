@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Charging\Domain\Classes\AirtimeKey;
 
-class ChangeCommanderLBS implements ShouldQueue
+class ChargeCommanderLBS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

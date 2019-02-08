@@ -26,4 +26,21 @@ trait HasNotifications
 
         return $this;
     }
+
+    public function routeNotificationForTelerivet()
+    {
+        return $this->extra_attributes['telerivet_id'];
+    }
+
+    public function getTelerivetIdAttribute()
+    {
+        return $this->extra_attributes['telerivet_id'] ?? null;
+    }
+
+    public function setTelerivetIdAttribute($value)
+    {
+        $this->extra_attributes['telerivet_id'] = $value;
+
+        return $this;
+    }
 }
