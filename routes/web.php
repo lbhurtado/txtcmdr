@@ -5,3 +5,4 @@ Route::get('/', function () {
 });
 
 Route::match(['get', 'post'], 'webhook/telerivet/airtime', 'TelerivetAirtimeController@handle');
+Route::match(['get', 'post'], 'webhook/engagespark/sms', 'EngageSparkSMSController@handle');

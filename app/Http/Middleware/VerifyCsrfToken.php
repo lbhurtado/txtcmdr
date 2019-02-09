@@ -20,5 +20,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'webhook/telerivet/airtime',
+        'webhook/engagespark/sms',
     ];
 }
