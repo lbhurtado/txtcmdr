@@ -38,7 +38,8 @@ use App\App\Stages\Notify\NotifyCommanderTagAreaStage;
 use App\App\Stages\Notify\NotifyCommanderTagGroupStage;
 use App\App\Stages\Charge\ChargeCommanderLBSStage;
 use App\App\Stages\Charge\RegisterAirtimeTransferServiceStage;
-use App\App\Stages\Charge\AirtimeTransferStage;
+use App\App\Stages\Charge\TransferCommanderAirtimeStage;
+use App\App\Stages\Charge\ChargeCommanderAirtimeTransferStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -298,9 +299,10 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command=ping}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
-//            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new RegisterAirtimeTransferServiceStage)
-            ->pipe(new AirtimeTransferStage)
+            ->pipe(new TransferCommanderAirtimeStage)
+            ->pipe(new ChargeCommanderAirtimeTransferStage)
             ->process($parameters)
         ;
 

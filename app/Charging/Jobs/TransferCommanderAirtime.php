@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class AirtimeTransfer implements ShouldQueue
+class TransferCommanderAirtime implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -23,9 +23,18 @@ class AirtimeTransfer implements ShouldQueue
 
     public function handle(Telerivet $api)
     {
-        $service = $api->getProject()->initServiceById('SVa8cc328a77a0db75');
+        $service = $api->getProject()->initServiceById($this->getServiceId());
 
         $service->invoke($this->getAttributes());
+    }
+
+    protected function getServiceId()
+    {
+        $default = config('txtcmdr.airtime.transfers.default');
+
+        \Log::info('airtime transfer: ' . $default);
+
+        return array_get(config('txtcmdr.airtime.transfers.telerivet.services'), $default);
     }
 
     protected function getAttributes()
@@ -36,16 +45,4 @@ class AirtimeTransfer implements ShouldQueue
             'to_number' => $this->contact->mobile
         ];
     }
-//
-//    protected function getArguments()
-//    {
-//        $retval['context'] = 'contact';
-//        $retval['content'] = $this->message->content;
-//        $telerivet_id = $this->contact->routeNotificationFor('telerivet');
-//        if ($telerivet_id)
-//            $retval['contact_id'] = $telerivet_id;
-//        $retval['to_number'] = $this->contact->mobile;
-//
-//        return $retval;
-//    }
 }
