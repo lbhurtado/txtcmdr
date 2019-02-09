@@ -4,6 +4,7 @@ use App\Campaign\Domain\Classes\InfoKey;
 use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\GlobeLabs\Channels\GlobeConnectChannel;
+use App\EngageSpark\Channels\EngageSparkChannel;
 
 return [
 	'airtime' => [

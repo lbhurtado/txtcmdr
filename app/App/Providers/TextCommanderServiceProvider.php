@@ -21,6 +21,7 @@ use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloque
 
 use App\Telerivet\Services\Telerivet;
 use Telerivet_API;
+use App\EngageSpark\Services\EngageSpark;
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -79,6 +80,10 @@ class TextCommanderServiceProvider extends ServiceProvider
             $config = config('broadcasting.connections.telerivet');
 
             return tap(new Telerivet(new Telerivet_API($config['api_key'])))->setProject($config['project_id']);
+        });
+
+        $this->app->singleton(EngageSpark::class, function ($app) {
+            return new EngageSpark($app['config']['services.engagespark']);
         });
     }
 }

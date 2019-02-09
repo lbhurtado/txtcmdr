@@ -6,31 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Telerivet\Channels\{TelerivetChannel, TelerivetMessage};
+use App\EngageSpark\Channels\{EngageSparkChannel, EngageSparkMessage};
 
 class AirtimeTransfer extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $airtime;
+
+    public function __construct($airtime)
     {
-        //
+        $this->$airtime = $airtime;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', EngageSparkChannel::class];
     }
 
     /**
@@ -60,8 +51,11 @@ class AirtimeTransfer extends Notification implements ShouldQueue
         ];
     }
 
-    public function toTelerivet($notifiable)
+    public function toEngageSpark($notifiable)
     {
-        return TelerivetMessage::create()->setCampaign($this->getCampaign());
+        return (new EngageSparkMessage())
+            ->mode('topup')
+            ->transfer($this->airtime)
+            ;
     }
 }

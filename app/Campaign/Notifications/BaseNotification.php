@@ -7,7 +7,8 @@ use App\Missive\Domain\Models\Contact;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\GlobeLabs\Channels\{GlobeConnectMessage, GlobeConnectChannel};
+use App\GlobeLabs\Channels\{GlobeConnectChannel, GlobeConnectMessage};
+use App\EngageSpark\Channels\{EngageSparkChannel, EngageSparkMessage};
 
 abstract class BaseNotification extends Notification implements ShouldQueue
 {
@@ -25,7 +26,8 @@ abstract class BaseNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return config('txtcmdr.notification.channels');
+        return ['database', EngageSparkChannel::class];
+//        return config('txtcmdr.notification.channels');
     }
 
     /**
@@ -59,6 +61,13 @@ abstract class BaseNotification extends Notification implements ShouldQueue
     public function toGlobeConnect($notifiable)
     {
         return (new GlobeConnectMessage())
+            ->content($this->getContent($notifiable))
+            ;
+    }
+
+    public function toEngageSpark($notifiable)
+    {
+        return (new EngageSparkMessage())
             ->content($this->getContent($notifiable))
             ;
     }

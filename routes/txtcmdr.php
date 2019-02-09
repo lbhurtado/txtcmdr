@@ -300,9 +300,9 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
             ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new RegisterAirtimeTransferServiceStage)
-            ->pipe(new TransferCommanderAirtimeStage)
-            ->pipe(new ChargeCommanderAirtimeTransferStage)
+//            ->pipe(new RegisterAirtimeTransferServiceStage) //working, here just for testing
+//            ->pipe(new TransferCommanderAirtimeStage) //working, here just for testing
+//            ->pipe(new ChargeCommanderAirtimeTransferStage) //working, here just for testing
             ->process($parameters)
         ;
 
