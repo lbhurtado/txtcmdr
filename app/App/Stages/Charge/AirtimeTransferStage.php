@@ -9,6 +9,6 @@ class AirtimeTransferStage extends BaseStage
 {
     public function execute()
     {
-        $this->dispatch(new AirtimeTransfer('639081877788'));
+        $this->dispatch(new AirtimeTransfer($this->getCommander()));
     }
 }

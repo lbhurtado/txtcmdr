@@ -23,24 +23,20 @@ class RegisterAirtimeTransferService implements ShouldQueue
 
     public function handle(Telerivet $api)
     {
-        $phone_number = $this->contact->mobile;
-        $name = $this->contact->handle;
-        $telerivet_id = $api->getProject()->getOrCreateContact(compact('phone_number', 'name'))->id;
+        $telerivet_id = $this->getTelerivetId($api);
         $this->contact->forceFill(compact('telerivet_id'))->save();
     }
 
-    protected function getTelerivetContact($mobile, $handle)
+    protected function getTelerivetId($api)
     {
-        return $this->getTelerivetProject()->getOrCreateContact([
-            'phone_number' => $mobile,
-            'name' => $handle,
-        ]);
+        return $api->getProject()->getOrCreateContact($this->getAttributes())->id;
     }
 
-    protected function getTelerivetProject()
+    protected function getAttributes()
     {
-        $config = config('broadcasting.connections.telerivet');
-
-        return (new Telerivet($config['api_key'], $config['project_id'], $config['service_id']))->getProject();
+        return [
+            'phone_number' => $this->contact->mobile,
+            'name' => $this->contact->handle,
+        ];
     }
 }

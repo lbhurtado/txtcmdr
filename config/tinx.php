@@ -7,9 +7,9 @@ return [
      * */
     'model_paths' => [
 //        '/app',
-        '/app/Campaign/Domain/Models/*',
-        '/app/Charging/Domain/Models/*',
-        '/app/Missive/Domain/Models/*',
+//        '/app/Campaign/Domain/Models/*',
+//        '/app/Charging/Domain/Models/*',
+//        '/app/Missive/Domain/Models/*',
         // '/also/search/this/directory',
         // '/also/search/this/directory/recursively/*',
     ],
@@ -18,6 +18,11 @@ return [
      * Only define these models (all other models will be ignored).
      * */
     'only' => [
+        \App\Missive\Domain\Models\Contact::class,
+        \App\Campaign\Domain\Models\Area::class,
+        \App\Campaign\Domain\Models\Group::class,
+        \App\Campaign\Domain\Models\Tag::class,
+        \App\Campaign\Domain\Models\Checkin::class,
         // 'App\OnlyThisModel',
         // 'App\AlsoOnlyThisModel',
     ],

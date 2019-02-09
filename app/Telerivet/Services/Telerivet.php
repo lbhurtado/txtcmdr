@@ -27,7 +27,7 @@ class Telerivet
         return $this->project;
     }
 
-    public function setService($service_id)
+    public function initService($service_id)
     {
         $this->service = $this->getProject()->initServiceById($service_id);
 

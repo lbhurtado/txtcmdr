@@ -4,31 +4,37 @@ namespace App\Charging\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Telerivet\Services\Telerivet;
+use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
 
 class AirtimeTransfer implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $mobile;
+    protected $contact;
 
-    public function __construct($mobile)
+    public function __construct(Contact $contact)
     {
-        $this->mobile = $mobile;
+        $this->contact = $contact;
     }
 
     public function handle(Telerivet $api)
     {
         $service = $api->getProject()->initServiceById('SVa8cc328a77a0db75');
 
-        $service->invoke([
+        $service->invoke($this->getAttributes());
+    }
+
+    protected function getAttributes()
+    {
+        return [
             'context' => 'contact',
-            'to_number' => $this->mobile,
-        ]);
+            'contact_id' => $this->contact->telerivetId,
+            'to_number' => $this->contact->mobile
+        ];
     }
 //
 //    protected function getArguments()

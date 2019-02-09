@@ -298,7 +298,9 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command=ping}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
-            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new RegisterAirtimeTransferServiceStage)
+            ->pipe(new AirtimeTransferStage)
             ->process($parameters)
         ;
 
