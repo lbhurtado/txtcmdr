@@ -2,7 +2,6 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Domain\Models\Tag;
 use App\Campaign\Jobs\UpdateCommanderTagArea;
 use App\Campaign\Domain\Repositories\TagRepository;
 use App\Campaign\Domain\Repositories\AreaRepository;
@@ -43,11 +42,18 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     protected function existsCommanderTag()
     {
-//        $command = array_get($this->getParameters(), 'command');
-//        return \DB::table('tags')->where('tagger_id', $this->getCommander()->id)->first();
-        return app(TagRepository::class)
-            ->findByField(
-                'contact_id', $this->getCommander()->id
-            )->first() ?? array_get($this->getParameters(), 'command') == 'TAG';
+        return $this->isCommanderTagPersisted() ?? $this->isCommandTag();
+    }
+
+    protected function isCommanderTagPersisted()
+    {
+        $contact_id = $this->getCommander()->id;
+
+        return app(TagRepository::class)->findByField(compact('contact_id'))->first();
+    }
+
+    protected function isCommandTag()
+    {
+        return strtoupper(array_get($this->getParameters(), 'command')) == 'TAG';
     }
 }

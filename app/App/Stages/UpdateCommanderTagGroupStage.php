@@ -3,6 +3,7 @@
 namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
+use App\Campaign\Domain\Repositories\TagRepository;
 use App\Campaign\Domain\Repositories\GroupRepository;
 
 class UpdateCommanderTagGroupStage extends BaseStage
@@ -11,7 +12,9 @@ class UpdateCommanderTagGroupStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->group = $this->getGroup();
+        $this->group = $this->getGroup();
+
+        return $this->existsCommanderTag() && $this->group;
     }
 
     public function execute()
@@ -35,5 +38,23 @@ class UpdateCommanderTagGroupStage extends BaseStage
     protected function getGroupFromCommander()
     {
         return $this->getCommander()->groups()->first();
+    }
+
+    protected function existsCommanderTag()
+    {
+        dd( $this->isCommandTag());
+        return $this->isCommanderTagPersisted() ?? $this->isCommandTag();
+    }
+
+    protected function isCommanderTagPersisted()
+    {
+        $contact_id = $this->getCommander()->id;
+
+        return app(TagRepository::class)->findByField(compact('contact_id'))->first();
+    }
+
+    protected function isCommandTag()
+    {
+        return strtoupper(array_get($this->getParameters(), 'command')) == 'TAG';
     }
 }

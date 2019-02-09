@@ -12,7 +12,11 @@ class AreaSeeder extends Seeder
      */
     public function run()
     {
-		Area::build('5th District of Leyte.City of Baybay.Altavista');
+		Area::build('5th District of Leyte.City of Baybay.Altavista.1A');
+        Area::build('5th District of Leyte.City of Baybay.Altavista.1B');
+        Area::build('5th District of Leyte.City of Baybay.Altavista.1C');
+        Area::build('5th District of Leyte.City of Baybay.Altavista.2A');
+        Area::build('5th District of Leyte.City of Baybay.Altavista.3A');
         Area::build('5th District of Leyte.City of Baybay.Ambacan');
         Area::build('5th District of Leyte.City of Baybay.Amguhan');
         Area::build('5th District of Leyte.City of Baybay.Ampihanon');
