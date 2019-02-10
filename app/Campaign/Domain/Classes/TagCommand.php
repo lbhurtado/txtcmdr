@@ -49,19 +49,24 @@ class TagCommand extends Command
 	protected function populateAreas()
     {
         $names = implode($this->areaRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
-        $ids = implode($this->areaRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
+        $aliases = implode($this->areaRepository->all()->sortByDesc('alias')->pluck('alias')->toArray(), '|');
+//        $ids = implode($this->areaRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
 
-        $this->AREAS = string($names)->concat('|')->concat($ids);
+//        $this->AREAS = string($names)->concat('|')->concat($ids);
+        $this->AREAS = string($names)->concat('|')->concat($aliases);
+//        $this->AREAS = $names;
 
         return $this;
     }
 
+    //TODO copy populate areas, change in stage as well
     protected function populateGroups()
     {
         $names = implode($this->groupRepository->all()->sortByDesc('name')->pluck('name')->toArray(), '|');
-        $ids = implode($this->groupRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
+//        $ids = implode($this->groupRepository->all()->sortByDesc('id')->pluck('id')->toArray(), '|');
 
-        $this->GROUPS = string($names)->concat('|')->concat($ids);
+//        $this->GROUPS = string($names)->concat('|')->concat($ids);
+        $this->GROUPS = $names;
 
         return $this;
     }

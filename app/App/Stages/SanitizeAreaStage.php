@@ -24,12 +24,22 @@ class SanitizeAreaStage extends BaseStage
 
     protected function getSanitizedArea($input):string
     {
-		return app(AreaRepository::class)
-				->pluck('name', 'id')
-				->first(function($value, $key) use ($input) {
+		return
+            app(AreaRepository::class)->all()->sortByDesc('name')
+				->pluck('name')
+				->first(function($value) use ($input) {
 					//there's no easy way to search case-insensitive in database
 					//better in the collection
-					return strtoupper($value) == strtoupper($input) or $key == $input;
-				});
+					return strtoupper($value) == strtoupper($input) ;
+				})
+            ??
+            app(AreaRepository::class)->all()->sortByDesc('alias')
+                ->pluck('name' ,'alias')
+                ->first(function($value, $alias) use ($input) {
+                    //there's no easy way to search case-insensitive in database
+                    //better in the collection
+                    return strtoupper($alias) == strtoupper($input) ;
+                })
+            ;
     }
 }

@@ -56,6 +56,7 @@ $txtcmdr = resolve('txtcmdr');
 //	});
 //});
 
+// TODO add upline notification
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
@@ -262,6 +263,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
     });
 });
 
+//TODO if alias is used in tagging, make sure the tag is the alias
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)

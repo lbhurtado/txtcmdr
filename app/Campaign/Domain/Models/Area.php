@@ -28,6 +28,7 @@ class Area extends Model implements Transformable, CampaignContext
      */
     protected $fillable = [
 		'name',
+        'alias',
 	];
 
     public $casts = [

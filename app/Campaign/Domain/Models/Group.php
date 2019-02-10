@@ -3,7 +3,6 @@
 namespace App\Campaign\Domain\Models;
 
 use App\App\Traits\HasNestedTrait;
-use App\Campaign\Domain\Models\Alert;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\Campaign\Domain\Traits\HasAlerts;
@@ -27,7 +26,8 @@ class Group extends Model implements Transformable, CampaignContext
 
     protected $fillable = [
 		'name',
-	];
+        'alias'
+    ];
 
     public $casts = [
         'extra_attributes' => 'array',

@@ -29,7 +29,8 @@ class SanitizeGroupStage extends BaseStage
 				->first(function($value, $key) use ($input) {
 					//there's no easy way to search case-insensitive in database
 					//better in the collection
-					return strtoupper($value) == strtoupper($input) or $key == $input;
+//					return strtoupper($value) == strtoupper($input) or $key == $input;
+                    return strtoupper($value) == strtoupper($input);
 				});
     }
 }

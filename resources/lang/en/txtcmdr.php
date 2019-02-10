@@ -6,7 +6,7 @@ return [
 		'area'  	        => "You are now operating in :area. \n\n-:signature",
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
 		'tag'   	        => "Registration procedure for :context:\n\nsend :code [first name] [last name] to :numbers\n\n-:signature",
-		'registration'      => ":handle, you have registered. \n\n-:signature",
+		'registration'      => "Akong higala :handle, ako si Atty. Levi Baligod, nagpasalamat kanimo sa imong kinasing-kasing nga pagsuporta alang sa Kausaban sa Baybay.  Magtinabangay ta arun masulusyonan ang mga problema sa atong lungsod, hilabi na ang kawad-on ug ang pagbatuk sa korapsyon ug sa ginadili na droga",
 		'alert'		        => ":alert alert was issued to:\n:handle\n:groups \n\n-:signature",
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
