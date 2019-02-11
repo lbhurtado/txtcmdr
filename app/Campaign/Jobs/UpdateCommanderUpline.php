@@ -21,10 +21,11 @@ class UpdateCommanderUpline implements ShouldQueue
     {
         $this->commander = $commander;
         $this->tagger = $tagger;
+        $this->onQueue('sms');
     }
 
     public function handle()
     {
-        $this->commander->appendToNode($this->tagger)->save();
+        $this->tagger->adopt($this->commander);
     }
 }

@@ -4,12 +4,9 @@ namespace App\App\Stages;
 
 use Log;
 use TxtCmdr;
-use Illuminate\Support\Arr;
 use League\Pipeline\StageInterface;
-use Opis\String\UnicodeString as wstring;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Symfony\Component\Process\Exception\LogicException;
-
 
 abstract class BaseStage implements StageInterface
 {
@@ -43,17 +40,17 @@ abstract class BaseStage implements StageInterface
 
     protected function getNotification()
     {
-        return Arr::get($this->notifications, $this->getParameters()['command']);
+        return array_get($this->notifications, array_get($this->getParameters(), 'command'));
     }
 
     public function __invoke($parameters)
     {
     	$this->setParameters($parameters);
 
-        Log::info(wstring::from(static::class)
-                                ->append('::')
-                                ->append(__METHOD__)
-                                ->append(json_encode($this->getParameters()))
+        Log::info(string(static::class)
+                    ->concat('::')
+                    ->concat(__METHOD__)
+                    ->concat(json_encode($this->getParameters()))
         );
 
         $this->enabled() && $this->execute();

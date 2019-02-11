@@ -22,6 +22,10 @@ use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloque
 use App\Telerivet\Services\Telerivet;
 use Telerivet_API;
 use App\EngageSpark\Services\EngageSpark;
+use App\Missive\Domain\Models\Contact;
+use App\Missive\Domain\Observers\ContactObserver;
+use App\Campaign\Observers\CheckinObserver;
+use App\Campaign\Domain\Models\Checkin;
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -33,6 +37,8 @@ class TextCommanderServiceProvider extends ServiceProvider
     public function boot()
     {
         SMS::observe(SMSObserver::class);
+        Contact::observe(ContactObserver::class);
+        Checkin::observe(CheckinObserver::class);
 
         $this->app
             ->when (GlobeConnectChannel::class)

@@ -29,7 +29,8 @@ class NotifyUplineStage extends NotifyStage
 
     protected function getNotifiable()
     {
-        return $this->getCommander()->parent;
+        //TODO this is cheating, need to persist data before notification
+        return  $this->getCommander()->parent ?? array_get($this->getParameters(), 'tagger');
     }
 
     public function setup($key)

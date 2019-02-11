@@ -21,6 +21,7 @@ class UpdateContact implements ShouldQueue
     {
         $this->contact = $contact;
         $this->handle = $handle;
+        $this->onQueue('sms');
     }
 
     public function handle()

@@ -2,8 +2,10 @@
 
 namespace App\App\Stages;
 
+
 use App\Campaign\Jobs\UpdateCommanderUpline;
 use App\Campaign\Domain\Repositories\TagRepository;
+
 
 class UpdateCommanderUplineStage extends BaseStage
 {
@@ -13,11 +15,13 @@ class UpdateCommanderUplineStage extends BaseStage
     {
         $this->tagger = $this->getTagger();
 
-        return ! $this->getCommander()->upline && $this->tagger;
+        return ! $this->getCommander()->parent && $this->tagger;
     }
 
     public function execute()
     {
+        array_set($this->parameters, 'tagger', $this->tagger);
+
         $this->dispatch(new UpdateCommanderUpline($this->getCommander(), $this->tagger));
     }
 

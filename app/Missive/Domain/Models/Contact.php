@@ -42,30 +42,8 @@ class Contact extends Model implements Transformable, Mobile
         'token',
     ];
 
-//    public function upline(): MorphTo
-//    {
-//        return $this->morphTo();
-//    }
-
-//    public function downlines()
-//    {
-//        return $this->morphOne(Contact::class, 'upline');
-//    }
-
-//    public function descendants ()
-//    {
-//        $sections = new Collection();
-//
-//        foreach ($this->downlines()->get() as $section) {
-//            $sections->push($section);
-//            $sections = $sections->merge($section->descendants());
-//        }
-//
-//        return $sections;
-//    }
-
-//    public function scopeOrphan($query)
-//    {
-//        return $query->whereNull('upline_id')->orWhereNull('upline_type');
-//    }
+    public function adopt(Contact $child)
+    {
+        $child->appendToNode($this)->save();
+    }
 }

@@ -41,6 +41,10 @@ use App\App\Stages\Charge\RegisterAirtimeTransferServiceStage;
 use App\App\Stages\Charge\TransferCommanderAirtimeStage;
 use App\App\Stages\Charge\ChargeCommanderAirtimeTransferStage;
 
+use Opis\Events\EventDispatcher;
+use App\Missive\Domain\Events\{ContactEvent, ContactEvents};
+use App\Campaign\Domain\Events\{CheckinEvent, CheckinEvents};
+
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
 
@@ -71,6 +75,7 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new UpdateCommanderTagAreaStage) //tested
 //            ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new NotifyUplineStage) //tested
             ->process($parameters)
         ;
     });
@@ -320,5 +325,17 @@ tap(Command::using(CommandKey::HELP), function ($cmd) use ($txtcmdr) {
         ;
 
         return true;
+    });
+});
+
+tap(app(EventDispatcher::class), function ($dispatcher) {
+    $dispatcher->handle(ContactEvents::ADOPTED, function (ContactEvent $event) {
+        \Log::info('aaaaaaaaaaaaaa');
+    });
+});
+
+tap(app(EventDispatcher::class), function ($dispatcher) {
+    $dispatcher->handle(CheckinEvents::CREATED, function (CheckinEvent $event) {
+        \Log::info('kkkkkkkkkkkkk');
     });
 });

@@ -26,8 +26,8 @@ abstract class BaseNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database', EngageSparkChannel::class];
-//        return config('txtcmdr.notification.channels');
+//        return ['database', EngageSparkChannel::class];
+        return config('txtcmdr.notification.channels');
     }
 
     /**
