@@ -21,7 +21,7 @@ class CommanderReportUpdated extends BaseNotification
 
         return [
             'tease' => $tease,
-            'upline' => $notifiable->upline->handle,
+            'upline' => $notifiable->parent->handle,
         ];
     }
 }

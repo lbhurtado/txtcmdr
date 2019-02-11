@@ -20,6 +20,7 @@ class SanitizeGroupStage extends BaseStage
 
 		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
         array_set($this->parameters, 'context', $sanitized_group);
+        array_set($this->parameters, 'field', 'group');
     }
 
     protected function getSanitizedGroup($input):string

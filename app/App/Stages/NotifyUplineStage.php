@@ -29,14 +29,12 @@ class NotifyUplineStage extends NotifyStage
 
     protected function getNotifiable()
     {
-        return $this->getCommander()->upline;
+        return $this->getCommander()->parent;
     }
 
     public function setup($key)
     {
-        $this->params = [
-            'downline' => $this->getCommander(),
-            'message' => array_get($this->getParameters(), 'message'),
-        ];
+        array_set($this->params, 'downline', $this->getCommander());
+        array_set($this->params, 'message', array_get($this->getParameters(), 'message'));
     }
 }

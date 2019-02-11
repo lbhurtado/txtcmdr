@@ -7,7 +7,9 @@ use App\Campaign\Domain\Classes\{Command, CommandKey};
 
 abstract class NotifyStage extends BaseStage
 {
-    public $params = ['downline' => null];
+//    public $params = ['downline' => null];
+//TODO investigate why the above is not working
+    public $params = [];
 
     protected $notifiable;
 

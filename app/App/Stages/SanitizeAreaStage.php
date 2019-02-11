@@ -20,7 +20,10 @@ class SanitizeAreaStage extends BaseStage
 
 		array_set($this->parameters, 'area', $sanitized_area ?? $this->halt());
         array_set($this->parameters, 'context', $sanitized_area);
+        array_set($this->parameters, 'field', 'area');
     }
+
+    //TODO get alias or note, sleep now
 
     protected function getSanitizedArea($input):string
     {

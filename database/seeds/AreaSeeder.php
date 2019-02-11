@@ -406,6 +406,34 @@ class AreaSeeder extends Seeder
         Area::build('5th District of Leyte.City of Baybay.Patag.258A');
 
         Area::build('5th District of Leyte.City of Baybay.Plaridel.259A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.260A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.261A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.262A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.263A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.264A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.265A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.266A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.267A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.268A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.269A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.270A');
+        Area::build('5th District of Leyte.City of Baybay.Plaridel.271A');
+
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.272A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.273A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.274A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.275A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.276A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.277A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.278A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.279A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.280A');
+        Area::build('5th District of Leyte.City of Baybay.Pomponan.281A');
+
+        Area::build('5th District of Leyte.City of Baybay.Punta.282A');
+        Area::build('5th District of Leyte.City of Baybay.Punta.282B');
+        Area::build('5th District of Leyte.City of Baybay.Punta.283A');
+        Area::build('5th District of Leyte.City of Baybay.Punta.284A');
 
         Area::build('5th District of Leyte.City of Baybay.Sabang.286A');
         Area::build('5th District of Leyte.City of Baybay.Sabang.286B');
@@ -460,11 +488,7 @@ class AreaSeeder extends Seeder
         Area::build('5th District of Leyte.City of Baybay.Zacarito.318A');
         Area::build('5th District of Leyte.City of Baybay.Zacarito.319');
 
-
-        Area::build('5th District of Leyte.City of Baybay.Pomponan');
-        Area::build('5th District of Leyte.City of Baybay.Punta');
-
-        optional(Area::where('name', '5th District of Leyte')->first())->update(['alias' => 'Leyte']);
+        optional(Area::where('name', '5th District of Leyte')->first())->update(['alias' => 'Kinto']);
         optional(Area::where('name', 'City of Baybay')->first())->update(['alias' => 'Baybay']);
         optional(Area::where('name', 'Monte Verde')->first())->update(['alias' => 'Verde']);
         optional(Area::where('name', 'San Isidro')->first())->update(['alias' => 'Isidro']);

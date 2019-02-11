@@ -4,6 +4,7 @@ namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
+use App\Campaign\Domain\Repositories\{AreaRepository, GroupRepository};
 
 class UpdateCommanderTagStage extends BaseStage
 {
@@ -16,17 +17,31 @@ class UpdateCommanderTagStage extends BaseStage
     {
         $space = " ";
         
-        return string($this->getTag())->concat($space)->concat($this->getSuffix())->toUpper();
+        return string($this->tag())->concat($space)->concat($this->context())->toUpper();
     }
 
-    protected function getTag()
+    protected function tag()
     {
         return array_get($this->getParameters(), 'tag') ?? config('txtcmdr.tag');
     }
 
-    protected function getSuffix()
+    protected function context()
     {
-        return array_get($this->getParameters(), 'context');
+        $repositories = [
+            'area' => AreaRepository::class,
+            'group' => GroupRepository::class
+        ];
+
+        $field = array_get($this->getParameters(), 'field', 'area');
+
+        $context = trim(array_get($this->getParameters(), 'context'));
+
+        $model =  app($repositories[$field])->findByField('name',  $context)->first();
+
+        return $model->alias ?? $model->name;
+
+//        return trim(array_get($this->getParameters(), 'area'));
+//        return array_get($this->getParameters(), 'context');
     }
 
 
