@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use Laravel\Scout\Searchable;
 use App\App\Traits\HasNestedTrait;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,10 @@ use App\Campaign\Domain\Contracts\CampaignContext;
  */
 class Area extends Model implements Transformable, CampaignContext
 {
-    use TransformableTrait, HasNestedTrait, HasSchemalessAttributes;
+    use TransformableTrait, HasSchemalessAttributes;
+    use HasNestedTrait, Searchable {
+        Searchable::usesSoftDelete insteadof HasNestedTrait;
+    }
 
     protected $default = false;
 
@@ -41,5 +45,17 @@ class Area extends Model implements Transformable, CampaignContext
     public function contacts()
     {
         return $this->morphedByMany(Contact::class, 'model', 'model_has_areas');
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+
+        return [
+            'id' => $array['id'],
+            'name' => $array['name'],
+            'alias' => $array['alias'],
+        ];
     }
 }
