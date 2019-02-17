@@ -9,14 +9,11 @@ use App\EngageSpark\Channels\EngageSparkChannel;
 return [
 	'airtime' => [
 		'availments' => [
-			AirtimeKey::SMS 	 => App\Charging\Domain\Classes\Availments\AvailSMS::class,
-            AirtimeKey::LBS      => App\Charging\Domain\Classes\Availments\AvailLBS::class,
-            AirtimeKey::LOAD10   => App\Charging\Domain\Classes\Availments\AvailLoad10::class,
-			AirtimeKey::LOAD25   => App\Charging\Domain\Classes\Availments\AvailLoad25::class,
-			AirtimeKey::LOAD50   => App\Charging\Domain\Classes\Availments\AvailLoad50::class,
-			AirtimeKey::LOAD100  => App\Charging\Domain\Classes\Availments\AvailLoad100::class,
-			AirtimeKey::LOAD500  => App\Charging\Domain\Classes\Availments\AvailLoad500::class,
-			AirtimeKey::LOAD1000 => App\Charging\Domain\Classes\Availments\AvailLoad1000::class,
+			AirtimeKey::INCOMING_SMS => App\Charging\Domain\Classes\Availments\AvailIncomingSMS::class,
+            AirtimeKey::OUTGOING_SMS => App\Charging\Domain\Classes\Availments\AvailOutgoingSMS::class,
+            AirtimeKey::LBS          => App\Charging\Domain\Classes\Availments\AvailLBS::class,
+            AirtimeKey::LOAD10       => App\Charging\Domain\Classes\Availments\AvailLoad10::class,
+			AirtimeKey::LOAD25       => App\Charging\Domain\Classes\Availments\AvailLoad25::class,
 		],
         'transfers' => [
             'default' => env('DEFAULT_AIRTIME_TRANSFER',AirtimeKey::LOAD10),

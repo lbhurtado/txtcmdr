@@ -51,7 +51,6 @@ class Area extends Model implements Transformable, CampaignContext
     {
         $array = $this->toArray();
 
-
         return [
             'id' => $array['id'],
             'name' => $array['name'],

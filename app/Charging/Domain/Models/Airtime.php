@@ -21,6 +21,8 @@ class Airtime extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'key',
+        'credits',
 	];
 
 }

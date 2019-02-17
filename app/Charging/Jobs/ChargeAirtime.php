@@ -21,7 +21,7 @@ class ChargeAirtime implements ShouldQueue
 
     protected $availment;
 
-    public function __construct(SMS $sms, $availment = AirtimeKey::SMS)
+    public function __construct(SMS $sms, $availment = AirtimeKey::INCOMING_SMS)
     {
         $this->sms = $sms;
         $this->availment = $availment;
