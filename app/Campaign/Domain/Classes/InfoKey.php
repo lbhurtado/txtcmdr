@@ -13,7 +13,7 @@ final class InfoKey extends Enum
     const      SIGNAL = 'Signal Description';
     const      STATUS = 'Status Description';
     const      UPLINE = 'Upline Description';
-    const    DOWNLINE = 'Downline Description';
+    const   DOWNLINES = 'Downline Description';
     const   ATTRIBUTE = 'Attribute Description';
     const DESCENDANTS = 'Descendants Description';
 }

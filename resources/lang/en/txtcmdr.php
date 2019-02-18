@@ -24,9 +24,9 @@ return [
             'signal'        => "Signal:\n:data\n\n-:signature",
             'status'        => "Status:\n:data\n\n-:signature",
             'upline'        => "Upline:\n:data\n\n-:signature",
-            'downline'      => "Downline:\n:data\n\n-:signature",
+            'downlines'     => "Downlines (:context):\n:data pax\n\n-:signature",
             'attribute'     => "Attribute:\n:data\n\n-:signature",
-            'descendants'   => "Descendants:\n:data\n\n-:signature",
+            'descendants'   => "Descendants:\n:data pax\n\n-:signature",
         ],
         'send'              => [
             'area'          => "Send:\n:message\n\ncc: :area\n\n-:signature",

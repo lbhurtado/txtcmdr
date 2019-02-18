@@ -104,6 +104,8 @@ return [
         InfoKey::GROUP => env('INFO_KEYWORD_GROUP', 'GROUP'),
         InfoKey::ALERT => env('INFO_KEYWORD_GROUP', 'ALERT'),
         InfoKey::STATUS => env('INFO_KEYWORD_STATUS', 'STATUS'),
+        InfoKey::DOWNLINES => env('INFO_KEYWORD_DOWNLINE', 'DOWNLINES'),
+        InfoKey::DESCENDANTS => env('INFO_KEYWORD_DESCENDANTS', 'DESCENDANTS'),
     ],
     'tag'  => env('TAG', 'JOIN'),
 ];
