@@ -45,6 +45,8 @@ use Opis\Events\EventDispatcher;
 use App\Missive\Domain\Events\{ContactEvent, ContactEvents};
 use App\Campaign\Domain\Events\{CheckinEvent, CheckinEvents};
 
+use App\App\Stages\Charge\ChargeCommanderOutgoingSMSStage;
+
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
 
@@ -76,6 +78,7 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
     });
@@ -85,6 +88,7 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
 		(new Pipeline)
 		    ->pipe(new NotifyCommanderInfoStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
 		    ->process($parameters)
 		    ;
 	});
@@ -113,6 +117,7 @@ tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
             ->pipe(new NotifyUplineStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyGroupAlertStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -125,6 +130,7 @@ tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new NotifyUplineStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -137,6 +143,7 @@ tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new NotifyDownlineStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -149,6 +156,7 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new NotifyDescendantsStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -162,6 +170,7 @@ tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderStatusStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -174,6 +183,7 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
         (new Pipeline)
             ->pipe(new UpdateCommanderAttributeStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -190,6 +200,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new UpdateCommanderTagAreaStage) //tested, working but should not be
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
     });
@@ -204,6 +215,7 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new UpdateCommanderTagGroupStage) //tested, working but should not be
             ->pipe(new NotifyCommanderStage)  //tested
             ->pipe(new NotifyUplineStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -231,6 +243,7 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
             ->pipe(new SanitizeGroupStage)
             ->pipe(new NotifyGroupStage)
             ->pipe(new NotifyCommanderStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -244,6 +257,7 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new NotifyAreaStage)
             ->pipe(new NotifyCommanderStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -261,6 +275,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderTagGroupStage) //tested
             ->pipe(new UpdateCommanderUnTagAreaStage)
             ->pipe(new NotifyCommanderTagGroupStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -279,6 +294,7 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderTagAreaStage) //tested
             ->pipe(new UpdateCommanderUnTagGroupStage)
             ->pipe(new NotifyCommanderTagAreaStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -295,6 +311,7 @@ tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
             ->pipe(new RegisterAirtimeTransferServiceStage)
 //            ->pipe(new AirtimeTransferStage)
             ->pipe(new ChargeCommanderLBSStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -310,6 +327,7 @@ tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new RegisterAirtimeTransferServiceStage) //working, here just for testing
 //            ->pipe(new TransferCommanderAirtimeStage) //working, here just for testing
 //            ->pipe(new ChargeCommanderAirtimeTransferStage) //working, here just for testing
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
@@ -321,6 +339,7 @@ tap(Command::using(CommandKey::HELP), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) use ($cmd) {
         (new Pipeline)
             ->pipe(new NotifyCommanderStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
 
