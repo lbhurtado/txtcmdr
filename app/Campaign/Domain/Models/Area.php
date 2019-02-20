@@ -39,6 +39,10 @@ class Area extends Model implements Transformable, CampaignContext
         'extra_attributes' => 'array',
     ];
 
+    public $appends = [
+        'name_suffixes',
+    ];
+
     /**
      * Get all of the contacts that are assigned this area.
      */
@@ -53,8 +57,23 @@ class Area extends Model implements Transformable, CampaignContext
 
         return [
             'id' => $array['id'],
-            'name' => $array['name'],
             'alias' => $array['alias'],
+            'name' => $array['name'],
+            'name_suffixes' => $array['name_suffixes'],
         ];
+    }
+
+    public function getNameSuffixesAttribute()
+    {
+        $array = [];
+
+        $index = $this->attributes['name'];
+
+        while (strpos($index, '0') === 0) {
+            $index = substr($index,1);
+            $array[] = $index;
+        }
+
+        return $array;
     }
 }
