@@ -2,10 +2,9 @@
 
 namespace App\Campaign\Domain\Repositories;
 
+use App\Campaign\Domain\Models\Tag;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Campaign\Domain\Repositories\TagRepository;
-use App\Campaign\Domain\Models\Tag;
 use App\Campaign\Domain\Validators\TagValidator;
 
 /**
@@ -44,5 +43,9 @@ class TagRepositoryEloquent extends BaseRepository implements TagRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function search($query = '', $callback = null)
+    {
+        return Tag::search($query, $callback);
+    }
 }

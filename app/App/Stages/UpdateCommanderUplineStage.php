@@ -2,10 +2,7 @@
 
 namespace App\App\Stages;
 
-
 use App\Campaign\Jobs\UpdateCommanderUpline;
-use App\Campaign\Domain\Repositories\TagRepository;
-
 
 class UpdateCommanderUplineStage extends BaseStage
 {
@@ -27,8 +24,6 @@ class UpdateCommanderUplineStage extends BaseStage
 
     protected function getTagger()
     {
-        $code = array_get($this->parameters, 'tag');
-
-        return optional(app(TagRepository::class)->findByField(compact('code'))->first())->tagger;
+        return optional(array_get($this->parameters, 'models.tag'))->tagger;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Repositories;
 
+use App\App\Contracts\Scoutable;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -9,7 +10,7 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  *
  * @package namespace App\Campaign\Domain\Repositories;
  */
-interface TagRepository extends RepositoryInterface
+interface TagRepository extends RepositoryInterface, Scoutable
 {
     //
 }

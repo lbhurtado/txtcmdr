@@ -46,6 +46,8 @@ use App\Missive\Domain\Events\{ContactEvent, ContactEvents};
 use App\Campaign\Domain\Events\{CheckinEvent, CheckinEvents};
 
 use App\App\Stages\Charge\ChargeCommanderOutgoingSMSStage;
+use App\App\Stages\SanitizeTagStage;
+
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -64,9 +66,11 @@ $txtcmdr = resolve('txtcmdr');
 
 // TODO add upline notification
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+//    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
+            ->pipe(new SanitizeTagStage)
             ->pipe(new UpdateCommanderStage) //tested
             ->pipe(new UpdateCommanderUplineStage) //tested
             ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
@@ -193,7 +197,6 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
 
 // TODO create a control for changing areas
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
-//    $txtcmdr->register("{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
     $txtcmdr->register("{command={$cmd->CMD}}{area}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
@@ -209,7 +212,6 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 
 // TODO create a control for changing groups
 tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
-//    $txtcmdr->register("{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
     $txtcmdr->register("{command={$cmd->CMD}}{group}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage) //tested

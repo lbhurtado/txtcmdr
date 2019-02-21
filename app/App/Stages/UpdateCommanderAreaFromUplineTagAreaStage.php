@@ -2,7 +2,6 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Domain\Repositories\TagRepository;
 use App\Campaign\Jobs\UpdateCommanderAreaFromUplineTagArea;
 
 class UpdateCommanderAreaFromUplineTagAreaStage extends BaseStage
@@ -23,9 +22,8 @@ class UpdateCommanderAreaFromUplineTagAreaStage extends BaseStage
 
     protected function getArea()
     {
-        $code = array_get($this->parameters, 'tag');
+        return optional(array_get($this->parameters, 'models.tag'), function ($tag) {
 
-        return optional(app(TagRepository::class)->findByField(compact('code'))->first(), function ($tag) {
             return $tag->areas()->first();
         });
     }

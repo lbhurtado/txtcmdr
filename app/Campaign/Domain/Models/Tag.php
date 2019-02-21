@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use Laravel\Scout\Searchable;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\App\Traits\HasSchemalessAttributes;
@@ -15,7 +16,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Tag extends Model implements Transformable
 {
-    use TransformableTrait, HasSchemalessAttributes;
+    use TransformableTrait, HasSchemalessAttributes, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -30,10 +31,39 @@ class Tag extends Model implements Transformable
         'extra_attributes' => 'array',
     ];
 
-//    public function tagger()
-//    {
-//        return $this->morphTo();
-//    }
+    public $appends = [
+        'code_suffixes',
+    ];
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        return [
+            'id' => $array['id'],
+            'code' => $array['code'],
+            'code_suffixes' => $array['code_suffixes'],
+        ];
+    }
+
+    //TODO: make this elegant, iterate thru all the words not just the second word
+    public function getCodeSuffixesAttribute()
+    {
+        $array = [];
+
+        $code_array = array_filter(explode(' ', array_get($this->attributes, 'code')));
+
+        $first_word = array_shift($code_array);
+
+        $index = implode($code_array);
+
+        while (strpos($index, '0') === 0) {
+            $index = substr($index,1);
+            $array[] = $first_word . ' ' . $index;
+        }
+
+        return $array;
+    }
 
     public function tagger()
     {
