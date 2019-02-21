@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\App\Providers\TextCommanderServiceProvider::class,
+        App\App\Providers\ScoutAgoliaServiceProvider::class,
     ],
 
     /*

@@ -44,5 +44,11 @@ class AreaRepositoryEloquent extends BaseRepository implements AreaRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function search($query = '', $callback = null)
+    {
+        return Area::search($query, $callback);
+    }
+
+
 }

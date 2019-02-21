@@ -27,17 +27,18 @@ class UpdateCommanderTagStage extends BaseStage
 
     protected function context()
     {
-        $repositories = [
-            'area' => AreaRepository::class,
-            'group' => GroupRepository::class
-        ];
-
+//        $repositories = [
+//            'area' => AreaRepository::class,
+//            'group' => GroupRepository::class
+//        ];
+//
         $field = array_get($this->getParameters(), 'field', 'area');
+//
+//        $context = trim(array_get($this->getParameters(), 'context'));
+//
+//        $model =  app($repositories[$field])->findByField('name',  $context)->first();
 
-        $context = trim(array_get($this->getParameters(), 'context'));
-
-        $model =  app($repositories[$field])->findByField('name',  $context)->first();
-
+        $model = array_get($this->parameters, 'models')[$field];
         return $model->alias ?? $model->name;
 
 //        return trim(array_get($this->getParameters(), 'area'));

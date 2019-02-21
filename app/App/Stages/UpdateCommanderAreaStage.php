@@ -3,7 +3,6 @@
 namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateCommanderArea;
-use App\Campaign\Domain\Repositories\AreaRepository;
 
 class UpdateCommanderAreaStage extends BaseStage
 {
@@ -11,7 +10,7 @@ class UpdateCommanderAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->area = app(AreaRepository::class)->findByField('name', $this->parameters['area'])->first();
+        return $this->area = array_get($this->parameters, 'models.area');
     }
 
     public function execute()

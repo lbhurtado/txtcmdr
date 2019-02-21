@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface AreaRepository extends RepositoryInterface
 {
-    //
+    public function search($query = '', $callback = null);
 }

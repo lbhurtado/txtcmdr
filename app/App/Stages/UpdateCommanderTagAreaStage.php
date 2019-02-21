@@ -4,7 +4,6 @@ namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateCommanderTagArea;
 use App\Campaign\Domain\Repositories\TagRepository;
-use App\Campaign\Domain\Repositories\AreaRepository;
 
 class UpdateCommanderTagAreaStage extends BaseStage
 {
@@ -29,10 +28,7 @@ class UpdateCommanderTagAreaStage extends BaseStage
 
     protected function getAreaFromParameters()
     {
-        return app(AreaRepository::class)
-            ->findByField([
-                'name' => array_get($this->parameters, 'area')
-            ])->first();
+        return array_get($this->parameters, 'models.area');
     }
 
     protected function getAreaFromCommander()

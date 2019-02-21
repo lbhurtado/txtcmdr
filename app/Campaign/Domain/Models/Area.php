@@ -43,6 +43,8 @@ class Area extends Model implements Transformable, CampaignContext
         'name_suffixes',
     ];
 
+    protected $guarded = ['_highlightResult'];
+
     /**
      * Get all of the contacts that are assigned this area.
      */

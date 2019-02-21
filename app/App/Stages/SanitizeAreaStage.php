@@ -2,7 +2,6 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Jobs\UpdateContactArea;
 use App\Campaign\Domain\Repositories\AreaRepository;
 
 class SanitizeAreaStage extends BaseStage
@@ -16,33 +15,22 @@ class SanitizeAreaStage extends BaseStage
 
     public function execute()
     {
-		$sanitized_area = $this->getSanitizedArea($this->input_area);
+        $area = $this->getSanitizedArea($this->input_area) ?? $this->halt();
+		$sanitized_area = $area->name;
 
-		array_set($this->parameters, 'area', $sanitized_area ?? $this->halt());
+		//TODO: combine the next 3 lines to something like the 4th line
+		array_set($this->parameters, 'area', $sanitized_area);
         array_set($this->parameters, 'context', $sanitized_area);
         array_set($this->parameters, 'field', 'area');
+
+        array_set($this->parameters, 'models.area', $area);
     }
 
-    //TODO get alias or note, sleep now
-
-    protected function getSanitizedArea($input):string
+    protected function getSanitizedArea($input)
     {
-		return
-            app(AreaRepository::class)->all()->sortByDesc('name')
-				->pluck('name')
-				->first(function($value) use ($input) {
-					//there's no easy way to search case-insensitive in database
-					//better in the collection
-					return strtoupper($value) == strtoupper($input) ;
-				})
-            ??
-            app(AreaRepository::class)->all()->sortByDesc('alias')
-                ->pluck('name' ,'alias')
-                ->first(function($value, $alias) use ($input) {
-                    //there's no easy way to search case-insensitive in database
-                    //better in the collection
-                    return strtoupper($alias) == strtoupper($input) ;
-                })
-            ;
+        return
+            optional(app(AreaRepository::class)->search($input), function ($hits) {
+                return ($hits->count() == 1) ? $hits->first() : null;
+            });
     }
 }

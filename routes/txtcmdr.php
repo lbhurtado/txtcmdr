@@ -193,7 +193,8 @@ tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
 
 // TODO create a control for changing areas
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
+//    $txtcmdr->register("{command={$cmd->CMD}}{area?={$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}}{area}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
@@ -285,7 +286,8 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 
 //TODO if alias is used in tagging, make sure the tag is the alias
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+//    $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}} @{area}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderTagStage) //tested
