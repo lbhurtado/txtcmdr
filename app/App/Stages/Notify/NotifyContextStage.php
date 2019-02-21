@@ -27,7 +27,7 @@ abstract class NotifyContextStage extends NotifyStage
     public function setup($key)
     {
         $this->params = [
-            'message' => array_get($this->getParameters(), 'message'),
+            'message' => trim(array_get($this->getParameters(), 'message')),
             'context' => $this->getContext(),
         ];
 

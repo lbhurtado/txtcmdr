@@ -2,7 +2,6 @@
 
 namespace App\App\Stages;
 
-//use App\Campaign\Jobs\UpdateContactArea;
 use App\Campaign\Domain\Repositories\GroupRepository;
 
 class SanitizeGroupStage extends BaseStage

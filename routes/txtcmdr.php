@@ -242,7 +242,8 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 //});
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("&{group={$cmd->GROUPS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+//    $txtcmdr->register("&{group={$cmd->GROUPS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+    $txtcmdr->register("&{group}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage)
             ->pipe(new NotifyGroupStage)
@@ -256,7 +257,8 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("@{area={$cmd->AREAS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+//    $txtcmdr->register("@{area={$cmd->AREAS}}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+    $txtcmdr->register("@{area}{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new NotifyAreaStage)
