@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use Laravel\Scout\Searchable;
 use App\App\Traits\HasNestedTrait;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,11 @@ use App\Campaign\Domain\Contracts\CampaignContext;
  */
 class Group extends Model implements Transformable, CampaignContext
 {
-    use TransformableTrait, HasNestedTrait, HasSchemalessAttributes, HasAlerts;
+    use TransformableTrait, HasSchemalessAttributes, HasAlerts;
+
+    use HasNestedTrait, Searchable {
+        Searchable::usesSoftDelete insteadof HasNestedTrait;
+    }
 
     protected $glue = ':';
 
@@ -34,10 +39,20 @@ class Group extends Model implements Transformable, CampaignContext
     ];
 
     /**
-     * Get all of the contacts that are assigned this area.
+     * Get all of the contacts that are assigned this group.
      */
     public function contacts()
     {
         return $this->morphedByMany(Contact::class, 'model', 'model_has_groups');
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        return [
+            'id' => $array['id'],
+            'name' => $array['name'],
+        ];
     }
 }

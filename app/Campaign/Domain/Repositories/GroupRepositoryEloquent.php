@@ -2,11 +2,11 @@
 
 namespace App\Campaign\Domain\Repositories;
 
+use App\Campaign\Domain\Models\Group;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Campaign\Domain\Repositories\GroupRepository;
-use App\Campaign\Domain\Models\Group;
 use App\Campaign\Domain\Validators\GroupValidator;
+use App\Campaign\Domain\Repositories\GroupRepository;
 
 /**
  * Class GroupRepositoryEloquent.
@@ -44,5 +44,9 @@ class GroupRepositoryEloquent extends BaseRepository implements GroupRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function search($query = '', $callback = null)
+    {
+        return Group::search($query, $callback);
+    }
 }

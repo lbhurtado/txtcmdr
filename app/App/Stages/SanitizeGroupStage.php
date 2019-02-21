@@ -2,7 +2,7 @@
 
 namespace App\App\Stages;
 
-use App\Campaign\Jobs\UpdateContactArea;
+//use App\Campaign\Jobs\UpdateContactArea;
 use App\Campaign\Domain\Repositories\GroupRepository;
 
 class SanitizeGroupStage extends BaseStage
@@ -16,22 +16,22 @@ class SanitizeGroupStage extends BaseStage
 
     public function execute()
     {
-		$sanitized_group = $this->getSanitizedGroup($this->input_group);
+        $group = $this->getSanitizedGroup($this->input_group) ?? $this->halt();
+        $sanitized_group = $group->name;
 
+        //TODO: combine the next 3 lines to something like the 4th line
 		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
         array_set($this->parameters, 'context', $sanitized_group);
         array_set($this->parameters, 'field', 'group');
+
+        array_set($this->parameters, 'models.group', $group);
     }
 
-    protected function getSanitizedGroup($input):string
+    protected function getSanitizedGroup($input)
     {
-		return app(GroupRepository::class)
-				->pluck('name', 'id')
-				->first(function($value, $key) use ($input) {
-					//there's no easy way to search case-insensitive in database
-					//better in the collection
-//					return strtoupper($value) == strtoupper($input) or $key == $input;
-                    return strtoupper($value) == strtoupper($input);
-				});
+        return
+            optional(app(GroupRepository::class)->search($input), function ($hits) {
+                return ($hits->count() == 1) ? $hits->first() : null;
+            });
     }
 }

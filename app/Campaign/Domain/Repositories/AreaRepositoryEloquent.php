@@ -2,11 +2,11 @@
 
 namespace App\Campaign\Domain\Repositories;
 
+use App\Campaign\Domain\Models\Area;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Campaign\Domain\Repositories\AreaRepository;
-use App\Campaign\Domain\Models\Area;
 use App\Campaign\Domain\Validators\AreaValidator;
+use App\Campaign\Domain\Repositories\AreaRepository;
 
 /**
  * Class AreaRepositoryEloquent.
@@ -49,6 +49,4 @@ class AreaRepositoryEloquent extends BaseRepository implements AreaRepository
     {
         return Area::search($query, $callback);
     }
-
-
 }

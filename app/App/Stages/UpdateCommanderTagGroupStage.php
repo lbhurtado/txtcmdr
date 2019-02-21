@@ -4,7 +4,6 @@ namespace App\App\Stages;
 
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use App\Campaign\Domain\Repositories\TagRepository;
-use App\Campaign\Domain\Repositories\GroupRepository;
 
 class UpdateCommanderTagGroupStage extends BaseStage
 {
@@ -29,10 +28,7 @@ class UpdateCommanderTagGroupStage extends BaseStage
 
     protected function getGroupFromParameters()
     {
-        return app(GroupRepository::class)
-            ->findByField([
-                'name' => array_get($this->parameters, 'group')
-            ])->first();
+        return array_get($this->parameters, 'models.group');
     }
 
     protected function getGroupFromCommander()
@@ -42,7 +38,6 @@ class UpdateCommanderTagGroupStage extends BaseStage
 
     protected function existsCommanderTag()
     {
-        dd( $this->isCommandTag());
         return $this->isCommanderTagPersisted() ?? $this->isCommandTag();
     }
 

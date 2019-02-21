@@ -209,7 +209,8 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 
 // TODO create a control for changing groups
 tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
+//    $txtcmdr->register("{command={$cmd->CMD}}{group?={$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}}{group}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage) //tested
             ->pipe(new UpdateCommanderGroupStage) //tested
@@ -267,7 +268,7 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} &{group={$cmd->GROUPS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}} &{group}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage) //tested
             ->pipe(new UpdateCommanderTagStage) //tested
@@ -286,7 +287,6 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 
 //TODO if alias is used in tagging, make sure the tag is the alias
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-//    $txtcmdr->register("{command={$cmd->CMD}} @{area={$cmd->AREAS}}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
     $txtcmdr->register("{command={$cmd->CMD}} @{area}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
