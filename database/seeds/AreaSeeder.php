@@ -486,7 +486,7 @@ class AreaSeeder extends Seeder
         Area::build('5th District of Leyte.City of Baybay.Villa Mag-aso.0317A');
 
         Area::build('5th District of Leyte.City of Baybay.Zacarito.0318A');
-        Area::build('5th District of Leyte.City of Baybay.Zacarito.0319');
+        Area::build('5th District of Leyte.City of Baybay.Zacarito.0319A');
 
         optional(Area::where('name', '5th District of Leyte')->first())->update(['alias' => 'Kinto']);
         optional(Area::where('name', 'City of Baybay')->first())->update(['alias' => 'Baybay']);
