@@ -52,7 +52,9 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
             'Municipality',
             'Barangay',
             'Precinct',
-            'Contacts'
+            'Upline',
+            'Member',
+            'Status',
         ];
     }
 
@@ -73,29 +75,33 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
             foreach ($areas as $area) {
 //                echo PHP_EOL.$prefix.' '.$area->name;
 
-                $ar = [
-                    'District' => '',
-                    'Municipality' => '',
-                    'Barangay' => '',
-                    'Precinct' => '',
-                    'Contacts' => '',
-                ];
-
-                $ar[$level[$prefix]] = $area->name;
-
-                $array[] = $ar;
-
                 $area->contacts->each(function ($item, $key) use (&$array) {
                     $ar = [
                         'District' => '',
                         'Municipality' => '',
                         'Barangay' => '',
                         'Precinct' => '',
-                        'Contacts' => $item->handle,
+                        'Upline' => optional($item->parent)->mobileHandle ?? '',
+                        'Member' => $item->mobileHandle,
+                        'Status' => $item->status(),
                     ];
 
                     $array [] = $ar;
                 });
+
+                $ar = [
+                    'District' => '',
+                    'Municipality' => '',
+                    'Barangay' => '',
+                    'Precinct' => '',
+                    'Upline' => '',
+                    'Member' => '',
+                    'Status' => '',
+                ];
+
+                $ar[$level[$prefix]] = $area->name;
+
+                $array[] = $ar;
 
                 $traverse($area->children, $prefix.'-');
             }

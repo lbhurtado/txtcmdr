@@ -46,4 +46,9 @@ class Contact extends Model implements Transformable, Mobile
     {
         $child->appendToNode($this)->save();
     }
+
+    public function getMobileHandleAttribute()
+    {
+        return string($this->handle)->concat(' [')->concat($this->mobile)->concat(']');
+    }
 }
