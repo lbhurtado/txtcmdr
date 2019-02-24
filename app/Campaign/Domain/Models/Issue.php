@@ -20,6 +20,9 @@ class Issue extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'code',
+        'name',
+    ];
 
 }

@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 trait HasNestedTrait
 {
-	use NodeTrait; 
+	use NodeTrait;
+
+	public static function dig($nodes)
+    {
+        $names = explode('.', $nodes);
+        $area = static::where('name', $name = array_shift($names))->first();
+        collect($names)->each(function ($name) use (&$area) {
+            return $area = tap($area->children->where('name', $name)->first(), function ($subdivision) {
+                return $subdivision;
+            });
+        });
+
+        return $area;
+    }
 
 	public static function build($nodes, self $parent = null)
     {

@@ -11,12 +11,24 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use App\Campaign\Domain\Models\Area;
+use App\Campaign\Domain\Models\Issue;
 
 class AreaContactsExport implements FromCollection, Responsable, WithHeadings, ShouldAutoSize
 {
     use Exportable;
 
     protected $data;
+
+    protected $basic_headings = [
+        'District',
+        'Municipality',
+        'Barangay',
+        'Precinct',
+        'Upline',
+        'Member',
+        'Status',
+    ];
+
 
     public $fileName = 'area-contacts.xlsx';
 
@@ -47,15 +59,23 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
 
     public function headings(): array
     {
-        return [
-            'District',
-            'Municipality',
-            'Barangay',
-            'Precinct',
-            'Upline',
-            'Member',
-            'Status',
-        ];
+//        return [
+//            'District',
+//            'Municipality',
+//            'Barangay',
+//            'Precinct',
+//            'Upline',
+//            'Member',
+//            'Status',
+//        ];
+
+        $issue_headings = [];
+
+        Issue::get()->each(function ($issue) use (&$issue_headings) {
+            $issue_headings[] = $issue->code;
+        });
+
+        return array_merge($this->basic_headings, $issue_headings);
     }
 
     protected function process()
@@ -75,20 +95,6 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
             foreach ($areas as $area) {
 //                echo PHP_EOL.$prefix.' '.$area->name;
 
-                $area->contacts->each(function ($item, $key) use (&$array) {
-                    $ar = [
-                        'District' => '',
-                        'Municipality' => '',
-                        'Barangay' => '',
-                        'Precinct' => '',
-                        'Upline' => optional($item->parent)->mobileHandle ?? '',
-                        'Member' => $item->mobileHandle,
-                        'Status' => $item->status(),
-                    ];
-
-                    $array [] = $ar;
-                });
-
                 $ar = [
                     'District' => '',
                     'Municipality' => '',
@@ -102,6 +108,28 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
                 $ar[$level[$prefix]] = $area->name;
 
                 $array[] = $ar;
+
+                $area->contacts->each(function ($contact) use (&$array) {
+                    $ar = [
+                        'District' => '',
+                        'Municipality' => '',
+                        'Barangay' => '',
+                        'Precinct' => '',
+                        'Upline' => optional($contact->parent)->mobileHandle ?? '',
+                        'Member' => $contact->mobileHandle,
+                        'Status' => $contact->status(),
+                    ];
+
+                    $ir = [];
+
+                    $contact->issues()->get()->each(function ($issue) use (&$ir) {
+                        $ir[$issue->code] = $issue->pivot->qty;
+                    });
+
+
+                    $array [] = array_merge($ar, $ir);
+                });
+
 
                 $traverse($area->children, $prefix.'-');
             }

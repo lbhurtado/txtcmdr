@@ -14,6 +14,8 @@ use Prettus\Repository\Traits\TransformableTrait;
 use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
 
 use App\App\Traits\HasNestedTrait;
+use App\Campaign\Domain\Models\Issue;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 /**
  * Class Contact.
@@ -50,5 +52,10 @@ class Contact extends Model implements Transformable, Mobile
     public function getMobileHandleAttribute()
     {
         return string($this->handle)->concat(' [')->concat($this->mobile)->concat(']');
+    }
+
+    public function issues()
+    {
+        return $this->belongsToMany(Issue::class)->withPivot(['qty'])->withTimestamps();
     }
 }
