@@ -107,7 +107,13 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
 
                 $ar[$level[$prefix]] = $area->name;
 
-                $array[] = $ar;
+                $ir = [];
+
+                $area->issues()->get()->each(function ($issue) use (&$ir) {
+                    $ir[$issue->code] = $issue->pivot->qty;
+                });
+
+                $array [] = array_merge($ar, $ir);
 
                 $area->contacts->each(function ($contact) use (&$array) {
                     $ar = [
@@ -120,14 +126,13 @@ class AreaContactsExport implements FromCollection, Responsable, WithHeadings, S
                         'Status' => $contact->status(),
                     ];
 
-                    $ir = [];
+//                    $ir = [];
+//
+//                    $area->issues()->get()->each(function ($issue) use (&$ir) {
+//                        $ir[$issue->code] = $issue->pivot->qty;
+//                    });
 
-                    $contact->issues()->get()->each(function ($issue) use (&$ir) {
-                        $ir[$issue->code] = $issue->pivot->qty;
-                    });
-
-
-                    $array [] = array_merge($ar, $ir);
+                    $array [] = $ar;
                 });
 
 

@@ -6,6 +6,7 @@ use Laravel\Scout\Searchable;
 use App\App\Traits\HasNestedTrait;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
+use App\Campaign\Domain\Traits\HasIssues;
 use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -19,7 +20,7 @@ use App\Campaign\Domain\Models\AreaIssue as Pivot;
  */
 class Area extends Model implements Transformable, CampaignContext
 {
-    use TransformableTrait, HasSchemalessAttributes;
+    use TransformableTrait, HasSchemalessAttributes, HasIssues;
     use HasNestedTrait, Searchable {
         Searchable::usesSoftDelete insteadof HasNestedTrait;
     }
@@ -78,18 +79,5 @@ class Area extends Model implements Transformable, CampaignContext
         }
 
         return $array;
-    }
-
-    public function issues()
-    {
-        return $this->belongsToMany(Issue::class)
-            ->withPivot('qty', 'contact_id')
-            ->using(AreaIssue::class)
-            ->withTimestamps();
-    }
-
-    public function addIssue(Issue $issue, Pivot $pivot)
-    {
-        return $this->issues()->attach($issue, $pivot->getAttributes());
     }
 }

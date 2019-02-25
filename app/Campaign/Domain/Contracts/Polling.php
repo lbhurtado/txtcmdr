@@ -2,7 +2,7 @@
 
 namespace App\Campaign\Domain\Contracts;
 
-interface CanPoll
+interface Polling
 {
     public function poll($issue_code, $qty);
 }

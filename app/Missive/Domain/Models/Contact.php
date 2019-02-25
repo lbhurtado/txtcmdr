@@ -2,32 +2,27 @@
 
 namespace App\Missive\Domain\Models;
 
-use App\Campaign\Domain\Contracts\CanPoll;
-use App\Campaign\Domain\Models\AreaIssue;
-use App\Campaign\Domain\Repositories\IssueRepository;
+use App\App\Traits\HasNestedTrait;
 use Spatie\ModelStatus\HasStatuses;
 use App\App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Model;
 use App\Missive\Domain\Contracts\Mobile;
 use App\Campaign\Domain\Traits\SendsAlert;
+use App\Campaign\Domain\Contracts\Polling;
 use App\App\Traits\HasSchemalessAttributes;
 use App\Charging\Domain\Traits\SpendsAirtime;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
-use App\Campaign\Domain\Traits\{HasGroups, HasAreas, HasLocation, HasTags};
-
-use App\App\Traits\HasNestedTrait;
-use App\Campaign\Domain\Models\Issue;
-use Propaganistas\LaravelPhone\PhoneNumber;
+use App\Campaign\Domain\Traits\{HasGroups, HasAreas, CanPollIssues, HasLocation, HasTags};
 
 /**
  * Class Contact.
  *
  * @package namespace App\Missive\Domain\Models;
  */
-class Contact extends Model implements Transformable, Mobile, CanPoll
+class Contact extends Model implements Transformable, Mobile, Polling
 {
-    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation, HasNestedTrait;
+    use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation, HasNestedTrait, CanPollIssues;
 
     /**
      * The attributes that are mass assignable.
@@ -55,22 +50,5 @@ class Contact extends Model implements Transformable, Mobile, CanPoll
     public function getMobileHandleAttribute()
     {
         return string($this->handle)->concat(' [')->concat($this->mobile)->concat(']');
-    }
-
-    public function issues()
-    {
-        return $this->belongsToMany(Issue::class)->withPivot(['qty'])->withTimestamps();
-    }
-
-    public function poll($issue_code, $qty)
-    {
-        optional($this->areas()->first(), function ($area) use ($issue_code, $qty) {
-            $pivot = AreaIssue::conjure($this, $qty);
-            optional(app(IssueRepository::class)->getSanitizedModel($issue_code), function ($issue) use ($area, $pivot) {
-                return $area->addIssue($issue, $pivot);
-           });
-        });
-
-        return $this;
     }
 }
