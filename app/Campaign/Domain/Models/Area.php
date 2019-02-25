@@ -10,6 +10,7 @@ use App\App\Traits\HasSchemalessAttributes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Campaign\Domain\Contracts\CampaignContext;
+use App\Campaign\Domain\Models\AreaIssue as Pivot;
 
 /**
  * Class Area.
@@ -77,5 +78,18 @@ class Area extends Model implements Transformable, CampaignContext
         }
 
         return $array;
+    }
+
+    public function issues()
+    {
+        return $this->belongsToMany(Issue::class)
+            ->withPivot('qty', 'contact_id')
+            ->using(AreaIssue::class)
+            ->withTimestamps();
+    }
+
+    public function addIssue(Issue $issue, Pivot $pivot)
+    {
+        return $this->issues()->attach($issue, $pivot->getAttributes());
     }
 }

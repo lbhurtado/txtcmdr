@@ -48,4 +48,12 @@ class TagRepositoryEloquent extends BaseRepository implements TagRepository
     {
         return Tag::search($query, $callback);
     }
+
+    public function getSanitizedModel($input)
+    {
+        return
+            optional($this->search($input), function ($hits) {
+                return ($hits->count() == 1) ? $hits->first() : null;
+            });
+    }
 }

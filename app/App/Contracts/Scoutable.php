@@ -8,8 +8,9 @@
 
 namespace App\App\Contracts;
 
-
 interface Scoutable
 {
     public function search($query = '', $callback = null);
+
+    public function getSanitizedModel($input);
 }

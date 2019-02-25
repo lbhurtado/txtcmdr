@@ -2,6 +2,9 @@
 
 namespace App\Missive\Domain\Models;
 
+use App\Campaign\Domain\Contracts\CanPoll;
+use App\Campaign\Domain\Models\AreaIssue;
+use App\Campaign\Domain\Repositories\IssueRepository;
 use Spatie\ModelStatus\HasStatuses;
 use App\App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +25,7 @@ use Propaganistas\LaravelPhone\PhoneNumber;
  *
  * @package namespace App\Missive\Domain\Models;
  */
-class Contact extends Model implements Transformable, Mobile
+class Contact extends Model implements Transformable, Mobile, CanPoll
 {
     use TransformableTrait, SpendsAirtime, HasGroups, HasNotifications, HasAreas, HasTags, HasSchemalessAttributes, HasStatuses, SendsAlert, HasLocation, HasNestedTrait;
 
@@ -57,5 +60,17 @@ class Contact extends Model implements Transformable, Mobile
     public function issues()
     {
         return $this->belongsToMany(Issue::class)->withPivot(['qty'])->withTimestamps();
+    }
+
+    public function poll($issue_code, $qty)
+    {
+        optional($this->areas()->first(), function ($area) use ($issue_code, $qty) {
+            $pivot = AreaIssue::conjure($this, $qty);
+            optional(app(IssueRepository::class)->getSanitizedModel($issue_code), function ($issue) use ($area, $pivot) {
+                return $area->addIssue($issue, $pivot);
+           });
+        });
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Campaign\Domain\Models;
 
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
@@ -13,7 +14,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Issue extends Model implements Transformable
 {
-    use TransformableTrait;
+    use TransformableTrait, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,4 +26,14 @@ class Issue extends Model implements Transformable
         'name',
     ];
 
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        return [
+            'id' => $array['id'],
+            'code' => $array['code'],
+            'name' => $array['name'],
+        ];
+    }
 }

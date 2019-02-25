@@ -44,5 +44,4 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }
