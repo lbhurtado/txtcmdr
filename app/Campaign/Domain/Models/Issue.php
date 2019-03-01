@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
+use App\Campaign\Domain\Models\Area;
+use App\Campaign\Domain\Models\AreaIssue as Pivot;
+
 /**
  * Class Issue.
  *
@@ -35,5 +38,18 @@ class Issue extends Model implements Transformable
             'code' => $array['code'],
             'name' => $array['name'],
         ];
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class)
+            ->withPivot('qty', 'contact_id')
+            ->using(Pivot::class)
+            ->withTimestamps();
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

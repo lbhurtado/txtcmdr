@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Campaign\Domain\Models\Area;
 use App\Missive\Domain\Models\Contact;
 use App\Campaign\Domain\Models\Issue;
+use App\Campaign\Domain\Models\Category;
 
 class SimulationSeeder extends Seeder
 {
@@ -495,7 +496,15 @@ class SimulationSeeder extends Seeder
 //        $issue1 = Issue::create([ 'code' => 'LEVI', 'name' => 'Levi Baligod']);
 //        $issue2 = Issue::create([ 'code' => 'BOYING', 'name' => 'Boying Cari']);
 
-        $issues = factory(Issue::class, 2)->create();
+        $category1 = factory(Category::class)->create(['name' => 'Representative']);
+        $category2 = factory(Category::class)->create(['name' => 'Mayor']);
+        $category3 = factory(Category::class)->create(['name' => 'Vice-Mayor']);
+
+        factory(Issue::class, 2)->create(['category_id' => $category1->id]);
+        factory(Issue::class, 2)->create(['category_id' => $category2->id]);
+        factory(Issue::class, 2)->create(['category_id' => $category3->id]);
+
+        $issues = Issue::all();
 
         foreach ($area_nodes as $area_node) {
             Area::build($area_node);

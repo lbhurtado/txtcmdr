@@ -12,8 +12,18 @@ class AreaIssue extends Pivot
         return static::make(['qty' => $qty])->contact()->associate($contact);
     }
 
-    protected function contact()
+    public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    public function issue()
+    {
+        return $this->belongsTo(Issue::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
     }
 }
