@@ -31,12 +31,9 @@ Route::get('/poll2', function() {
 Route::get('/poll3', function() {
     return
         DB::table('area_issue')
-            ->addSelect('precincts.name as precinct')
-            ->addSelect('barangays.name as barangay')
-            ->addSelect('towns.name as town')
-            ->addSelect('districts.name as district')
-            ->addSelect('categories.name as category')
-            ->addSelect('issues.name as issue')
+            ->selectRaw("concat_ws(', ', `precincts`.`name`, `barangays`.`name`, `towns`.`name`, `districts`.`name`) as precinct")
+            ->addSelect('categories.name as position')
+            ->addSelect('issues.name as candidate')
             ->addSelect('area_issue.qty as votes')
             ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
             ->join('categories', 'categories.id', '=', 'issues.category_id')
@@ -44,26 +41,64 @@ Route::get('/poll3', function() {
             ->join('areas as barangays', 'barangays.id', '=', 'precincts.parent_id')
             ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
             ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')
-            ->orderBy('precinct')
+            ->whereIn('categories.id', [1, 2, 3])
+            ->orderBy('precincts.id')
             ->get();
 });
 
 Route::get('/poll4', function() {
     return
         DB::table('area_issue')
-            ->addSelect('barangays.name as barangay')
-//            ->addSelect('district.name as district')
-            ->addSelect('categories.name as category')
-            ->addSelect('issues.name as issue')
-            ->selectRaw('sum(area_issue.qty) as votes')
+            ->selectRaw("concat_ws(', ', `barangays`.`name`, `towns`.`name`, `districts`.`name`) as barangay")
+            ->addSelect('categories.name as position')
+            ->addSelect('issues.name as candidate')
+            ->selectRaw('sum(`area_issue`.`qty`) as `votes`')
             ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
             ->join('categories', 'categories.id', '=', 'issues.category_id')
             ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
             ->join('areas as barangays', 'barangays.id', '=', 'precincts.parent_id')
             ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
             ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')
-            ->groupBy('barangay', 'category', 'issue')
-            ->orderByRaw('barangays.id, categories.id, issue', 'qty desc')
+            ->whereIn('categories.id', [1, 2, 3])
+            ->groupBy('barangay', 'position', 'candidate')
+            ->orderByRaw('`barangay`, `categories`.`id`, `votes` desc')
+            ->get();
+});
+
+Route::get('/poll5', function() {
+        return DB::table('area_issue')
+            ->selectRaw("concat_ws(', ', `towns`.`name`, `districts`.`name`) as town")
+            ->addSelect('categories.name as position')
+            ->addSelect('issues.name as candidate')
+            ->selectRaw('sum(`area_issue`.`qty`) as `votes`')
+            ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
+            ->join('categories', 'categories.id', '=', 'issues.category_id')
+            ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
+            ->join('areas as barangays', 'barangays.id', '=', 'precincts.parent_id')
+            ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
+            ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')
+            ->whereIn('categories.id', [1, 2, 3])
+            ->groupBy('town', 'position', 'candidate')
+            ->orderByRaw('`town`, `categories`.`id`, `votes` desc')
+            ->get();
+});
+
+Route::get('/poll6', function() {
+    return
+        DB::table('area_issue')
+            ->selectRaw("concat_ws(', ', `districts`.`name`) as district")
+            ->addSelect('categories.name as position')
+            ->addSelect('issues.name as candidate')
+            ->selectRaw('sum(`area_issue`.`qty`) as `votes`')
+            ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
+            ->join('categories', 'categories.id', '=', 'issues.category_id')
+            ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
+            ->join('areas as barangays', 'barangays.id', '=', 'precincts.parent_id')
+            ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
+            ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')
+            ->whereIn('categories.id', [1])
+            ->groupBy('district', 'position', 'candidate')
+            ->orderByRaw('`district`, `categories`.`id`, `votes` desc')
             ->get();
 });
 
