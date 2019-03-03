@@ -30,6 +30,7 @@
         "spatie/laravel-schemaless-attributes": "^1.3",
         "spatie/once": "^2.0",
         "spatie/string": "^2.2",
+        "sven/artisan-view": "^3.2",
         "telerivet/telerivet-php-client": "^1.1"
     },
     "require-dev": {
