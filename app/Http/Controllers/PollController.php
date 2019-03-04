@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Response;
 
 class PollController extends Controller
 {
+    public function poll_precinct()
+    {
+        $report = Poll::report_precinct()->groupBy(['precinct', 'position']);
+
+        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
+    }
+
+    public function poll_barangay()
+    {
+        $report = Poll::report_barangay()->groupBy(['barangay', 'position']);
+
+        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
+    }
+
     public function poll_town()
     {
         $report = Poll::report_town()->groupBy(['town', 'position']);
