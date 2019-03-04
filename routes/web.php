@@ -67,6 +67,8 @@ Route::get('/poll4', function() {
 
 Route::get('/report/precinct', 'PollController@poll_precinct');
 
+Route::get('/report/cluster', 'PollController@poll_cluster');
+
 Route::get('/report/barangay', 'PollController@poll_barangay');
 
 Route::get('/report/town', 'PollController@poll_town');

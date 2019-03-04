@@ -15,6 +15,13 @@ class PollController extends Controller
         return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
     }
 
+    public function poll_cluster()
+    {
+        $report = Poll::report_cluster()->groupBy(['cluster', 'position']);
+
+        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
+    }
+
     public function poll_barangay()
     {
         $report = Poll::report_barangay()->groupBy(['barangay', 'position']);
