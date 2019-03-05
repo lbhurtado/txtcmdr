@@ -25,6 +25,16 @@ class Area extends Model implements Transformable, CampaignContext
         Searchable::usesSoftDelete insteadof HasNestedTrait;
     }
 
+//    public const PRECINCT = 'precinct';
+//
+//    public const CLUSTER = 'cluster';
+//
+//    public const BARANGAY = 'barangay';
+//
+//    public const TOWN = 'town';
+//
+//    public const DISTRICT = 'district';
+
     protected $default = false;
 
     /**

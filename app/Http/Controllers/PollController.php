@@ -2,43 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Campaign\Domain\Classes\Poll;
 use Illuminate\Support\Facades\Response;
+use App\Campaign\Domain\Classes\Collections\PollArea;
 
 class PollController extends Controller
 {
-    public function poll_precinct()
+    public function poll_area($area)
     {
-        $report = Poll::report_precinct()->groupBy(['precinct', 'position']);
-
-        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
-    }
-
-    public function poll_cluster()
-    {
-        $report = Poll::report_cluster()->groupBy(['cluster', 'position']);
-
-        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
-    }
-
-    public function poll_barangay()
-    {
-        $report = Poll::report_barangay()->groupBy(['barangay', 'position']);
-
-        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
-    }
-
-    public function poll_town()
-    {
-        $report = Poll::report_town()->groupBy(['town', 'position']);
-
-        return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
-    }
-
-    public function poll_district()
-    {
-        $report = Poll::report_district()->groupBy(['district', 'position']);
+        $report = PollArea::by($area)->groupBy(['area', 'position']);
 
         return Response::view('txtcmdr.poll.test', ['areas' => $report])->header('Content-Type', 'text/plain');
     }

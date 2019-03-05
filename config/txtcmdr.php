@@ -108,4 +108,13 @@ return [
         InfoKey::DESCENDANTS => env('INFO_KEYWORD_DESCENDANTS', 'DESCENDANTS'),
     ],
     'tag'  => env('TAG', 'JOIN'),
+    'collections' => [
+        'poll' => [
+            'precinct' => App\Campaign\Domain\Classes\Collections\PollPrecincts::class,
+            'cluster' => App\Campaign\Domain\Classes\Collections\PollClusters::class,
+            'barangay' => App\Campaign\Domain\Classes\Collections\PollBarangays::class,
+            'town' => App\Campaign\Domain\Classes\Collections\PollTowns::class,
+            'district' => App\Campaign\Domain\Classes\Collections\PollDistricts::class,
+        ]
+    ]
 ];
