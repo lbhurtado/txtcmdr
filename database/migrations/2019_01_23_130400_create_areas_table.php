@@ -15,11 +15,12 @@ class CreateAreasTable extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->index();
             $table->string('alias')->nullable()->index();
             $table->schemalessAttributes('extra_attributes');
             $table->nestedSet();
             $table->timestamps();
+            $table->unique(['name', 'parent_id']);
         });
 
         Schema::create('model_has_areas', function (Blueprint $table) {

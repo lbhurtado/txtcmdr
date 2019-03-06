@@ -27,6 +27,8 @@ use App\Missive\Domain\Models\Contact;
 use App\Missive\Domain\Observers\ContactObserver;
 use App\Campaign\Observers\CheckinObserver;
 use App\Campaign\Domain\Models\Checkin;
+use App\Campaign\Domain\Models\Area;
+use App\Campaign\Domain\Observers\AreaObserver;
 
 class TextCommanderServiceProvider extends ServiceProvider
 {
@@ -40,6 +42,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         SMS::observe(SMSObserver::class);
         Contact::observe(ContactObserver::class);
         Checkin::observe(CheckinObserver::class);
+        Area::observe(AreaObserver::class);
 
         $this->app
             ->when (GlobeConnectChannel::class)

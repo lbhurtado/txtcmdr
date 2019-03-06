@@ -15,19 +15,21 @@ class AreasImport implements ToCollection
         foreach ($rows as $row)
         {
             $ar = [];
-
-//            dd(sizeOf($row));
+            $pointer = 0;
 
             for ($i = 0; $i <= sizeOf($row)-1; $i++) {
-                $ar[$i] = $row[$i];
+                $ar[$i] = $row[$i] ?? null;
+                $pointer = !empty($row[$i]) ? $i : $pointer;
             }
+
+            array_splice($this->last_attribs, $pointer+1);
 
             for ($i = 0; $i <= sizeOf($this->last_attribs)-1; $i++) {
-                $ar[$i] = empty($ar[$i]) ? $this->last_attribs[$i];
+                $ar[$i] = $ar[$i] ?? $this->last_attribs[$i];
             }
-            $node = implode('.', $ar);
 
-            \Log::info($node);
+            $node = $this->getNodeFromArray($ar);
+
             Area::build($node);
 
             for ($i = 0; $i <= sizeOf($ar)-1; $i++) {
@@ -36,5 +38,10 @@ class AreasImport implements ToCollection
                 });
             }
         }
+    }
+
+    protected function getNodeFromArray($array)
+    {
+        return implode('.', array_filter($array));
     }
 }
