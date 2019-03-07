@@ -1,7 +1,7 @@
 <?php
 
 use Maatwebsite\Excel\Facades\Excel;
-use App\Campaign\Exports\AreaContactsExport;
+use App\Campaign\Exports\{AreasExport, AreaContactsExport};
 
 
 Route::get('/', function () {
@@ -14,6 +14,10 @@ Route::match(['get', 'post'], 'webhook/engagespark/airtime', 'EngageSparkAirtime
 
 Route::get('/exports/area-contacts', function() {
     return Excel::download(new AreaContactsExport, 'area-contacts.xlsx');
+});
+
+Route::get('/exports/areas', function() {
+    return Excel::download(new AreasExport, 'areas.xlsx');
 });
 
 Route::get('/poll', function() {

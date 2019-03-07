@@ -90,4 +90,9 @@ class Area extends Model implements Transformable, CampaignContext
 
         return $array;
     }
+
+    public function getRegisteredVotersAttribute()
+    {
+        return (int) $this->extra_attributes['registered_voters'];
+    }
 }

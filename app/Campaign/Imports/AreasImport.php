@@ -17,7 +17,10 @@ class AreasImport implements ToCollection
             $ar = [];
             $pointer = 0;
 
-            for ($i = 0; $i <= sizeOf($row)-1; $i++) {
+//            $columns_count = sizeOf($row);
+            $columns_count = 5;
+
+            for ($i = 0; $i <= $columns_count-1; $i++) {
                 $ar[$i] = $row[$i] ?? null;
                 $pointer = !empty($row[$i]) ? $i : $pointer;
             }
@@ -31,6 +34,15 @@ class AreasImport implements ToCollection
             $node = $this->getNodeFromArray($ar);
 
             Area::build($node);
+
+            $area = Area::dig($node);
+
+            $area->extra_attributes['registered_voters'] = $row[$columns_count];
+            $area->save();
+            $area->parent->extra_attributes['polling_place'] = $row[$columns_count+1];
+            $area->parent->extra_attributes['polling_address'] = $row[$columns_count+1+1];
+            $area->parent->save();
+//            dd($area);
 
             for ($i = 0; $i <= sizeOf($ar)-1; $i++) {
                 optional($ar[$i], function ($value) use ($i) {
