@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "420733e8d3e6557260e34da8c65b2ee2",
+    "content-hash": "38afbf19c79b01a84de8f9bb3c247714",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2198,6 +2198,63 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
+        },
+        {
+            "name": "nanigans/single-table-inheritance",
+            "version": "0.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Nanigans/single-table-inheritance.git",
+                "reference": "874e2b56b09d2db80d2ca4a5000a8d4e7f2f628a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nanigans/single-table-inheritance/zipball/874e2b56b09d2db80d2ca4a5000a8d4e7f2f628a",
+                "reference": "874e2b56b09d2db80d2ca4a5000a8d4e7f2f628a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*",
+                "illuminate/support": "5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*",
+                "php": ">= 5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*|~1.0",
+                "orchestra/database": "3.2.*|3.5.*|3.6.*",
+                "orchestra/testbench": "3.2.*|3.5.*|3.6.*",
+                "phpunit/phpunit": "~4.8|~5.2|~6.0|~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nanigans\\SingleTableInheritance\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Palmer",
+                    "email": "jpalmer@nanigans.com"
+                }
+            ],
+            "description": "Single Table Inheritance Trait",
+            "keywords": [
+                "eloquent",
+                "inheritance",
+                "laravel",
+                "model",
+                "single",
+                "table"
+            ],
+            "time": "2018-09-20T11:52:52+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -4921,6 +4978,46 @@
             "description": "PHP client library for Telerivet REST API",
             "homepage": "https://telerivet.com/api",
             "time": "2014-07-10T23:06:03+00:00"
+        },
+        {
+            "name": "tightenco/parental",
+            "version": "v0.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tightenco/parental.git",
+                "reference": "43f02e764d95ac62df2b2a3a69a37c9e78115fb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tightenco/parental/zipball/43f02e764d95ac62df2b2a3a69a37c9e78115fb2",
+                "reference": "43f02e764d95ac62df2b2a3a69a37c9e78115fb2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.6.0|~5.7.0|~5.8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.8.*",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tightenco\\Parental\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio",
+                    "email": "calebporzio@gmail.com"
+                }
+            ],
+            "description": "A simple eloquent trait that allows relationships to be accessed through child models.",
+            "time": "2019-02-28T04:26:54+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

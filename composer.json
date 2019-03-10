@@ -21,6 +21,7 @@
         "laravel/tinker": "^1.0",
         "league/pipeline": "^1.0",
         "maatwebsite/excel": "^3.1",
+        "nanigans/single-table-inheritance": "^0.8.3",
         "opis/events": "^5.0",
         "opis/string": "^1.5",
         "predis/predis": "^1.1",
@@ -31,7 +32,8 @@
         "spatie/once": "^2.0",
         "spatie/string": "^2.2",
         "sven/artisan-view": "^3.2",
-        "telerivet/telerivet-php-client": "^1.1"
+        "telerivet/telerivet-php-client": "^1.1",
+        "tightenco/parental": "^0.6.1"
     },
     "require-dev": {
         "ajthinking/tinx": "^2.1",

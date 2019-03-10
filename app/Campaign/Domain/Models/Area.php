@@ -12,6 +12,8 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use App\Campaign\Domain\Contracts\CampaignContext;
 use App\Campaign\Domain\Models\AreaIssue as Pivot;
+//use Tightenco\Parental\HasChildren;
+use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 /**
  * Class Area.
@@ -24,6 +26,32 @@ class Area extends Model implements Transformable, CampaignContext
     use HasNestedTrait, Searchable {
         Searchable::usesSoftDelete insteadof HasNestedTrait;
     }
+//    use HasChildren;
+    use SingleTableInheritanceTrait {
+        newFromBuilder as stiNewFromBuilder;
+    }
+
+    public function newFromBuilder($attributes = array(), $connection = null)
+    {
+        $instance = $this->stiNewFromBuilder($attributes, $connection);
+        $instance->clearAction();
+
+//        return $instance;
+    }
+
+    protected $table = "areas";
+
+    protected static $singleTableTypeField = 'type';
+
+    protected static $singleTableSubclasses = [
+        \App\Campaign\Domain\Models\Inheritors\District::class,
+        \App\Campaign\Domain\Models\Inheritors\Town::class,
+    ];
+
+//    protected $childTypes = [
+//        'district' => \App\Campaign\Domain\Models\Inheritors\District::class,
+//        'town' => \App\Campaign\Domain\Models\Inheritors\Town::class,
+//    ];
 
 //    public const PRECINCT = 'precinct';
 //
@@ -45,6 +73,7 @@ class Area extends Model implements Transformable, CampaignContext
     protected $fillable = [
 		'name',
         'alias',
+        'type'
 	];
 
     public $casts = [
