@@ -19,8 +19,10 @@ class CreateIssuesTable extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('name')->unique();
+            $table->integer('category_id')->unsigned()->index();
             $table->schemalessAttributes('extra_attributes');
             $table->timestamps();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 		});
 	}
 

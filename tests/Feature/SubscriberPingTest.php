@@ -8,10 +8,12 @@ use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Notifications\CommanderTestUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
+use App\Charging\Domain\Classes\AirtimeKey;
 
 class SubscriberPingTest extends TestCase
 {
-    use RefreshDatabase;
+//    use RefreshDatabase;
 
     /** @test */
     function commander_can_send_test_command()
@@ -27,6 +29,16 @@ class SubscriberPingTest extends TestCase
         /*** assert ***/
         $this->assertCommandIssued($missive);
         Notification::assertSentTo($this->commander, CommanderTestUpdated::class);
-        Queue::assertPushed(ChargeAirtime::class); 
+        Queue::assertPushed(ChargeAirtime::class, function ($job) {
+            return
+                ($job->sms->origin->is($this->commander)) &&
+                ($job->availment == AirtimeKey::INCOMING_SMS)
+                ;
+        });
+        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
+            return
+                $job->commander->is($this->commander)
+                ;
+        });
     }
 }

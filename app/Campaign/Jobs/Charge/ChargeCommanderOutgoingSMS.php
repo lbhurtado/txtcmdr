@@ -14,7 +14,7 @@ class ChargeCommanderOutgoingSMS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $commander;
+    public $commander;
 
     public function __construct(Contact $commander)
     {

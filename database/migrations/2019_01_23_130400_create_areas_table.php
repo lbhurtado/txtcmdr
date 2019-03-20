@@ -17,6 +17,7 @@ class CreateAreasTable extends Migration
             $table->increments('id');
             $table->string('name')->index();
             $table->string('alias')->nullable()->index();
+            $table->string('type')->nullable();
             $table->schemalessAttributes('extra_attributes');
             $table->nestedSet();
             $table->timestamps();

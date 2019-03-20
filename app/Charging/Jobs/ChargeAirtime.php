@@ -9,17 +9,15 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Charging\Domain\Classes\AirtimeKey;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Missive\Domain\Repositories\ContactRepository;
-
-
 
 class ChargeAirtime implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $sms;
+    //properties are public for testing purposes
+    public $sms;
 
-    protected $availment;
+    public $availment;
 
     public function __construct(SMS $sms, $availment = AirtimeKey::INCOMING_SMS)
     {
@@ -27,12 +25,8 @@ class ChargeAirtime implements ShouldQueue
         $this->availment = $availment;
     }
 
-    public function handle(ContactRepository $contacts)
+    public function handle()
     {
-        $mobile = $this->sms->from;
-
-        tap($contacts->findByField(compact('mobile'))->first(), function ($origin) {
-            $origin->spendAirtime($this->availment);
-        }); 
+        $this->sms->origin->spendAirtime($this->availment);
     }
 }

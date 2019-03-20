@@ -12,14 +12,12 @@ use App\Providers\RouteServiceProvider;
 use App\Campaign\Domain\Classes\Command;
 use App\Campaign\Domain\Models\Campaign;
 use App\Charging\Domain\Classes\AirtimeKey;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderUpline;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class TextCommanderCase extends TestCase
 {
-//    use RefreshDatabase, WithFaker;
+    use DatabaseTransactions;
 
     protected $commander;
 

@@ -12,7 +12,7 @@ class AirtimeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('airtimes')->delete();
+//        DB::table('airtimes')->delete();
         AirTime::create([ 'key' => 'incoming-sms',  'credits' =>    0.005   ]);
         AirTime::create([ 'key' => 'outgoing-sms',  'credits' =>    0.02    ]);
         AirTime::create([ 'key' => 'lbs',           'credits' =>    0.05    ]);

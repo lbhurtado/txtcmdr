@@ -18,16 +18,16 @@ class SimulationSeeder extends Seeder
         $area_nodes = [
             '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0001A',
             '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0001B',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0002A',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0002B',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0003A',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0003B',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0004A',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0005A',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0006A',
-
-            '5th District of Leyte.City of Baybay.Poblacion Zone 2.Cluster Group 3.0007A',
-            '5th District of Leyte.City of Baybay.Poblacion Zone 2.Cluster Group 3.0008A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0002A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0002B',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0003A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0003B',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0004A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 2.0005A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 1.Cluster Group 1.0006A',
+//
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 2.Cluster Group 3.0007A',
+//            '5th District of Leyte.City of Baybay.Poblacion Zone 2.Cluster Group 3.0008A',
 
 //            '5th District of Leyte.City of Baybay.Poblacion Zone 3.0009A',
 //            '5th District of Leyte.City of Baybay.Poblacion Zone 3.0010A',
