@@ -17,7 +17,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class TextCommanderCase extends TestCase
 {
-    use DatabaseTransactions;
+//    use DatabaseTransactions;
 
     protected $commander;
 

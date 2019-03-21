@@ -15,18 +15,18 @@ class ChargeAirtime implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     //properties are public for testing purposes
-    public $sms;
+    public $commander;
 
     public $availment;
 
     public function __construct(SMS $sms, $availment = AirtimeKey::INCOMING_SMS)
     {
-        $this->sms = $sms;
+        $this->commander = $sms->origin;
         $this->availment = $availment;
     }
 
     public function handle()
     {
-        $this->sms->origin->spendAirtime($this->availment);
+        $this->commander->spendAirtime($this->availment);
     }
 }
