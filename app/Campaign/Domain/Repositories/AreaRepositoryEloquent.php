@@ -53,8 +53,13 @@ class AreaRepositoryEloquent extends BaseRepository implements AreaRepository
     public function getSanitizedModel($input)
     {
         return
+            $this->findByField('name', $input)->first() //great for testing
+            ??
+            $this->findByField('alias', $input)->first() //great for testing
+            ??
             optional($this->search($input), function ($hits) {
                 return ($hits->count() == 1) ? $hits->first() : null;
-            });
+            })
+            ;
     }
 }

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ContactSeeder::class);
 
 //        $this->call(GroupSeeder::class);
-//        $this->call(AreaSeeder::class);
+        $this->call(AreaSeeder::class);
 //        $this->call(CampaignSeeder::class);
 //        $this->call(AlertSeeder::class);
 //        $this->call(CategorySeeder::class);

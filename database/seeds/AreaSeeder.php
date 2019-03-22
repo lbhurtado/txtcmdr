@@ -490,6 +490,7 @@ class AreaSeeder extends Seeder
 
         optional(Area::where('name', '5th District of Leyte')->first())->update(['alias' => 'Kinto']);
         optional(Area::where('name', 'City of Baybay')->first())->update(['alias' => 'Baybay']);
+
 //        optional(Area::where('name', 'Monte Verde')->first())->update(['alias' => 'Verde']);
 //        optional(Area::where('name', 'San Isidro')->first())->update(['alias' => 'Isidro']);
 //        optional(Area::where('name', 'San Juan')->first())->update(['alias' => 'Juan']);

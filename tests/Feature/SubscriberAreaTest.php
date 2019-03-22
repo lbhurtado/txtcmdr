@@ -6,17 +6,16 @@ use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderArea;
+use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Jobs\UpdateCommanderTagArea;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Notifications\CommanderAreaUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 use App\Campaign\Notifications\CommanderAreaUplineUpdated;
 
 class SubscriberAreaTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $tagger;
 
     function setup()
@@ -32,8 +31,9 @@ class SubscriberAreaTest extends TestCase
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::AREA);
-        $area = $this->conjureArea();
-        $missive = "{$command}{$area->name}";
+        $area = $this->pickRandomArea() ?? $this->conjureArea();
+        $input = ucfirst(strtolower($area->name)); //add some difficulty
+        $missive = "{$command}{$input}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -48,7 +48,17 @@ class SubscriberAreaTest extends TestCase
         Notification::assertSentTo($this->commander, CommanderAreaUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderAreaUplineUpdated::class);
         Queue::assertPushed(UpdateCommanderArea::class);
-        Queue::assertPushed(UpdateCommanderTagArea::class);
-        Queue::assertPushed(ChargeAirtime::class);
+//        Queue::assertPushed(UpdateCommanderTagArea::class);
+        Queue::assertPushed(ChargeAirtime::class, function ($job) {
+            return
+                ($job->commander->is($this->commander)) &&
+                ($job->availment == AirtimeKey::INCOMING_SMS)
+                ;
+        });
+        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
+            return
+                $job->commander->is($this->commander)
+                ;
+        });
     }
 }

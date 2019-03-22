@@ -28,9 +28,6 @@ class SanitizeAreaStage extends BaseStage
 
     protected function getSanitizedArea($input)
     {
-        return
-            optional(app(AreaRepository::class)->search($input), function ($hits) {
-                return ($hits->count() == 1) ? $hits->first() : null;
-            });
+        return app(AreaRepository::class)->getSanitizedModel($input);
     }
 }

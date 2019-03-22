@@ -17,7 +17,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class TextCommanderCase extends TestCase
 {
-//    use DatabaseTransactions;
+    use DatabaseTransactions;
 
     protected $commander;
 
@@ -65,6 +65,11 @@ abstract class TextCommanderCase extends TestCase
     function conjureArea()
     {
         return factory(Area::class)->create();
+    }
+
+    function pickRandomArea()
+    {
+        return Area::all()->random(1)->first();
     }
 
     function conjureAreas($number)

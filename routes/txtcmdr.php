@@ -204,7 +204,7 @@ tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new UpdateCommanderTagAreaStage) //tested, working but should not be
             ->pipe(new NotifyCommanderStage) //tested
             ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage) //tested
             ->process($parameters)
         ;
     });
