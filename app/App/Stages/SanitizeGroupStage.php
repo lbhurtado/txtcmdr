@@ -28,9 +28,6 @@ class SanitizeGroupStage extends BaseStage
 
     protected function getSanitizedGroup($input)
     {
-        return
-            optional(app(GroupRepository::class)->search($input), function ($hits) {
-                return ($hits->count() == 1) ? $hits->first() : null;
-            });
+        return app(GroupRepository::class)->getSanitizedModel($input);
     }
 }

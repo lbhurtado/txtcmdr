@@ -87,6 +87,11 @@ abstract class TextCommanderCase extends TestCase
         return factory(Group::class, $number)->create();
     }
 
+    function pickRandomGroup()
+    {
+        return Group::all()->random(1)->first();
+    }
+
     function conjureContact()
     {
         return factory(Contact::class)->create();

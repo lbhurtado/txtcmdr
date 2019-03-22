@@ -6,18 +6,16 @@ use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderGroup;
+use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderGroupUpdated;
+use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 use App\Campaign\Notifications\CommanderGroupUplineUpdated;
 
 class SubscriberGroupTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
     protected $tagger;
 
     function setup()
@@ -33,8 +31,9 @@ class SubscriberGroupTest extends TestCase
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::GROUP);
-        $group = $this->conjureGroup();
-        $missive = "{$command}{$group->name}";
+        $group = $this->pickRandomGroup() ?? $this->conjureGroup();
+        $input = ucfirst(strtolower($group->name)); //add some difficulty
+        $missive = "{$command}{$input}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -49,7 +48,17 @@ class SubscriberGroupTest extends TestCase
         Notification::assertSentTo($this->commander, CommanderGroupUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderGroupUplineUpdated::class);
         Queue::assertPushed(UpdateCommanderGroup::class);
-        Queue::assertPushed(UpdateCommanderTagGroup::class);
-        Queue::assertPushed(ChargeAirtime::class);
+//        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        Queue::assertPushed(ChargeAirtime::class, function ($job) {
+            return
+                ($job->commander->is($this->commander)) &&
+                ($job->availment == AirtimeKey::INCOMING_SMS)
+                ;
+        });
+        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
+            return
+                $job->commander->is($this->commander)
+                ;
+        });
     }
 }
