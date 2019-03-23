@@ -2,16 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderGroup;
-use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderGroupUpdated;
-use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 use App\Campaign\Notifications\CommanderGroupUplineUpdated;
 
 class SubscriberGroupTest extends TestCase
@@ -48,17 +45,7 @@ class SubscriberGroupTest extends TestCase
         Notification::assertSentTo($this->commander, CommanderGroupUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderGroupUplineUpdated::class);
         Queue::assertPushed(UpdateCommanderGroup::class);
-//        Queue::assertPushed(UpdateCommanderTagGroup::class);
-        Queue::assertPushed(ChargeAirtime::class, function ($job) {
-            return
-                ($job->commander->is($this->commander)) &&
-                ($job->availment == AirtimeKey::INCOMING_SMS)
-                ;
-        });
-        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
-            return
-                $job->commander->is($this->commander)
-                ;
-        });
+        Queue::assertNotPushed(UpdateCommanderTagGroup::class);
+        $this->assertAirtimeCharged();
     }
 }

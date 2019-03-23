@@ -4,8 +4,10 @@ namespace Tests;
 
 use App\Campaign\Domain\Models\Tag;
 use App\Campaign\Domain\Models\Area;
+use App\Charging\Jobs\ChargeAirtime;
 use App\Campaign\Domain\Models\Alert;
 use App\Campaign\Domain\Models\Group;
+use Illuminate\Support\Facades\Queue;
 use App\Missive\Domain\Models\Contact;
 use App\Charging\Domain\Models\Airtime;
 use App\Providers\RouteServiceProvider;
@@ -13,7 +15,9 @@ use App\Campaign\Domain\Classes\Command;
 use App\Campaign\Domain\Models\Campaign;
 use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Jobs\UpdateCommanderUpline;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 
 abstract class TextCommanderCase extends TestCase
 {
@@ -107,6 +111,11 @@ abstract class TextCommanderCase extends TestCase
         return factory(Campaign::class)->create();
     }
 
+    function pickRandomCampaign()
+    {
+        return Campaign::all()->random(1)->first();
+    }
+
     function conjureCampaigns($number)
     {
         return factory(Campaign::class, $number)->create();
@@ -130,5 +139,20 @@ abstract class TextCommanderCase extends TestCase
     function conjureAlerts($number)
     {
         return factory(Alert::class, $number)->create();
+    }
+
+    protected function assertAirtimeCharged()
+    {
+        Queue::assertPushed(ChargeAirtime::class, function ($job) {
+            return
+                ($job->commander->is($this->commander)) &&
+                ($job->availment == AirtimeKey::INCOMING_SMS)
+                ;
+        });
+        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
+            return
+                $job->commander->is($this->commander)
+                ;
+        });
     }
 }

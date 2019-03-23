@@ -2,16 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderArea;
-use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Jobs\UpdateCommanderTagArea;
 use App\Campaign\Notifications\CommanderAreaUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
-use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 use App\Campaign\Notifications\CommanderAreaUplineUpdated;
 
 class SubscriberAreaTest extends TestCase
@@ -48,17 +45,7 @@ class SubscriberAreaTest extends TestCase
         Notification::assertSentTo($this->commander, CommanderAreaUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderAreaUplineUpdated::class);
         Queue::assertPushed(UpdateCommanderArea::class);
-//        Queue::assertPushed(UpdateCommanderTagArea::class);
-        Queue::assertPushed(ChargeAirtime::class, function ($job) {
-            return
-                ($job->commander->is($this->commander)) &&
-                ($job->availment == AirtimeKey::INCOMING_SMS)
-                ;
-        });
-        Queue::assertPushed(ChargeCommanderOutgoingSMS::class, function ($job) {
-            return
-                $job->commander->is($this->commander)
-                ;
-        });
+        Queue::assertNotPushed(UpdateCommanderTagArea::class);
+        $this->assertAirtimeCharged();
     }
 }

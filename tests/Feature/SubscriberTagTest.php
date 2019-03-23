@@ -2,66 +2,122 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderTag;
 use App\Campaign\Jobs\UpdateCommanderArea;
 use App\Campaign\Jobs\UpdateCommanderGroup;
 use App\Campaign\Domain\Classes\CommandKey;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderTagArea;
 use App\Campaign\Jobs\UpdateCommanderTagGroup;
 use App\Campaign\Jobs\UpdateCommanderTagCampaign;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\App\Stages\UpdateCommanderUnTagAreaStage;
+use App\App\Stages\UpdateCommanderUnTagGroupStage;
 use App\Campaign\Notifications\CommanderTagUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
 
 class SubscriberTagTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    protected $command;
 
-    /** @test */
-    function commander_can_send_tag_command()
+    protected $campaign;
+
+    function setup()
     {
-        /*** arrange ***/
-        $command = $this->getCommand(CommandKey::TAG);
-        $code = $this->faker->word;
-        $campaign = $this->conjureCampaign();
-        $missive = "{$campaign->name}{$command}{$code}";
+        parent::setUp();
 
-        /*** act ***/
-        $this->redefineRoutes();
-        Queue::fake();
-        Notification::fake();
-
-        /*** assert ***/
-        $this->assertCommandIssued($missive);
-        Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
-        Queue::assertPushed(UpdateCommanderTag::class);
-        Queue::assertPushed(UpdateCommanderTagCampaign::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->command = $this->getCommand(CommandKey::TAG);
+        $this->campaign = $this->pickRandomCampaign() ?? $this->conjureCampaign();
     }
 
     /** @test */
-    function commander_can_send_tag_command_updating_tag_group_and_area()
+    function commander_can_send_tag_area_command()
     {
         /*** arrange ***/
-        $group = $this->conjureGroup();
-        $area = $this->conjureArea();
-        $missive = "{$this->conjureCampaign()->name}{$this->getCommand(CommandKey::TAG)}{$this->faker->word}";
+        $area = $this->pickRandomArea() ?? $this->conjureArea();
+        $missive = "{$this->command} @{$area->name}";
 
         /*** act ***/
         $this->redefineRoutes();
         Queue::fake();
         Notification::fake();
-        //the ff: 2 lines are needed to make sure that UpdateCommanderTagGroup job is pushed
-        (new UpdateCommanderGroup($this->commander, $group))->handle();
-        (new UpdateCommanderArea($this->commander, $area))->handle();
-        (new UpdateCommanderTag($this->commander, $this->faker->word))->handle();
 
         /*** assert ***/
         $this->assertCommandIssued($missive);
-        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        Queue::assertPushed(UpdateCommanderTag::class);
+        Queue::assertPushed(UpdateCommanderArea::class);
         Queue::assertPushed(UpdateCommanderTagArea::class);
+        Queue::assertNotPushed(UpdateCommanderTagCampaign::class);
+        Queue::assertNotPushed(UpdateCommanderUnTagGroupStage::class);
+        Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
+        $this->assertAirtimeCharged();
+    }
+
+    /** @test */
+    function commander_can_send_tag_area_campaign_command()
+    {
+        /*** arrange ***/
+        $area = $this->pickRandomArea() ?? $this->conjureArea();
+        $missive = "{$this->command} @{$area->name} {$this->campaign->name}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Queue::assertPushed(UpdateCommanderTag::class);
+        Queue::assertPushed(UpdateCommanderArea::class);
+        Queue::assertPushed(UpdateCommanderTagArea::class);
+        Queue::assertPushed(UpdateCommanderTagCampaign::class);
+        Queue::assertNotPushed(UpdateCommanderUnTagGroupStage::class);
+        Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
+        $this->assertAirtimeCharged();
+    }
+
+    /** @test */
+    function commander_can_send_tag_group_command()
+    {
+        /*** arrange ***/
+        $group = $this->pickRandomGroup() ?? $this->conjureGroup();
+        $missive = "{$this->command} &{$group->name}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Queue::assertPushed(UpdateCommanderTag::class);
+        Queue::assertPushed(UpdateCommanderGroup::class);
+        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        Queue::assertNotPushed(UpdateCommanderTagCampaign::class);
+        Queue::assertNotPushed(UpdateCommanderUnTagAreaStage::class);
+        Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
+        $this->assertAirtimeCharged();
+    }
+
+    /** @test */
+    function commander_can_send_tag_group_campaign_command()
+    {
+        /*** arrange ***/
+        $group = $this->pickRandomGroup() ?? $this->conjureGroup();
+        $missive = "{$this->command} &{$group->name} {$this->campaign->name}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Queue::assertPushed(UpdateCommanderTag::class);
+        Queue::assertPushed(UpdateCommanderGroup::class);
+        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        Queue::assertPushed(UpdateCommanderTagCampaign::class);
+        Queue::assertNotPushed(UpdateCommanderUnTagAreaStage::class);
+        Notification::assertSentTo($this->commander, CommanderTagUpdated::class);
+        $this->assertAirtimeCharged();
     }
 }

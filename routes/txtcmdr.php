@@ -272,7 +272,24 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} &{group}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}} &{group}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeGroupStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderGroupStage) //tested
+            ->pipe(new UpdateCommanderTagGroupStage) //tested
+            ->pipe(new UpdateCommanderUnTagAreaStage)
+            ->pipe(new NotifyCommanderTagGroupStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}} &{group} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeGroupStage) //tested
             ->pipe(new UpdateCommanderTagStage) //tested
@@ -291,7 +308,24 @@ tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 
 //TODO if alias is used in tagging, make sure the tag is the alias
 tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} @{area}{campaign?=\s{$cmd->LST}}", function (string $path, array $parameters) {
+    $txtcmdr->register("{command={$cmd->CMD}} @{area}", function (string $path, array $parameters) {
+        (new Pipeline)
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new UpdateCommanderTagAreaStage) //tested
+//            ->pipe(new UpdateCommanderUnTagGroupStage)
+            ->pipe(new NotifyCommanderTagAreaStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}} @{area} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
         (new Pipeline)
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderTagStage) //tested
