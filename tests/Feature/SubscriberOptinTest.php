@@ -11,11 +11,10 @@ use App\Missive\Domain\Repositories\ContactRepository;
 
 class SubscriberOptinTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
     function setup()
     {
         parent::setUp();
+
         $this->endpoint = $this->getEndpoint('redirect');
     }
 
