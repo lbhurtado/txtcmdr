@@ -31,30 +31,25 @@ class SubscriberRegistrationTest extends TestCase
     {
         parent::setUp();
 
-//        $this->campaign = $this->pickRandomCampaign() ?? $this->conjureCampaign();
+        $this->code = $this->faker->word;
+        $this->campaign = $this->pickRandomCampaign() ?? $this->conjureCampaign();
         $this->group = $this->pickRandomGroup() ?? $this->conjureGroup();
         $this->area = $this->pickRandomArea() ?? $this->conjureArea();
-
-//        $this->code = 'XXX';
 //        (new UpdateCommanderTag($this->commander, $this->code))->handle();
     }
 
     /** @test */
-    function commander_can_send_registration_command()
+    function commander_register_tag_command()
     {
-//        $tag = $this->pickRandomTag();
-        $tag = factory(Tag::class)->create(['code' => "BALIGOD {$this->area->name}"]);
-        $tag
-//            ->setCampaign($this->campaign, true)
-            ->setGroup($this->group)
-            ->setArea($this->area)
-            ;
-//        $this->tagger = $tag->tagger;
-
         /*** arrange ***/
-        $handle = "Renz Verano";
-        $missive = "{$tag->code} {$handle}";
-//        $missive = "BALIGOD 0001A {$handle}";
+        $code = "{$this->code}";
+
+        tap(factory(Tag::class)->create(compact('code')), function ($tag) {
+            $tag->setCampaign($this->campaign, true);
+        });
+
+        $handle = $this->faker->name;
+        $missive = "{$code} {$handle}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -68,19 +63,63 @@ class SubscriberRegistrationTest extends TestCase
         $this->assertEquals($this->commander->handle, $handle);
         Queue::assertPushed(UpdateContact::class);
         Queue::assertPushed(UpdateCommanderUpline::class);
-        Queue::assertPushed(UpdateCommanderAreaFromUplineTagArea::class);
-        Queue::assertPushed(UpdateCommanderGroupFromUplineTagGroup::class);
-//        Queue::assertPushed(UpdateCommanderTag::class);
+        Queue::assertNotPushed(UpdateCommanderAreaFromUplineTagArea::class);
+        Queue::assertNotPushed(UpdateCommanderGroupFromUplineTagGroup::class);
+        Queue::assertNotPushed(UpdateCommanderTag::class);
+
+
         Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
         $this->assertAirtimeCharged();
      }
 
-//    /** @test */
+    /** @test */
+    function commander_register_tag_area_command()
+    {
+        /*** arrange ***/
+        $code = "{$this->code} {$this->area->name}";
+
+        tap(factory(Tag::class)->create(compact('code')), function ($tag) {
+            $tag
+                ->setCampaign($this->campaign, true)
+                ->setArea($this->area)
+            ;
+        });
+
+        $handle = $this->faker->name;
+        $missive = "{$code} {$handle}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+        //the ff: line is needed to make sure that UpdateContact job is pushed
+        (new UpdateContact($this->commander, $handle))->handle();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        $this->assertEquals($this->commander->handle, $handle);
+        Queue::assertPushed(UpdateContact::class);
+        Queue::assertPushed(UpdateCommanderUpline::class);
+        Queue::assertPushed(UpdateCommanderAreaFromUplineTagArea::class);
+        Queue::assertNotPushed(UpdateCommanderGroupFromUplineTagGroup::class);
+        Queue::assertNotPushed(UpdateCommanderTag::class);
+        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        $this->assertAirtimeCharged();
+    }
+
+    /** @test */
     function commander_can_send_registration_command_amd_then_some()
     {
         /*** arrange ***/
+        $code = "{$this->code}";
+
+        $this->tagger = tap(factory(Tag::class)->create(compact('code')), function ($tag) {
+            $tag->setCampaign($this->campaign, true);
+        })->tagger;
+
+
         $handle = $this->faker->name;
-        $missive = "{$this->tag->code} {$handle}";
+        $missive = "{$code} {$handle}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -95,7 +134,7 @@ class SubscriberRegistrationTest extends TestCase
 
          /*** assert ***/
         $this->assertCommandIssued($missive);
-        $this->assertEquals($this->commander->upline->handle, $this->tagger->handle);
+//        $this->assertEquals($this->commander->upline->handle, $this->tagger->handle);
         $this->assertEquals($this->commander->tags()->first()->code, $code);
         $this->assertEquals($this->commander->areas()->first()->name, $area->name);
         $this->assertEquals($this->commander->groups()->first()->name, $group->name);
