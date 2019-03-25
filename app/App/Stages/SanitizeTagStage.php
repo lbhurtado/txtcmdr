@@ -20,8 +20,8 @@ class SanitizeTagStage extends BaseStage
         $code = '';
         while ($word = array_shift($array)) {
             $code = trim(string($code)->concat(' ')->concat($word));
-
             if ($tag = $this->getSanitizedTag($code)) {
+
                 array_set($this->parameters, 'models.tag', $tag);
                 array_set($this->parameters, 'handle', implode(' ', $array));
 
@@ -34,9 +34,6 @@ class SanitizeTagStage extends BaseStage
 
     protected function getSanitizedTag($input)
     {
-        return
-            optional(app(TagRepository::class)->search($input), function ($hits) {
-                return ($hits->count() == 1) ? $hits->first() : null;
-            });
+        return app(TagRepository::class)->getSanitizedModel($input);
     }
 }

@@ -126,6 +126,11 @@ abstract class TextCommanderCase extends TestCase
         return factory(Tag::class)->create();
     }
 
+    function pickRandomTag()
+    {
+        return Tag::all()->random(1)->first();
+    }
+
     function conjureTags($number)
     {
         return factory(Tag::class, $number)->create();

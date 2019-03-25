@@ -24,6 +24,7 @@ class UpdateCommanderUplineStage extends BaseStage
 
     protected function getTagger()
     {
+//        dd($this->parameters);
         return optional(array_get($this->parameters, 'models.tag'))->tagger;
     }
 }

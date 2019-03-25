@@ -52,8 +52,11 @@ class TagRepositoryEloquent extends BaseRepository implements TagRepository
     public function getSanitizedModel($input)
     {
         return
-            optional($this->search($input), function ($hits) {
-                return ($hits->count() == 1) ? $hits->first() : null;
-            });
+            $this->findByField('code', $input)->first() //great for testing
+//            ??
+//            optional($this->search($input), function ($hits) {
+//                return ($hits->count() == 1) ? $hits->first() : null;
+//            })
+            ;
     }
 }

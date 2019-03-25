@@ -66,8 +66,8 @@ $txtcmdr = resolve('txtcmdr');
 
 // TODO add upline notification
 tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-//    $txtcmdr->register("{tag={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
-    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("{code={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+//    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
             ->pipe(new SanitizeTagStage)

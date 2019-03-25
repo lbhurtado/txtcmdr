@@ -21,6 +21,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Campaign\Domain\Models\Tag;
 
 class SubscriberRegistrationTest extends TestCase
 {
@@ -31,8 +32,8 @@ class SubscriberRegistrationTest extends TestCase
         parent::setUp();
 
 //        $this->campaign = $this->pickRandomCampaign() ?? $this->conjureCampaign();
-//        $this->group = $this->pickRandomGroup() ?? $this->conjureGroup();
-//        $this->area = $this->pickRandomArea() ?? $this->conjureArea();
+        $this->group = $this->pickRandomGroup() ?? $this->conjureGroup();
+        $this->area = $this->pickRandomArea() ?? $this->conjureArea();
 
 //        $this->code = 'XXX';
 //        (new UpdateCommanderTag($this->commander, $this->code))->handle();
@@ -41,35 +42,36 @@ class SubscriberRegistrationTest extends TestCase
     /** @test */
     function commander_can_send_registration_command()
     {
-//        $tag = $this->conjureTag();
-//        $this->tag
+//        $tag = $this->pickRandomTag();
+        $tag = factory(Tag::class)->create(['code' => "BALIGOD {$this->area->name}"]);
+        $tag
 //            ->setCampaign($this->campaign, true)
-//            ->setGroup($this->group)
-//            ->setArea($this->area)
-//            ;
+            ->setGroup($this->group)
+            ->setArea($this->area)
+            ;
 //        $this->tagger = $tag->tagger;
 
         /*** arrange ***/
         $handle = "Renz Verano";
-//        $missive = "{$tag->code} {$handle}";
-        $missive = "BALIGOD 0001A {$handle}";
+        $missive = "{$tag->code} {$handle}";
+//        $missive = "BALIGOD 0001A {$handle}";
 
         /*** act ***/
         $this->redefineRoutes();
         Queue::fake();
         Notification::fake();
         //the ff: line is needed to make sure that UpdateContact job is pushed
-        (new UpdateContact($this->commander, 'xxx'))->handle();
+        (new UpdateContact($this->commander, $handle))->handle();
 
          /*** assert ***/
         $this->assertCommandIssued($missive);
-//        $this->assertEquals($this->commander->handle, $handle);
-//        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        $this->assertEquals($this->commander->handle, $handle);
         Queue::assertPushed(UpdateContact::class);
-//        Queue::assertPushed(UpdateCommanderUpline::class);
-//        Queue::assertPushed(UpdateCommanderAreaFromUplineTagArea::class);
-//        Queue::assertPushed(UpdateCommanderGroupFromUplineTagGroup::class);
+        Queue::assertPushed(UpdateCommanderUpline::class);
+        Queue::assertPushed(UpdateCommanderAreaFromUplineTagArea::class);
+        Queue::assertPushed(UpdateCommanderGroupFromUplineTagGroup::class);
 //        Queue::assertPushed(UpdateCommanderTag::class);
+        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
         $this->assertAirtimeCharged();
      }
 
