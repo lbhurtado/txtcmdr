@@ -3,17 +3,15 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Campaign\Domain\Repositories\TagRepository;
-
 use App\Missive\Domain\Models\Contact;
+use App\Campaign\Domain\Repositories\TagRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Campaign\Domain\Models\{Tag, Group, Area, Campaign};
 
 class TagTest extends TestCase
 {
-	use RefreshDatabase, WithFaker;
-
+    use DatabaseTransactions;
+    
     /** @test */
     public function tag_has_code_and_tagger()
     {
@@ -28,8 +26,7 @@ class TagTest extends TestCase
         	$this->assertEquals($tagger->name, $tag->tagger->name);
             $this->assertDatabaseHas('tags', [
                 'code' => $code,
-                'tagger_id' => $tagger->id,
-                'tagger_type' => get_class($tagger)
+                'contact_id' => $tagger->id
             ]);
         });
     }

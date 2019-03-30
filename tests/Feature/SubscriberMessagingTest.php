@@ -2,27 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Campaign\Notifications\CommanderReportUpdated;
-use App\Campaign\Notifications\CommanderReportUplineUpdated;
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Campaign\Jobs\UpdateCommanderUpline;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Notifications\CommanderSendToArea;
 use App\Campaign\Notifications\CommanderSendToGroup;
 use App\Campaign\Notifications\CommanderSendUpdated;
 use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Notifications\CommanderReportUpdated;
 use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\DownlineAnnouncementUpdated;
 use App\Campaign\Notifications\DescendantsBroadcastUpdated;
 use App\Campaign\Notifications\CommanderAnnouncementUpdated;
+use App\Campaign\Notifications\CommanderReportUplineUpdated;
 
 class SubscriberMessagingTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
     protected $downline1;
 
     protected $downline2;
@@ -98,7 +93,7 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertNotSentTo($this->downline4, DownlineAnnouncementUpdated::class);
         Notification::assertNotSentTo($this->downline5, DownlineAnnouncementUpdated::class);
         Notification::assertNotSentTo($this->downline6, DownlineAnnouncementUpdated::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 
     /** @test */
@@ -123,7 +118,7 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertSentTo($this->downline4, DescendantsBroadcastUpdated::class);
         Notification::assertSentTo($this->downline5, DescendantsBroadcastUpdated::class);
         Notification::assertSentTo($this->downline6, DescendantsBroadcastUpdated::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 
     /** @test */
@@ -132,7 +127,7 @@ class SubscriberMessagingTest extends TestCase
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::SEND);
         $message = $this->faker->sentence;
-        $missive = "{$this->area1->name}{$command}{$message}";
+        $missive = "@{$this->area1->name}{$command}{$message}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -148,12 +143,12 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertNotSentTo($this->downline4, CommanderSendToArea::class);
         Notification::assertNotSentTo($this->downline5, CommanderSendToArea::class);
         Notification::assertNotSentTo($this->downline6, CommanderSendToArea::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
 
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::SEND);
         $message = $this->faker->sentence;
-        $missive = "{$this->area2->name}{$command}{$message}";
+        $missive = "@{$this->area2->name}{$command}{$message}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -177,7 +172,7 @@ class SubscriberMessagingTest extends TestCase
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::SEND);
         $message = $this->faker->sentence;
-        $missive = "{$this->group1->name}{$command}{$message}";
+        $missive = "&{$this->group1->name}{$command}{$message}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -193,12 +188,12 @@ class SubscriberMessagingTest extends TestCase
         Notification::assertNotSentTo($this->downline4, CommanderSendToGroup::class);
         Notification::assertNotSentTo($this->downline5, CommanderSendToGroup::class);
         Notification::assertNotSentTo($this->downline6, CommanderSendToGroup::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
 
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::SEND);
         $message = $this->faker->sentence;
-        $missive = "{$this->group2->name}{$command}{$message}";
+        $missive = "&{$this->group2->name}{$command}{$message}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -233,6 +228,6 @@ class SubscriberMessagingTest extends TestCase
         $this->assertCommandIssued($missive);
         Notification::assertSentTo($this->commander, CommanderReportUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderReportUplineUpdated::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 }

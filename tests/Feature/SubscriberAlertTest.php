@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Jobs\UpdateCommanderAlert;
 use App\Campaign\Domain\Classes\CommandKey;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderAlertToGroup;
 use App\Campaign\Notifications\CommanderAlertUpdated;
@@ -14,8 +12,6 @@ use App\Campaign\Notifications\CommanderAlertUplineUpdated;
 
 class SubscriberAlertTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected $alert;
 
     protected $group;
@@ -65,6 +61,6 @@ class SubscriberAlertTest extends TestCase
         Notification::assertSentTo($this->contact2, CommanderAlertToGroup::class);
         Notification::assertNotSentTo($this->contact3, CommanderAlertToGroup::class);
         Notification::assertNotSentTo($this->contact4, CommanderAlertToGroup::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 }

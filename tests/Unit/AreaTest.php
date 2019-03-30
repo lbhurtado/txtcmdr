@@ -3,13 +3,12 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Domain\Repositories\AreaRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AreaTest extends TestCase
 {
-	use RefreshDatabase, WithFaker;
+    use DatabaseTransactions;
 
     /** @test */
     public function area_has_name()

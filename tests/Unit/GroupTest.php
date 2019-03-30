@@ -3,13 +3,12 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Campaign\Domain\Repositories\GroupRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GroupTest extends TestCase
 {
-	use RefreshDatabase, WithFaker;
+    use DatabaseTransactions;
 
     /** @test */
     public function group_has_name()

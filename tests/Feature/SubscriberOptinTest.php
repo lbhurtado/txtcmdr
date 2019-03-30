@@ -5,8 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Charging\Jobs\ChargeAirtime;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Missive\Domain\Repositories\ContactRepository;
 
 class SubscriberOptinTest extends TestCase

@@ -3,16 +3,14 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Missive\Domain\Repositories\ContactRepository;
 use App\Campaign\Domain\Models\Area;
 use App\Missive\Domain\Models\Contact;
-use App\Campaign\Domain\Models\Tag;
+use App\Missive\Domain\Repositories\ContactRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase
 {
-	use RefreshDatabase, WithFaker;
+    use DatabaseTransactions;
 
     /** @test */
     public function contact_has_mobile()
@@ -38,16 +36,16 @@ class ContactTest extends TestCase
     {
         $code = $this->faker->word;
         $contact = factory(Contact::class)->create();
-        $this->assertEquals($contact->tags()->count(), 0);
+        $this->assertEquals($contact->tag()->count(), 0);
 
-        $tag = $contact->tags()->create(compact('code'));
-        
-        $this->assertEquals($contact->tags()->count(), 1);
+        $tag = $contact->tag()->create(compact('code'));
+
+        $this->assertEquals($contact->tag()->count(), 1);
         $this->assertEquals($code, $tag->code);
         $this->assertEquals($contact->id, $tag->tagger->id);
 
         $this->expectException(\Illuminate\Database\QueryException::class);
-        $contact->tags()->create(['code' => $this->faker->word]);
+        $contact->tag()->create(['code' => $this->faker->word]);
     }
 
     /** @test */
@@ -56,14 +54,13 @@ class ContactTest extends TestCase
         $commander = factory(Contact::class)->create();
         $recruiter = factory(Contact::class)->create();
 
-        $commander->upline()->associate($recruiter)->save();
+        $commander->parent()->associate($recruiter)->save();
 
-        $this->assertEquals($commander->upline->mobile, $recruiter->mobile);
+        $this->assertEquals($commander->parent->mobile, $recruiter->mobile);
         
         $this->assertDatabaseHas('contacts', [
             'id' => $commander->id,
-            'upline_id' => $recruiter->id,
-            'upline_type' => get_class($recruiter)
+            'parent_id' => $recruiter->id
         ]);
     }
 }

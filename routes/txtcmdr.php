@@ -235,7 +235,7 @@ tap(Command::using(CommandKey::GROUP), function ($cmd) use ($txtcmdr) {
 //            ->pipe(new NotifyContextGroupStage) //tested
 //            ->pipe(new NotifyCommanderStage) //tested
 //            ->process($parameters)
-//        ;
+//
 //
 //        return true;
 //    });

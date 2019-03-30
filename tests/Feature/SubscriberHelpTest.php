@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderHelpUpdated;
@@ -24,6 +23,6 @@ class SubscriberHelpTest extends TestCase
         /*** assert ***/
         $this->assertCommandIssued($missive);
         Notification::assertSentTo($this->commander, CommanderHelpUpdated::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 }

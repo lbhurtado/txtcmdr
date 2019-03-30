@@ -15,7 +15,6 @@ use App\Campaign\Domain\Classes\Command;
 use App\Campaign\Domain\Models\Campaign;
 use App\Charging\Domain\Classes\AirtimeKey;
 use App\Campaign\Jobs\UpdateCommanderUpline;
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Campaign\Jobs\Charge\ChargeCommanderOutgoingSMS;
 
@@ -99,6 +98,11 @@ abstract class TextCommanderCase extends TestCase
     function conjureContact()
     {
         return factory(Contact::class)->create();
+    }
+
+    function pickRandomContact()
+    {
+        return Contact::all()->random(1)->first();
     }
 
     function conjureContacts($number)

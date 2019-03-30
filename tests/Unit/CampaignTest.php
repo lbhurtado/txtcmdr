@@ -3,13 +3,12 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Campaign\Domain\Repositories\CampaignRepository;
 
 class CampaignTest extends TestCase
 {
-	use RefreshDatabase, WithFaker;
+    use DatabaseTransactions;
 
     /** @test */
     public function campaign_has_name_and_message()

@@ -13,15 +13,11 @@ use App\Campaign\Jobs\{
     UpdateCommanderAreaFromUplineTagArea,
     UpdateCommanderGroupFromUplineTagGroup
 };
+use App\Campaign\Domain\Models\Tag;
 use App\Missive\Jobs\UpdateContact;
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Campaign\Domain\Models\Tag;
 
 class SubscriberRegistrationTest extends TestCase
 {
@@ -143,5 +139,6 @@ class SubscriberRegistrationTest extends TestCase
         Queue::assertNotPushed(UpdateCommanderTagCampaign::class);
         Queue::assertNotPushed(UpdateCommanderTagArea::class);
         Queue::assertNotPushed(UpdateCommanderTagGroup::class);
+        $this->assertAirtimeCharged();
     }
 }
