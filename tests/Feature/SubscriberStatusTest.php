@@ -2,19 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Charging\Jobs\ChargeAirtime;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Jobs\UpdateCommanderStatus;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderStatusUpdated;
 use App\Campaign\Notifications\CommanderStatusUplineUpdated;
 
 class SubscriberStatusTest extends TestCase
 {
-    use RefreshDatabase;
-
     function setup()
     {
         parent::setUp();
@@ -40,6 +36,6 @@ class SubscriberStatusTest extends TestCase
         Notification::assertSentTo($this->commander, CommanderStatusUpdated::class);
         Notification::assertSentTo($this->tagger, CommanderStatusUplineUpdated::class);
         Queue::assertPushed(UpdateCommanderStatus::class);
-        Queue::assertPushed(ChargeAirtime::class);
+        $this->assertAirtimeCharged();
     }
 }

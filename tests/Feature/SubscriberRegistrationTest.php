@@ -127,6 +127,7 @@ class SubscriberRegistrationTest extends TestCase
         Notification::fake();
         //the ff: 4 lines are needed to make sure that UpdateCommanderTagGroup job is pushed
         (new UpdateContact($this->commander, $handle))->handle();
+
         (new UpdateCommanderUpline($this->commander, $this->tagger))->handle();
         (new UpdateCommanderTag($this->commander, $code = $this->faker->word))->handle();
         (new UpdateCommanderArea($this->commander, $area = $this->conjureArea()))->handle();
@@ -134,12 +135,13 @@ class SubscriberRegistrationTest extends TestCase
 
          /*** assert ***/
         $this->assertCommandIssued($missive);
-//        $this->assertEquals($this->commander->upline->handle, $this->tagger->handle);
-        $this->assertEquals($this->commander->tags()->first()->code, $code);
-        $this->assertEquals($this->commander->areas()->first()->name, $area->name);
-        $this->assertEquals($this->commander->groups()->first()->name, $group->name);
-        Queue::assertPushed(UpdateCommanderTagCampaign::class);
-        Queue::assertPushed(UpdateCommanderTagArea::class);
-        Queue::assertPushed(UpdateCommanderTagGroup::class);
+        $this->assertTrue($this->commander->parent->is($this->tagger));
+
+        $this->assertEquals($this->commander->tag()->first()->code, $code);
+        $this->assertTrue($this->commander->areas()->first()->is($area));
+        $this->assertTrue($this->commander->groups()->first()->is($group));
+        Queue::assertNotPushed(UpdateCommanderTagCampaign::class);
+        Queue::assertNotPushed(UpdateCommanderTagArea::class);
+        Queue::assertNotPushed(UpdateCommanderTagGroup::class);
     }
 }
