@@ -11,7 +11,7 @@ use App\Campaign\Domain\Models\{Tag, Group, Area, Campaign};
 class TagTest extends TestCase
 {
     use DatabaseTransactions;
-    
+
     /** @test */
     public function tag_has_code_and_tagger()
     {
