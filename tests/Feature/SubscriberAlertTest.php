@@ -20,7 +20,7 @@ class SubscriberAlertTest extends TestCase
 
     protected $contact1, $contact2, $contact3, $contact4;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

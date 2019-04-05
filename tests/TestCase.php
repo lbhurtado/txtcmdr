@@ -9,7 +9,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, WithFaker;
 
-    function setup()
+    function setup():void
     {
         parent::setUp();
         $this->faker = $this->makeFaker('en_PH');

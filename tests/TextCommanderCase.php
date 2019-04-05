@@ -26,7 +26,7 @@ abstract class TextCommanderCase extends TestCase
 
     protected $destination;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

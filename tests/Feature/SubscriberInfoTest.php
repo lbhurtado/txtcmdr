@@ -20,7 +20,7 @@ class SubscriberInfoTest extends TestCase
 
     protected $notifications;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

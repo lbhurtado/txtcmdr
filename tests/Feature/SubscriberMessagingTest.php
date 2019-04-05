@@ -30,7 +30,7 @@ class SubscriberMessagingTest extends TestCase
 
     protected $downline6;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

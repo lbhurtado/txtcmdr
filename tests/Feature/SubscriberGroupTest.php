@@ -15,7 +15,7 @@ class SubscriberGroupTest extends TestCase
 {
     protected $tagger;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

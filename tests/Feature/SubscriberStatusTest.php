@@ -11,7 +11,7 @@ use App\Campaign\Notifications\CommanderStatusUplineUpdated;
 
 class SubscriberStatusTest extends TestCase
 {
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

@@ -9,7 +9,7 @@ use App\Missive\Domain\Repositories\ContactRepository;
 
 class SubscriberOptinTest extends TestCase
 {
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

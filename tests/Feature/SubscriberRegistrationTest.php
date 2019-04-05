@@ -23,7 +23,7 @@ class SubscriberRegistrationTest extends TestCase
 {
     protected $code;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 

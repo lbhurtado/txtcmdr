@@ -21,7 +21,7 @@ class SubscriberTagTest extends TestCase
 
     protected $campaign;
 
-    function setup()
+    function setup(): void
     {
         parent::setUp();
 
