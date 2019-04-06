@@ -25,3 +25,19 @@ if (!function_exists('remove_non_ascii_for_smsc_consumption')) {
         return preg_replace("/[^A-Za-z0-9]/", '', $mobile);
     } 
 }
+
+if (!function_exists('excel_range_to_array')) {
+
+    function excel_range_to_array($filename = 'volunteers.xlsx', $topleft = 'A2') {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($filename);
+        
+        $worksheet = $spreadsheet->getActiveSheet();
+        $highestRow = $worksheet->getHighestRow();
+        $highestColumn = $worksheet->getHighestColumn();
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); 
+
+        return $worksheet->rangeToArray("{$topleft}:{$highestColumn}{$highestColumnIndex}");
+    } 
+}

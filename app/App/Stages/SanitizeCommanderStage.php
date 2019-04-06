@@ -34,17 +34,7 @@ class SanitizeCommanderStage extends BaseStage
 
     protected function getCommanderRecordFromExcel($needle)
     {     
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $reader->setReadDataOnly(true);
-        $spreadsheet = $reader->load("volunteers.xlsx");
-        
-        $worksheet = $spreadsheet->getActiveSheet();
-        $highestRow = $worksheet->getHighestRow();
-        $highestColumn = $worksheet->getHighestColumn();
-        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); // e.g. 5
-
-        $array = $worksheet->rangeToArray("A2:{$highestColumn}{$highestColumnIndex}");
-
+        $array = excel_range_to_array();
         $key = array_search($needle, array_column($array, 0));
 
         return ($key !== false) 
