@@ -11,6 +11,7 @@ use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\NotifyGroupAlertStage;
 use App\App\Stages\OnboardCommanderStage;
+use App\App\Stages\SanitizeCommanderStage;
 use App\App\Stages\NotifyDescendantsStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
@@ -85,6 +86,24 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
             ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;
+    });
+});
+
+tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command={$cmd->CMD}} {id}", function (string $path, array $parameters) use ($cmd) {
+        (new Pipeline)
+            ->pipe(new SanitizeCommanderStage)
+            ->pipe(new UpdateCommanderStage) //tested
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new SanitizeGroupStage) //tested
+            ->pipe(new UpdateCommanderGroupStage) //tested
+            ->pipe(new NotifyCommanderStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+
+        return true;
     });
 });
 

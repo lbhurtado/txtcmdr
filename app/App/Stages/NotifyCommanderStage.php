@@ -13,6 +13,7 @@ use App\Campaign\Notifications\CommanderGroupUpdated;
 use App\Campaign\Notifications\CommanderAlertUpdated;
 use App\Campaign\Notifications\CommanderReportUpdated;
 use App\Campaign\Notifications\CommanderStatusUpdated;
+use App\Campaign\Notifications\CommanderConfirmUpdated;
 use App\Campaign\Notifications\CommanderCheckinUpdated;
 use App\Campaign\Notifications\CommanderAttributeUpdated;
 use App\Campaign\Notifications\CommanderBroadcastUpdated;
@@ -32,6 +33,7 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::OPTIN     => CommanderOptinUpdated::class,
         CommandKey::REPORT    => CommanderReportUpdated::class,
         CommandKey::STATUS    => CommanderStatusUpdated::class,
+        CommandKey::CONFIRM   => CommanderConfirmUpdated::class,
         CommandKey::CHECKIN   => CommanderCheckinUpdated::class,
         CommandKey::REGISTER  => CommanderRegistrationUpdated::class,
         CommandKey::ANNOUNCE  => CommanderAnnouncementUpdated::class,

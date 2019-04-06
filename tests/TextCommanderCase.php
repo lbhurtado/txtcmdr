@@ -32,8 +32,8 @@ abstract class TextCommanderCase extends TestCase
 
 //        factory(Airtime::class)->create(['key' => AirtimeKey::SMS]);
 
-//        $this->commander = factory(Contact::class)->create(['mobile' => $this->generateMobile()]);
-        $this->commander = $this->pickRandomContact();
+       // $this->commander = factory(Contact::class)->create(['mobile' => $this->generateMobile(), 'handle' => null]);
+        $this->commander = $this->pickRandomContact() ;
         $this->destination = $this->generateMobile();
         $this->endpoint = $this->getEndpoint();
     }
@@ -98,7 +98,9 @@ abstract class TextCommanderCase extends TestCase
 
     function conjureContact()
     {
-        return factory(Contact::class)->create();
+        return Contact::create(['mobile' => $this->faker->mobileNumber]);
+
+        // return factory(Contact::class)->create(['handle' => null]);
     }
 
     function pickRandomContact()

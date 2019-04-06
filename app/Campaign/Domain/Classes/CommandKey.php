@@ -22,4 +22,5 @@ final class CommandKey extends Enum
     const  REGISTER = 'Registration';
     const BROADCAST = 'Broadcast';
     const ATTRIBUTE = 'Attribute';
+    const   CONFIRM = 'Confirm';
 }

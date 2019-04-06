@@ -97,6 +97,10 @@ return [
             'cmd' => env('ATTRIBUTE_COMMAND'),
             'class' => App\Campaign\Domain\Classes\AttributeCommand::class,
         ],
+        CommandKey::CONFIRM => [
+            'cmd' => env('CONFIRM_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\ConfirmCommand::class,
+        ],
     ],
     'infokeys' => [
         InfoKey::TAG => env('INFO_KEYWORD_AREA', 'TAG'),
@@ -108,6 +112,7 @@ return [
         InfoKey::DESCENDANTS => env('INFO_KEYWORD_DESCENDANTS', 'DESCENDANTS'),
     ],
     'tag'  => env('TAG', 'JOIN'),
+    'confirm'  => env('CONFIRM', 'CONFIRM'),
     'collections' => [
         'poll' => [
             'precinct' => App\Campaign\Domain\Classes\Collections\PollPrecincts::class,

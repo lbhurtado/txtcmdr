@@ -4,6 +4,7 @@ return [
 	'commander' => [
 		'optin' 	        => "You have opted in using :mobile. \n\n-:signature",
 		'area'  	        => "You are now operating in :area. \n\n-:signature",
+        'confirm'           => "You are now registered as :handle. \n\n-:signature",
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
 		'tag'   	        => "Registration procedure for :context:\n\nsend :code [first name] [last name] to :numbers\n\n-:signature",
 		'registration'      => "Akong higala :handle, ako si Atty. Levi Baligod, nagpasalamat kanimo sa imong kinasing-kasing nga pagsuporta alang sa Kausaban sa Baybay.  Magtinabangay ta arun masulusyonan ang mga problema sa atong lungsod, hilabi na ang kawad-on ug ang pagbatuk sa korapsyon ug sa ginadili na droga",
