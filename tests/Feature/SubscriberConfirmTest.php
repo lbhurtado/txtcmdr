@@ -26,8 +26,9 @@ class SubscriberConfirmTest extends TestCase
         parent::setUp();
 
         $record = $this->getRandomRecord(); 
-        $this->id = $record[0];
-        $this->handle = $record[1];
+
+        $this->id = $record['id'];
+        $this->handle = $record['name'];
 
     }
 
@@ -53,7 +54,7 @@ class SubscriberConfirmTest extends TestCase
         $this->assertAirtimeCharged();           
      }
 
-    /** @test */
+    // /** @test */
     public function commander_confirm_handle()
     {
         /*** arrange ***/
@@ -72,7 +73,8 @@ class SubscriberConfirmTest extends TestCase
 
      protected function getRandomRecord()
      {
-        $array = excel_range_to_array();
+        // $array = excel_range_to_array();
+        $array = excel_range_to_array(storage_path('app/public/spreadsheet.xlsx'), ['id', 'name', 'area', 'group']);
 
         return $array[array_rand($array)];
      }

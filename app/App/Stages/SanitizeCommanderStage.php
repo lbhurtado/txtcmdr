@@ -7,9 +7,10 @@ use App\Missive\Domain\Repositories\ContactRepository;
 
 class SanitizeCommanderStage extends BaseStage
 {
-    const HANDLE_NDX    = 1;
-    const AREA_NDX      = 2;
-    const GROUP_NDX     = 3;
+    const ID_NDX        = 'id';
+    const HANDLE_NDX    = 'name';
+    const AREA_NDX      = 'area';
+    const GROUP_NDX     = 'group';
 
     protected $input_id;
 
@@ -21,12 +22,11 @@ class SanitizeCommanderStage extends BaseStage
     public function execute()
     {
         $array_record = $this->getCommanderRecordFromExcel($this->input_id) ?? $this->halt();
+
         $handle   = $array_record[self::HANDLE_NDX];
         $area     = $array_record[self::AREA_NDX  ];
-        $group    = Arr::get($array_record, self::GROUP_NDX, 'HQ');
-        $group    = 'HQ';
+        $group    = $array_record[self::GROUP_NDX ];
 
-        //TODO: combine the next 3 lines to something like the 4th line
 		array_set($this->parameters, 'handle', $handle ?? $this->halt());
         array_set($this->parameters, 'area', $area);
         array_set($this->parameters, 'group', $group);
@@ -34,8 +34,10 @@ class SanitizeCommanderStage extends BaseStage
 
     protected function getCommanderRecordFromExcel($needle)
     {     
-        $array = excel_range_to_array();
-        $key = array_search($needle, array_column($array, 0));
+        $array = excel_range_to_array(storage_path('app/public/spreadsheet.xlsx'), [
+            self::ID_NDX, self::HANDLE_NDX, self::AREA_NDX, self::GROUP_NDX
+        ]);
+        $key = array_search($needle, array_column($array, self::ID_NDX));
 
         return ($key !== false) 
                     ? $array[$key] 

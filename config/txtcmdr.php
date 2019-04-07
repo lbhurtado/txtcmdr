@@ -121,5 +121,8 @@ return [
             'town' => App\Campaign\Domain\Classes\Collections\PollTowns::class,
             'district' => App\Campaign\Domain\Classes\Collections\PollDistricts::class,
         ]
-    ]
+    ],
+    'path' => [
+        'spreadsheet' => 'app/public/spreadsheet.xlsx',
+    ],
 ];

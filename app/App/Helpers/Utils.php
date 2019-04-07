@@ -28,9 +28,15 @@ if (!function_exists('remove_non_ascii_for_smsc_consumption')) {
 
 if (!function_exists('excel_range_to_array')) {
 
-    function excel_range_to_array($filename = 'volunteers.xlsx', $topleft = 'A2') {
+    function test_alter(&$item1, $key, $prefix)
+    {
+        $item1 = "$prefix: $item1";
+    }
+
+    function excel_range_to_array($filename = null, $headers = true, $topleft = null) {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setReadDataOnly(true);
+        $filename = $filename ?? storage_path(config('txtcmdr.path.spreadsheet'));
         $spreadsheet = $reader->load($filename);
         
         $worksheet = $spreadsheet->getActiveSheet();
@@ -38,6 +44,25 @@ if (!function_exists('excel_range_to_array')) {
         $highestColumn = $worksheet->getHighestColumn();
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); 
 
-        return $worksheet->rangeToArray("{$topleft}:{$highestColumn}{$highestColumnIndex}");
+        $topleft = $topleft ?? 'A1';
+        $excel = $worksheet->rangeToArray("{$topleft}:{$highestColumn}{$highestColumnIndex}");
+
+
+        $array = [];
+        if ($headers === false) {
+            $array = $excel;
+        }
+        else {
+            $h1 = array_shift($excel);
+            if ($headers === true)
+                $headers = $h1;
+            if (is_array($headers)) {
+                foreach ($excel as $record) {
+                    $array [] = array_combine($headers, $record); 
+                }                
+            }
+        }
+
+        return $array;
     } 
 }
