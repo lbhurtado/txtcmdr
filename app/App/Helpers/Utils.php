@@ -28,12 +28,7 @@ if (!function_exists('remove_non_ascii_for_smsc_consumption')) {
 
 if (!function_exists('excel_range_to_array')) {
 
-    function test_alter(&$item1, $key, $prefix)
-    {
-        $item1 = "$prefix: $item1";
-    }
-
-    function excel_range_to_array($filename = null, $headers = true, $topleft = null) {
+    function excel_range_to_array($filename = null, $headers = [], $topleft = null) {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setReadDataOnly(true);
         $filename = $filename ?? storage_path(config('txtcmdr.path.spreadsheet'));
@@ -54,7 +49,7 @@ if (!function_exists('excel_range_to_array')) {
         }
         else {
             $h1 = array_shift($excel);
-            if ($headers === true)
+            if ($headers === true || $headers === [])
                 $headers = $h1;
             if (is_array($headers)) {
                 foreach ($excel as $record) {
@@ -65,4 +60,17 @@ if (!function_exists('excel_range_to_array')) {
 
         return $array;
     } 
+}
+
+if (!function_exists('excel_lookup')) {
+
+    function excel_lookup($needle, $index = 'ID',  $file = null, $headers = [], $topleft = null)
+    {
+        $array = excel_range_to_array($file, $headers, $topleft);
+        $key = array_search($needle, array_column($array, $index));
+
+        return ($key !== false) 
+                    ? $array[$key] 
+                    : [];        
+    }
 }

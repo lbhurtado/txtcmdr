@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-// use Tests\TestCase;
 use App\Missive\Jobs\UpdateContact;
 use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
@@ -20,6 +19,8 @@ class SubscriberConfirmTest extends TestCase
     protected $id;
 
     protected $handle;
+
+    protected $default_excel_file = null;
 
     public function setUp(): void
     {
@@ -73,8 +74,7 @@ class SubscriberConfirmTest extends TestCase
 
      protected function getRandomRecord()
      {
-        // $array = excel_range_to_array();
-        $array = excel_range_to_array(storage_path('app/public/spreadsheet.xlsx'), ['id', 'name', 'area', 'group']);
+        $array = excel_range_to_array($this->default_excel_file, ['id', 'name', 'area', 'group']);
 
         return $array[array_rand($array)];
      }
