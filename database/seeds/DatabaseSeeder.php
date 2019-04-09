@@ -12,11 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AirtimeSeeder::class);
-        $this->call(ContactSeeder::class);
+        // $this->call(ContactSeeder::class);
 
-        $this->call(GroupSeeder::class);
-        $this->call(AreaSeeder::class);
-        $this->call(CampaignSeeder::class);
+        // $this->call(GroupSeeder::class);
+        // $this->call(AreaSeeder::class);
+        // $this->call(CampaignSeeder::class);
 //        $this->call(AlertSeeder::class);
 //        $this->call(CategorySeeder::class);
 //        $this->call(IssueSeeder::class);

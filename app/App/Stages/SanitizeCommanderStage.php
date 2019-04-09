@@ -14,8 +14,11 @@ class SanitizeCommanderStage extends BaseStage
 
     protected $input_id;
 
+    protected $handle;
+
     protected function enabled()
     {
+        $this->handle = trim(array_get($this->getParameters(), 'handle', null));
         return $this->input_id = trim(array_get($this->getParameters(), 'id'));
     }
 
@@ -23,7 +26,7 @@ class SanitizeCommanderStage extends BaseStage
     {
         $array_record = excel_lookup($this->input_id);
 
-        $handle   = $array_record[self::HANDLE_NDX];
+        $handle   = $this->handle ?? $array_record[self::HANDLE_NDX];
         $area     = $array_record[self::AREA_NDX  ];
         $group    = $array_record[self::GROUP_NDX ];
 

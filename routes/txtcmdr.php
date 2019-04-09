@@ -90,7 +90,9 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
 });
 
 tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} {id}", function (string $path, array $parameters) use ($cmd) {
+    // $txtcmdr->register("{command={$cmd->CMD}} {id} {handle}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("{id=\d+} {handle}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
         (new Pipeline)
             ->pipe(new SanitizeCommanderStage)
             ->pipe(new UpdateCommanderStage) //tested
@@ -133,46 +135,46 @@ tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
 //    return true;
 //});
 
-tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new UpdateCommanderAlertStage)
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyGroupAlertStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::ALERT), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}}{alert={$cmd->LST}}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new UpdateCommanderAlertStage)
+//             ->pipe(new NotifyUplineStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new NotifyGroupAlertStage) //tested
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new NotifyUplineStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new NotifyDownlineStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::ANNOUNCE), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new NotifyDownlineStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
 tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command={$cmd->CMD}}{message}", function (string $path, array $parameters) {
@@ -187,32 +189,32 @@ tap(Command::using(CommandKey::BROADCAST), function ($cmd) use ($txtcmdr) {
     });
 });
 
-tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{percent?}{command={$cmd->CMD}}{status}/{reason?}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new UpdateCommanderStatusStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::STATUS), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{percent?}{command={$cmd->CMD}}{status}/{reason?}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new UpdateCommanderStatusStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new NotifyUplineStage) //tested
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{key}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new UpdateCommanderAttributeStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::ATTRIBUTE), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{key}{command={$cmd->CMD}}{value?}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new UpdateCommanderAttributeStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
 // TODO create a control for changing areas
 tap(Command::using(CommandKey::AREA), function ($cmd) use ($txtcmdr) {
@@ -290,93 +292,93 @@ tap(Command::using(CommandKey::SEND), function ($cmd) use ($txtcmdr) {
     });
 });
 
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} &{group}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new SanitizeGroupStage) //tested
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderGroupStage) //tested
-            ->pipe(new UpdateCommanderTagGroupStage) //tested
-            ->pipe(new UpdateCommanderUnTagAreaStage)
-            ->pipe(new NotifyCommanderTagGroupStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}} &{group}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new SanitizeGroupStage) //tested
+//             ->pipe(new UpdateCommanderTagStage) //tested
+//             ->pipe(new UpdateCommanderGroupStage) //tested
+//             ->pipe(new UpdateCommanderTagGroupStage) //tested
+//             ->pipe(new UpdateCommanderUnTagAreaStage)
+//             ->pipe(new NotifyCommanderTagGroupStage)
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} &{group} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new SanitizeGroupStage) //tested
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-            ->pipe(new UpdateCommanderGroupStage) //tested
-            ->pipe(new UpdateCommanderTagGroupStage) //tested
-            ->pipe(new UpdateCommanderUnTagAreaStage)
-            ->pipe(new NotifyCommanderTagGroupStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}} &{group} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new SanitizeGroupStage) //tested
+//             ->pipe(new UpdateCommanderTagStage) //tested
+//             ->pipe(new UpdateCommanderTagCampaignStage) //tested
+//             ->pipe(new UpdateCommanderGroupStage) //tested
+//             ->pipe(new UpdateCommanderTagGroupStage) //tested
+//             ->pipe(new UpdateCommanderUnTagAreaStage)
+//             ->pipe(new NotifyCommanderTagGroupStage)
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
 //TODO if alias is used in tagging, make sure the tag is the alias
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} @{area}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new SanitizeAreaStage) //tested
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderAreaStage) //tested
-            ->pipe(new UpdateCommanderTagAreaStage) //tested
-//            ->pipe(new UpdateCommanderUnTagGroupStage)
-            ->pipe(new NotifyCommanderTagAreaStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}} @{area}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new SanitizeAreaStage) //tested
+//             ->pipe(new UpdateCommanderTagStage) //tested
+//             ->pipe(new UpdateCommanderAreaStage) //tested
+//             ->pipe(new UpdateCommanderTagAreaStage) //tested
+// //            ->pipe(new UpdateCommanderUnTagGroupStage)
+//             ->pipe(new NotifyCommanderTagAreaStage)
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}} @{area} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
-        (new Pipeline)
-            ->pipe(new SanitizeAreaStage) //tested
-            ->pipe(new UpdateCommanderTagStage) //tested
-            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-            ->pipe(new UpdateCommanderAreaStage) //tested
-            ->pipe(new UpdateCommanderTagAreaStage) //tested
-            ->pipe(new UpdateCommanderUnTagGroupStage)
-            ->pipe(new NotifyCommanderTagAreaStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}} @{area} {campaign={$cmd->LST}}", function (string $path, array $parameters) {
+//         (new Pipeline)
+//             ->pipe(new SanitizeAreaStage) //tested
+//             ->pipe(new UpdateCommanderTagStage) //tested
+//             ->pipe(new UpdateCommanderTagCampaignStage) //tested
+//             ->pipe(new UpdateCommanderAreaStage) //tested
+//             ->pipe(new UpdateCommanderTagAreaStage) //tested
+//             ->pipe(new UpdateCommanderUnTagGroupStage)
+//             ->pipe(new NotifyCommanderTagAreaStage)
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
-tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) use ($cmd) {
-        (new Pipeline)
-            ->pipe(new UpdateCommanderCheckinStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new RegisterAirtimeTransferServiceStage)
-//            ->pipe(new AirtimeTransferStage)
-            ->pipe(new ChargeCommanderLBSStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
+// tap(Command::using(CommandKey::CHECKIN), function ($cmd) use ($txtcmdr) {
+//     $txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) use ($cmd) {
+//         (new Pipeline)
+//             ->pipe(new UpdateCommanderCheckinStage) //tested
+//             ->pipe(new NotifyCommanderStage) //tested
+//             ->pipe(new NotifyUplineStage) //tested
+//             ->pipe(new RegisterAirtimeTransferServiceStage)
+// //            ->pipe(new AirtimeTransferStage)
+//             ->pipe(new ChargeCommanderLBSStage)
+//             ->pipe(new ChargeCommanderOutgoingSMSStage)
+//             ->process($parameters)
+//         ;
 
-        return true;
-    });
-});
+//         return true;
+//     });
+// });
 
 tap(Command::using(CommandKey::TEST), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command=ping}", function (string $path, array $parameters) use ($cmd) {
