@@ -9,3 +9,5 @@ Route::match(['get', 'post'], 'webhook/redirect/globe', App\Missive\Actions\Crea
 Route::match(['get', 'post'], 'webhook/sms/globe', App\Missive\Actions\CreateGlobeSMSAction::class);
 
 Route::match(['get', 'post'], 'webhook/sms/engagespark-relay', App\Missive\Actions\CreateEngageSparkRelaySMSAction::class);
+
+Route::match(['get', 'post'], 'webhook/sms/telerivet-relay', App\Missive\Actions\CreateTelerivetRelaySMSAction::class);

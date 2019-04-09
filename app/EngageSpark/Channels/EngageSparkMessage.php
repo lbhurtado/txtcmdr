@@ -124,6 +124,7 @@ class EngageSparkMessage
 
     public function generateClientReference()
     {
-        return str_random(12);
+        return 'ABC';
+//        return str_random(12);
     }
 }
