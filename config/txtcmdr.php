@@ -123,6 +123,6 @@ return [
         ]
     ],
     'path' => [
-        'spreadsheet' => 'app/public/spreadsheet.xlsx',
+        'spreadsheet' => 'spreadsheets/spreadsheet.xlsx',
     ],
 ];

@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Repositories\AreaRepository;
 
 class SanitizeAreaStage extends BaseStage
@@ -10,7 +11,7 @@ class SanitizeAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->input_area = trim(array_get($this->getParameters(), 'area'));
+        return $this->input_area = trim(Arr::get($this->getParameters(), 'area'));
     }
 
     public function execute()
@@ -19,11 +20,11 @@ class SanitizeAreaStage extends BaseStage
 		$sanitized_area = $area->name;
 
 		//TODO: combine the next 3 lines to something like the 4th line
-		array_set($this->parameters, 'area', $sanitized_area);
-        array_set($this->parameters, 'context', $sanitized_area);
-        array_set($this->parameters, 'field', 'area');
+		Arr::set($this->parameters, 'area', $sanitized_area);
+        Arr::set($this->parameters, 'context', $sanitized_area);
+        Arr::set($this->parameters, 'field', 'area');
 
-        array_set($this->parameters, 'models.area', $area);
+        Arr::set($this->parameters, 'models.area', $area);
     }
 
     protected function getSanitizedArea($input)

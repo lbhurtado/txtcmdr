@@ -65,33 +65,33 @@ $txtcmdr = resolve('txtcmdr');
 //	});
 //});
 
-// TODO add upline notification
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{code={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
-//    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
-        $parameters['command'] = $cmd->CMD;
-        (new Pipeline)
-            ->pipe(new SanitizeTagStage)
-            ->pipe(new UpdateCommanderStage) //tested
-            ->pipe(new UpdateCommanderUplineStage) //tested
-            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
-            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
-//            ->pipe(new UpdateCommanderTagStage) //tested
-//            ->pipe(new UpdateCommanderCampaignParametersStage) //done
-//            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-//            ->pipe(new UpdateCommanderTagAreaStage) //tested
-//            ->pipe(new UpdateCommanderTagGroupStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
-    });
-});
+//// TODO add upline notification
+//tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
+//    $txtcmdr->register("{code={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+////    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
+//        $parameters['command'] = $cmd->CMD;
+//        (new Pipeline)
+//            ->pipe(new SanitizeTagStage)
+//            ->pipe(new UpdateCommanderStage) //tested
+//            ->pipe(new UpdateCommanderUplineStage) //tested
+//            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
+//            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
+////            ->pipe(new UpdateCommanderTagStage) //tested
+////            ->pipe(new UpdateCommanderCampaignParametersStage) //done
+////            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+////            ->pipe(new UpdateCommanderTagAreaStage) //tested
+////            ->pipe(new UpdateCommanderTagGroupStage) //tested
+//            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new NotifyUplineStage) //tested
+//            ->pipe(new ChargeCommanderOutgoingSMSStage)
+//            ->process($parameters)
+//        ;
+//    });
+//});
 
 tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
     // $txtcmdr->register("{command={$cmd->CMD}} {id} {handle}", function (string $path, array $parameters) use ($cmd) {
-    $txtcmdr->register("{id=\d+} {handle}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("RUTH {id=\d+} {handle}", function (string $path, array $parameters) use ($cmd) {
         $parameters['command'] = $cmd->CMD;
         (new Pipeline)
             ->pipe(new SanitizeCommanderStage)
@@ -109,15 +109,15 @@ tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
     });
 });
 
-tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
-	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
-		(new Pipeline)
-		    ->pipe(new NotifyCommanderInfoStage)
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-		    ->process($parameters)
-		    ;
-	});
-});
+//tap(Command::using(CommandKey::INFO), function ($cmd) use ($txtcmdr) {
+//	$txtcmdr->register("{command={$cmd->CMD}}{keyword?={$cmd->LST}}", function (string $path, array $parameters) {
+//		(new Pipeline)
+//		    ->pipe(new NotifyCommanderInfoStage)
+//            ->pipe(new ChargeCommanderOutgoingSMSStage)
+//		    ->process($parameters)
+//		    ;
+//	});
+//});
 
 //tap(Command::using(CommandKey::TAG), function ($cmd) use ($txtcmdr) {
 //    $txtcmdr->register("{campaign?={$cmd->LST}}{command={$cmd->CMD}}{tag?}", function (string $path, array $parameters) {

@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Repositories\GroupRepository;
 
 class SanitizeGroupStage extends BaseStage
@@ -10,7 +11,7 @@ class SanitizeGroupStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->input_group = trim(array_get($this->getParameters(), 'group'));
+        return $this->input_group = trim(Arr::get($this->getParameters(), 'group'));
     }
 
     public function execute()
@@ -19,11 +20,11 @@ class SanitizeGroupStage extends BaseStage
         $sanitized_group = $group->name;
 
         //TODO: combine the next 3 lines to something like the 4th line
-		array_set($this->parameters, 'group', $sanitized_group ?? $this->halt());
-        array_set($this->parameters, 'context', $sanitized_group);
-        array_set($this->parameters, 'field', 'group');
+		Arr::set($this->parameters, 'group', $sanitized_group ?? $this->halt());
+        Arr::set($this->parameters, 'context', $sanitized_group);
+        Arr::set($this->parameters, 'field', 'group');
 
-        array_set($this->parameters, 'models.group', $group);
+        Arr::set($this->parameters, 'models.group', $group);
     }
 
     protected function getSanitizedGroup($input)

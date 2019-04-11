@@ -30,8 +30,7 @@ if (!function_exists('excel_range_to_array')) {
 
     function excel_range_to_array($filename = null, $headers = [], $topleft = null) {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $reader->setReadDataOnly(true);
-        $filename = $filename ?? storage_path(config('txtcmdr.path.spreadsheet'));
+        $filename = $filename ?? database_path(config('txtcmdr.path.spreadsheet'));
         $spreadsheet = $reader->load($filename);
         
         $worksheet = $spreadsheet->getActiveSheet();

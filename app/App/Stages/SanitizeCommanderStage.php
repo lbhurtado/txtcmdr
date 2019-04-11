@@ -3,7 +3,7 @@
 namespace App\App\Stages;
 
 use Illuminate\Support\Arr;
-use App\Missive\Domain\Repositories\ContactRepository;
+use App\Campaign\Domain\Repositories\LeadRepository;
 
 class SanitizeCommanderStage extends BaseStage
 {
@@ -16,22 +16,29 @@ class SanitizeCommanderStage extends BaseStage
 
     protected $handle;
 
+    protected $lead;
+
     protected function enabled()
     {
-        $this->handle = trim(array_get($this->getParameters(), 'handle', null));
-        return $this->input_id = trim(array_get($this->getParameters(), 'id'));
+
+        $input_code = trim(Arr::get($this->getParameters(), 'id'));
+
+        return $this->lead = $this->getSanitizedLead($input_code);
     }
 
     public function execute()
     {
-        $array_record = excel_lookup($this->input_id);
+        $handle = trim(Arr::get($this->getParameters(), 'handle')) ?? $this->lead->name;
+        $area = $this->lead->area;
+        $group = $this->lead->group;
 
-        $handle   = $this->handle ?? $array_record[self::HANDLE_NDX];
-        $area     = $array_record[self::AREA_NDX  ];
-        $group    = $array_record[self::GROUP_NDX ];
+        Arr::set($this->parameters, 'handle', $handle);
+        Arr::set($this->parameters, 'area', $area);
+        Arr::set($this->parameters, 'group', $group);
+    }
 
-		array_set($this->parameters, 'handle', $handle ?? $this->halt());
-        array_set($this->parameters, 'area', $area);
-        array_set($this->parameters, 'group', $group);
+    protected function getSanitizedLead($input)
+    {
+        return app(LeadRepository::class)->findByField('code', $input)->first();
     }
 }

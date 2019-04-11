@@ -33,6 +33,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Campaign\Domain\Repositories\CheckinRepository::class, \App\Campaign\Domain\Repositories\CheckinRepositoryEloquent::class);
         $this->app->bind(\App\Campaign\Domain\Repositories\IssueRepository::class, \App\Campaign\Domain\Repositories\IssueRepositoryEloquent::class);
         $this->app->bind(\App\Campaign\Domain\Repositories\CategoryRepository::class, \App\Campaign\Domain\Repositories\CategoryRepositoryEloquent::class);
+        $this->app->bind(\App\Campaign\Domain\Repositories\LeadRepository::class, \App\Campaign\Domain\Repositories\LeadRepositoryEloquent::class);
         //:end-bindings:
     }
 }

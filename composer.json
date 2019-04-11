@@ -20,6 +20,7 @@
         "laravel/horizon": "^2.0",
         "laravel/scout": "^7.0",
         "laravel/tinker": "^1.0",
+        "league/csv": "^9.2",
         "league/pipeline": "^1.0",
         "maatwebsite/excel": "^3.1",
         "nanigans/single-table-inheritance": "^0.8.3",

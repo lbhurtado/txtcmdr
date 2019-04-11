@@ -16,6 +16,9 @@ class CabuyaoSeeder extends Seeder
      */
     public function run()
     {
+        Contact::create(['mobile' => '+639173011987', 'handle' => 'Lester Hurtado']);
+        Contact::create(['mobile' => '+639178150471', 'handle' => 'Edward Inzon']);
+
     	$group_nodes = [
     		'HQ.CORE',
     		'HQ.VOLUNTEER',

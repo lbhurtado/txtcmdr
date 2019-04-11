@@ -31,6 +31,9 @@ class SubscriberConfirmTest extends TestCase
         $this->id = $record['id'];
         $this->handle = $record['name'];
 
+        $this->id = '10801';
+        $this->handle = 'John Doe';
+
     }
 
     /** @test */
@@ -38,7 +41,7 @@ class SubscriberConfirmTest extends TestCase
     {
         /*** arrange ***/
         $command = $this->getCommand(CommandKey::CONFIRM);
-        $missive = "{$command} {$this->id}";
+        $missive = "RUTH {$this->id} John Doe";
 
         /*** act ***/
         $this->redefineRoutes();

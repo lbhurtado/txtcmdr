@@ -19,6 +19,7 @@ use App\Charging\Domain\Repositories\{AirtimeRepository, AirtimeRepositoryEloque
 use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{IssueRepository, IssueRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{LeadRepository, LeadRepositoryEloquent};
 
 use App\Telerivet\Services\Telerivet;
 use Telerivet_API;
@@ -76,6 +77,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         $this->app->bind(AlertRepository::class, AlertRepositoryEloquent::class);
         $this->app->bind(CheckinRepository::class, CheckinRepositoryEloquent::class);
         $this->app->bind(IssueRepository::class, IssueRepositoryEloquent::class);
+        $this->app->bind(LeadRepository::class, LeadRepositoryEloquent::class);
 
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {
