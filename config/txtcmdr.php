@@ -27,7 +27,7 @@ return [
 	],
     'notification' => [
         'channels' => array_merge(['database'], env('SEND_NOTIFICATION', false)
-                                             ? [env('NOTIFICATION_CLASS', GlobeConnectChannel::class)] 
+                                             ? [env('NOTIFICATION_CLASS', EngageSparkChannel::class)]
                                              : []),
         'signature' => env('TXTCMDR_SIGNATURE', 'HQ'),
     ],
