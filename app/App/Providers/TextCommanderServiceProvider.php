@@ -20,6 +20,7 @@ use App\Campaign\Domain\Repositories\{CampaignRepository, CampaignRepositoryEloq
 use App\Campaign\Domain\Repositories\{CheckinRepository, CheckinRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{IssueRepository, IssueRepositoryEloquent};
 use App\Campaign\Domain\Repositories\{LeadRepository, LeadRepositoryEloquent};
+use App\Campaign\Domain\Repositories\{StubRepository, StubRepositoryEloquent};
 
 use App\Telerivet\Services\Telerivet;
 use Telerivet_API;
@@ -78,6 +79,7 @@ class TextCommanderServiceProvider extends ServiceProvider
         $this->app->bind(CheckinRepository::class, CheckinRepositoryEloquent::class);
         $this->app->bind(IssueRepository::class, IssueRepositoryEloquent::class);
         $this->app->bind(LeadRepository::class, LeadRepositoryEloquent::class);
+        $this->app->bind(StubRepository::class, StubRepositoryEloquent::class);
 
         $this->app->singleton(EventDispatcher::class);
         $this->app->singleton('txtcmdr', function ($app) {

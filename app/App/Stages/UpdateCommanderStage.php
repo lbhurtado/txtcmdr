@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Missive\Jobs\UpdateContact;
 
 class UpdateCommanderStage extends BaseStage
@@ -10,7 +11,7 @@ class UpdateCommanderStage extends BaseStage
 
     protected function enabled()
     {
-    	$this->handle = array_get($this->parameters,'handle');
+    	$this->handle = Arr::get($this->parameters,'handle');
 
     	return $this->handle != $this->getCommander()->handle;
     }

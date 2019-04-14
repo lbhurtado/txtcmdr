@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup};
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Campaign\Notifications\CommanderConfirmUpdated;
+use App\Campaign\Domain\Models\Lead;
+use App\Campaign\Domain\Models\Stub;
+use App\Campaign\Jobs\UpdateCommanderStub;
 
 class SubscriberConfirmTest extends TestCase
 {
@@ -26,17 +29,17 @@ class SubscriberConfirmTest extends TestCase
     {
         parent::setUp();
 
-        $record = $this->getRandomRecord(); 
-
-        $this->id = $record['id'];
-        $this->handle = $record['name'];
+        $lead = Lead::all()->random()->first();
 
         $this->id = '10801';
         $this->handle = 'John Doe';
 
+        $this->id = $lead->code;
+        $this->handle = "Rowena";
+
     }
 
-    /** @test */
+//    /** @test */
     public function commander_confirm_stages()
     {
         /*** arrange ***/
@@ -58,27 +61,28 @@ class SubscriberConfirmTest extends TestCase
         $this->assertAirtimeCharged();           
      }
 
-    // /** @test */
-    public function commander_confirm_handle()
+     /** @test */
+    public function commander_confirm_using_stubs()
     {
         /*** arrange ***/
-        $command = $this->getCommand(CommandKey::CONFIRM);
-        $missive = "{$command} {$this->id}";
+        $stub = Stub::all()->random()->first()->code;
+
+//        $command = $this->getCommand(CommandKey::CONFIRM);
+        $missive = "HERNANDEZ {$stub} John Doe";
 
         /*** act ***/
-        Queue::fake();
         $this->redefineRoutes();
-        (new UpdateContact($this->commander, $this->handle))->handle();
+        Queue::fake();
+        Notification::fake();
 
-         /*** assert ***/
+        /*** assert ***/
         $this->assertCommandIssued($missive);
-        $this->assertEquals($this->commander->handle, $this->handle);            
-     }
 
-     protected function getRandomRecord()
-     {
-        $array = excel_range_to_array($this->default_excel_file, ['id', 'name', 'area', 'group']);
-
-        return $array[array_rand($array)];
-     }
+        Queue::assertPushed(UpdateContact::class);
+        Queue::assertPushed(UpdateCommanderArea::class);
+        Queue::assertPushed(UpdateCommanderGroup::class);
+        Queue::assertPushed(UpdateCommanderStub::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
+        $this->assertAirtimeCharged();
+    }
 }

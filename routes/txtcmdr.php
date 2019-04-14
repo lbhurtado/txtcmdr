@@ -22,6 +22,7 @@ use App\App\Stages\UpdateCommanderAlertStage;
 use App\App\Stages\UpdateCommanderGroupStage;
 use App\App\Stages\UpdateCommanderUplineStage;
 use App\App\Stages\UpdateCommanderStatusStage;
+use App\App\Stages\SanitizeCommanderStubStage;
 use App\App\Stages\UpdateCommanderTagAreaStage;
 use App\App\Stages\UpdateCommanderTagGroupStage;
 use App\App\Stages\UpdateCommanderAttributeStage;
@@ -48,7 +49,7 @@ use App\Campaign\Domain\Events\{CheckinEvent, CheckinEvents};
 
 use App\App\Stages\Charge\ChargeCommanderOutgoingSMSStage;
 use App\App\Stages\SanitizeTagStage;
-
+use App\App\Stages\UpdateCommanderStubStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -102,6 +103,28 @@ tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderGroupStage) //tested
             ->pipe(new NotifyCommanderStage)
             ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
+    // $txtcmdr->register("{command={$cmd->CMD}} {id} {handle}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("HERNANDEZ {code=[a-zA-Z]{4}} {handle}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
+
+        (new Pipeline)
+            ->pipe(new SanitizeCommanderStubStage)
+            ->pipe(new UpdateCommanderStage) //tested
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new SanitizeGroupStage) //tested
+            ->pipe(new UpdateCommanderGroupStage) //tested
+            ->pipe(new NotifyCommanderStage)
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->pipe(new UpdateCommanderStubStage)
             ->process($parameters)
         ;
 
