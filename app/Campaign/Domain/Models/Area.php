@@ -23,9 +23,10 @@ use App\Campaign\Domain\Models\AreaIssue as Pivot;
 class Area extends Model implements Transformable, CampaignContext
 {
     use TransformableTrait, HasSchemalessAttributes, HasIssues;
-    use HasNestedTrait, Searchable {
-        Searchable::usesSoftDelete insteadof HasNestedTrait;
-    }
+    use HasNestedTrait;
+//    use Searchable {
+//        Searchable::usesSoftDelete insteadof HasNestedTrait;
+//    }
 //    use HasChildren;
 //    use SingleTableInheritanceTrait {
 //        newFromBuilder as stiNewFromBuilder;
@@ -123,5 +124,10 @@ class Area extends Model implements Transformable, CampaignContext
     public function getRegisteredVotersAttribute()
     {
         return (int) $this->extra_attributes['registered_voters'];
+    }
+
+    public function shouldBeSearchable()
+    {
+        return \App::environment('production');
     }
 }

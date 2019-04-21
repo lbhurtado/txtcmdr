@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AirtimeSeeder::class);
-        // $this->call(ContactSeeder::class);
+         $this->call(ContactSeeder::class);
 
         // $this->call(GroupSeeder::class);
         // $this->call(AreaSeeder::class);
@@ -20,5 +20,8 @@ class DatabaseSeeder extends Seeder
 //        $this->call(AlertSeeder::class);
 //        $this->call(CategorySeeder::class);
 //        $this->call(IssueSeeder::class);
+        $this->call(LeadSeeder::class);
+        $this->call(StubSeeder::class);
+        $this->call(CabuyaoSeeder::class);
     }
 }

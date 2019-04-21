@@ -52,7 +52,7 @@ abstract class TextCommanderCase extends TestCase
 
     function assertCommandIssued($missive)
     {
-        $this->json('POST', $this->endpoint, $this->getJsonData($message = $missive, $from = $this->commander->mobile, $to = $this->destination))
+        $this->json('POST', $this->endpoint, $this->getJsonData($message = trim($missive), $from = $this->commander->mobile, $to = $this->destination))
             ->assertStatus(200)
             ->assertJson(['data' => compact('from','to', 'message')])
         ;

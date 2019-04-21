@@ -11,7 +11,7 @@ class SanitizeGroupStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->input_group = trim(Arr::get($this->getParameters(), 'group'));
+        return $this->input_group = trim(Arr::get($this->getParameters(), 'group', config('txtcmdr.default.group')));
     }
 
     public function execute()

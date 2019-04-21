@@ -2,6 +2,7 @@
 
 namespace App\App\Traits;
 
+use Illuminate\Support\Arr;
 use Kalnoy\Nestedset\NodeTrait;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
@@ -30,7 +31,7 @@ trait HasNestedTrait
     //override create in Kalnoy NestedSet
     public static function create(array $attributes = [], self $parent = null)
     {
-        $children = array_pull($attributes, 'children');
+        $children = Arr::pull($attributes, 'children');
 
         $instance = static::firstOrNew($attributes);
 

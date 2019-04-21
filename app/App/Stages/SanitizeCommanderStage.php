@@ -35,6 +35,7 @@ class SanitizeCommanderStage extends BaseStage
         Arr::set($this->parameters, 'handle', $handle);
         Arr::set($this->parameters, 'area', $area);
         Arr::set($this->parameters, 'group', $group);
+        Arr::set($this->parameters, 'models.lead', $this->lead);
     }
 
     protected function getSanitizedLead($input)

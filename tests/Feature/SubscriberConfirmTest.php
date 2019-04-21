@@ -7,13 +7,14 @@ use Tests\TextCommanderCase as TestCase;
 use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\{Queue, Notification};
+use Illuminate\Support\Facades\{Queue, Notification, Event};
 use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup};
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Campaign\Notifications\CommanderConfirmUpdated;
 use App\Campaign\Domain\Models\Lead;
 use App\Campaign\Domain\Models\Stub;
 use App\Campaign\Jobs\UpdateCommanderStub;
+use App\Campaign\Domain\Events\CommandExecuted;
 
 class SubscriberConfirmTest extends TestCase
 {
@@ -39,26 +40,28 @@ class SubscriberConfirmTest extends TestCase
 
     }
 
-//    /** @test */
+    /** @test */
     public function commander_confirm_stages()
     {
         /*** arrange ***/
-        $command = $this->getCommand(CommandKey::CONFIRM);
-        $missive = "RUTH {$this->id} John Doe";
+//        $command = $this->getCommand(CommandKey::CONFIRM);
+        $missive = "RUTH 10802 John Doe";
 
         /*** act ***/
         $this->redefineRoutes();
+//        Event::fake();
         Queue::fake();
         Notification::fake();
 
          /*** assert ***/
         $this->assertCommandIssued($missive);
 
+//        Event::assertDispatched(CommandExecuted::class);
         Queue::assertPushed(UpdateContact::class);
         Queue::assertPushed(UpdateCommanderArea::class);
         Queue::assertPushed(UpdateCommanderGroup::class);
         Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
-        $this->assertAirtimeCharged();           
+        $this->assertAirtimeCharged();
      }
 
      /** @test */

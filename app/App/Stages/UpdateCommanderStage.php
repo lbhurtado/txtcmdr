@@ -11,7 +11,7 @@ class UpdateCommanderStage extends BaseStage
 
     protected function enabled()
     {
-    	$this->handle = Arr::get($this->parameters,'handle');
+    	$this->handle = Arr::get($this->parameters,'handle') ?: config('txtcmdr.default.handle');
 
     	return $this->handle != $this->getCommander()->handle;
     }

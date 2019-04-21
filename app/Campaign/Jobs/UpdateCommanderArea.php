@@ -14,9 +14,9 @@ class UpdateCommanderArea implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $commander;
+    public $commander;
 
-    protected $area;
+    public $area;
 
     public function __construct(Contact $commander, Area $area)
     {

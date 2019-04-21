@@ -17,7 +17,7 @@ class CreateSMSTable extends Migration
             $table->increments('id');
             $table->string('from');
             $table->string('to');
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }

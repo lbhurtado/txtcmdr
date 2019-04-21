@@ -21,9 +21,10 @@ class Group extends Model implements Transformable, CampaignContext
 {
     use TransformableTrait, HasSchemalessAttributes, HasAlerts;
 
-    use HasNestedTrait, Searchable {
-        Searchable::usesSoftDelete insteadof HasNestedTrait;
-    }
+    use HasNestedTrait;
+//    use Searchable {
+//        Searchable::usesSoftDelete insteadof HasNestedTrait;
+//    }
 
     protected $glue = ':';
 
@@ -54,5 +55,10 @@ class Group extends Model implements Transformable, CampaignContext
             'id' => $array['id'],
             'name' => $array['name'],
         ];
+    }
+
+    public function shouldBeSearchable()
+    {
+        return \App::environment('production');
     }
 }

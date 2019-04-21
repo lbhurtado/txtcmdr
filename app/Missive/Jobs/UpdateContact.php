@@ -13,9 +13,9 @@ class UpdateContact implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $contact;
+    public $contact;
 
-    protected $handle;
+    public $handle;
 
     public function __construct(Contact $contact, $handle)
     {

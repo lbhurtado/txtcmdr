@@ -125,4 +125,9 @@ return [
     'path' => [
         'spreadsheet' => 'spreadsheets/spreadsheet.xlsx',
     ],
+    'default' => [
+        'handle' => env('DEFAULT_HANDLE', null),
+        'area' => env('DEFAULT_AREA', null),
+        'group' => env('DEFAULT_GROUP', null),
+    ],
 ];

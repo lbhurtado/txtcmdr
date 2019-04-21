@@ -11,7 +11,7 @@ class SanitizeAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->input_area = trim(Arr::get($this->getParameters(), 'area'));
+        return $this->input_area = trim(Arr::get($this->getParameters(), 'area', config('txtcmdr.default.area')));
     }
 
     public function execute()

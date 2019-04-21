@@ -144,4 +144,9 @@ class Tag extends Model implements Transformable
     {
         return $this->campaigns()->first();
     }
+
+    public function shouldBeSearchable()
+    {
+        return \App::environment('production');
+    }
 }
