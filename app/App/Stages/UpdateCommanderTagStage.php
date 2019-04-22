@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Jobs\UpdateCommanderTag;
 
 class UpdateCommanderTagStage extends BaseStage
@@ -20,13 +21,14 @@ class UpdateCommanderTagStage extends BaseStage
 
     protected function tag()
     {
-        return array_get($this->getParameters(), 'tag') ?? config('txtcmdr.tag');
+        //TODO Confirm Code
+        return Arr::get($this->getParameters(), 'tag') ?? config('txtcmdr.tag');
     }
 
     protected function context()
     {
-        $field = array_get($this->getParameters(), 'field', 'area');
-        $model = array_get($this->parameters, 'models')[$field];
+        $field = Arr::get($this->getParameters(), 'field', 'area');
+        $model = Arr::get($this->parameters, 'models')[$field];
 
         return $model->alias ?? $model->name;
     }

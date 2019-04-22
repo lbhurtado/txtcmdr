@@ -5,23 +5,30 @@ namespace Tests\Feature;
 use App\Missive\Jobs\UpdateContact;
 use App\Campaign\Domain\Models\Lead;
 use Tests\TextCommanderCase as TestCase;
-use Illuminate\Support\Facades\{Queue, Notification};
-use App\Campaign\Notifications\CommanderRegistrationUpdated;
-use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup};
-use App\Campaign\Domain\Classes\CommandKey;
-use App\App\Services\TextCommander;
-use App\Campaign\Domain\Events\CommandExecuted;
 use App\Campaign\Jobs\UpdateCommanderLead;
+use App\Campaign\Domain\Classes\CommandKey;
+use Illuminate\Support\Facades\{Queue, Notification};
+use App\Campaign\Notifications\CommanderConfirmUpdated;
+use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup};
 
-class Laguna2ndDistrictTest extends TestCase
+class Laguna2ndDistrictConfirmTest extends TestCase
 {
+    protected $keyword;
+
+    function setup(): void
+    {
+        parent::setup();
+
+        $this->keyword = $this->getCommand(CommandKey::CONFIRM);
+    }
+
     /** @test */
-    public function commander_can_register_using_syntax_code_existing_numeric_id_and_with_name()
+    public function commander_can_confirm_using_syntax_code_existing_numeric_id_and_with_name()
     {
         /*** arrange ***/
         $lead = Lead::all()->random();
         $name = $this->faker->name;
-        $missive = "RUTH {$lead->code} {$name}";
+        $missive = "{$this->keyword} {$lead->code} {$name}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -37,22 +44,22 @@ class Laguna2ndDistrictTest extends TestCase
             return $job->contact->is($this->commander) && $job->handle == $name;
         });
         Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
-            return $job->commander->is($this->commander) && $job->area->name == $lead->area;
+            return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
         });
         Queue::assertPushed(UpdateCommanderGroup::class, function ($job) use ($lead) {
             return $job->commander->is($this->commander) && $job->group->name == $lead->group;
         });
-        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
         $this->assertAirtimeCharged();
     }
 
     /** @test */
-    public function commander_can_register_using_syntax_code_existing_numeric_id_and_with_name_no_spaces()
+    public function commander_can_confirm_using_syntax_code_existing_numeric_id_and_with_name_no_spaces()
     {
         /*** arrange ***/
         $lead = Lead::all()->random();
         $name = $this->faker->name;
-        $missive = "RUTH{$lead->code}{$name}";
+        $missive = "{$this->keyword}{$lead->code}{$name}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -65,22 +72,50 @@ class Laguna2ndDistrictTest extends TestCase
             return $job->contact->is($this->commander) && $job->handle == $name;
         });
         Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
-            return $job->commander->is($this->commander) && $job->area->name == $lead->area;
+            return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
         });
         Queue::assertPushed(UpdateCommanderGroup::class, function ($job) use ($lead) {
             return $job->commander->is($this->commander) && $job->group->name == $lead->group;
         });
-        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
         $this->assertAirtimeCharged();
     }
 
     /** @test */
-    public function commander_can_register_using_syntax_code_non_existing_numeric_id_and_with_name()
+    public function commander_can_confirm_using_syntax_code_existing_numeric_id_and_with_name_and_gibberish_in_between()
+    {
+        /*** arrange ***/
+        $lead = Lead::all()->random();
+        $name = $this->faker->name;
+        $missive = " %# {$this->keyword}!@#{$lead->code} ^&*( {$name} *()";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
+            return $job->contact->is($this->commander) && $job->handle == $name;
+        });
+        Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
+            return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
+        });
+        Queue::assertPushed(UpdateCommanderGroup::class, function ($job) use ($lead) {
+            return $job->commander->is($this->commander) && $job->group->name == $lead->group;
+        });
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
+        $this->assertAirtimeCharged();
+    }
+
+    /** @test */
+    public function commander_can_confirm_using_syntax_code_non_existing_numeric_id_and_with_name()
     {
         /*** arrange ***/
         $non_existing_id = '1000000';
         $name = $this->faker->name;
-        $missive = "RUTH {$non_existing_id} {$name}";
+        $missive = "{$this->keyword} {$non_existing_id} {$name}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -102,16 +137,16 @@ class Laguna2ndDistrictTest extends TestCase
                 return $job->commander->is($this->commander) && strtoupper($job->group->name) == strtoupper($default_group_name);
             });
         });
-        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
         $this->assertAirtimeCharged();
     }
 
     /** @test */
-    public function commander_can_register_using_syntax_code_without_numeric_id_and_with_name()
+    public function commander_can_confirm_using_syntax_code_without_numeric_id_and_with_name()
     {
         /*** arrange ***/
         $name = $this->faker->name;
-        $missive = "RUTH {$name}";
+        $missive = "{$this->keyword} {$name}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -133,15 +168,15 @@ class Laguna2ndDistrictTest extends TestCase
                 return $job->commander->is($this->commander) && strtoupper($job->group->name) == strtoupper($default_group_name);
             });
         });
-        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
         $this->assertAirtimeCharged();
     }
 
     /** @test */
-    public function commander_can_register_using_syntax_code_without_numeric_id_and_without_name()
+    public function commander_can_confirm_using_syntax_code_without_numeric_id_and_without_name()
     {
         /*** arrange ***/
-        $missive = "RUTH ";
+        $missive = "{$this->keyword}";
 
         /*** act ***/
         $this->redefineRoutes();
@@ -163,7 +198,28 @@ class Laguna2ndDistrictTest extends TestCase
                 return $job->commander->is($this->commander) && strtoupper($job->group->name) == strtoupper($default_group_name);
             });
         });
-        Notification::assertSentTo($this->commander, CommanderRegistrationUpdated::class);
+        Notification::assertSentTo($this->commander, CommanderConfirmUpdated::class);
         $this->assertAirtimeCharged();
+    }
+
+    /** @test */
+    public function commander_cannot_confirm_using_syntax_without_code_with_numeric_id_and_with_name()
+    {
+        /*** arrange ***/
+        $lead = Lead::all()->random();
+        $name = $this->faker->name;
+        $missive = "{$lead->code} {$name}";
+
+        /*** act ***/
+        $this->redefineRoutes();
+        Queue::fake();
+        Notification::fake();
+
+        /*** assert ***/
+        $this->assertCommandIssued($missive);
+        Queue::assertNotPushed(UpdateCommanderLead::class);
+        Queue::assertNotPushed(UpdateCommanderArea::class);
+        Queue::assertNotPushed(UpdateCommanderGroup::class);
+        Notification::assertNotSentTo($this->commander, CommanderConfirmUpdated::class);
     }
 }

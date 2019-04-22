@@ -11,7 +11,7 @@ use App\App\Stages\UpdateCommanderStage;
 use App\App\Stages\NotifyCommanderStage;
 use App\App\Stages\NotifyGroupAlertStage;
 use App\App\Stages\OnboardCommanderStage;
-use App\App\Stages\SanitizeCommanderStage;
+use App\App\Stages\SanitizeCommanderLeadStage;
 use App\App\Stages\NotifyDescendantsStage;
 use App\App\Stages\NotifyContextAreaStage;
 use App\App\Stages\NotifyContextGroupStage;
@@ -92,12 +92,11 @@ $txtcmdr = resolve('txtcmdr');
 //    });
 //});
 
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{code?=RUTH\s?}{id=\d*}{=\s?}{handle=.*?}", function (string $path, array $parameters) use ($cmd) {
-        $parameters['command'] = $cmd->CMD;
+tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{=[\W\s]*}{command={$cmd->CMD}}{=[\W\s]*}{id=\d*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
         (new Pipeline)
-            ->pipe(new SanitizeCommanderStage)
-            ->pipe(new UpdateCommanderLeadStage)
+            ->pipe(new SanitizeCommanderLeadStage) //tested
+            ->pipe(new UpdateCommanderLeadStage) //tested
             ->pipe(new UpdateCommanderStage) //tested
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
@@ -105,6 +104,7 @@ tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
             ->pipe(new UpdateCommanderGroupStage) //tested
             ->pipe(new NotifyCommanderStage)
             ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->pipe(new UpdateCommanderTagStage) //tested
             ->process($parameters)
         ;
 
