@@ -98,13 +98,13 @@ tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
             ->pipe(new SanitizeCommanderLeadStage) //tested
             ->pipe(new UpdateCommanderLeadStage) //tested
             ->pipe(new UpdateCommanderStage) //tested
+//            ->pipe(new UpdateCommanderTagStage) //tested
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
             ->pipe(new SanitizeGroupStage) //tested
             ->pipe(new UpdateCommanderGroupStage) //tested
             ->pipe(new NotifyCommanderStage)
             ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->pipe(new UpdateCommanderTagStage) //tested
             ->process($parameters)
         ;
 

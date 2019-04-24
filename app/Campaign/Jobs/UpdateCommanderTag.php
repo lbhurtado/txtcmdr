@@ -14,13 +14,13 @@ class UpdateCommanderTag implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $commander;
+    public $commander;
 
-    protected $code;
+    public $code;
 
     protected $originalCode;
      
-    public function __construct(Contact $commander, $code, $originalCode = null)
+    public function __construct(Contact $commander, string $code, $originalCode = null)
     {
         $this->commander = $commander;
         $this->code = $code;

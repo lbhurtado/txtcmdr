@@ -15,8 +15,10 @@ class UpdateCommanderTagStage extends BaseStage
     protected function getCode()
     {
         $space = " ";
-        
-        return string($this->tag())->concat($space)->concat($this->context())->toUpper();
+
+//        dd($this->context());
+//        return $this->tag();
+        return trim(string($this->tag())->concat($space)->concat($this->context())->toUpper());
     }
 
     protected function tag()
@@ -27,9 +29,14 @@ class UpdateCommanderTagStage extends BaseStage
 
     protected function context()
     {
-        $field = Arr::get($this->getParameters(), 'field', 'area');
-        $model = Arr::get($this->parameters, 'models')[$field];
+        return '';
 
-        return $model->alias ?? $model->name;
+        $field = Arr::get($this->getParameters(), 'field', 'area');
+//        $model = Arr::get($this->parameters, 'models')[$field];
+
+        return optional(Arr::get($this->parameters, 'models')[$field], function ($model) {
+            return $model->alias ?? $model->name;
+        }) ?? 'xxx';
+//        return optional($model)->alias ?? optional($model)->name;
     }
 }

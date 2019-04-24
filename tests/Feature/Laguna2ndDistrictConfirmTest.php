@@ -9,7 +9,7 @@ use App\Campaign\Jobs\UpdateCommanderLead;
 use App\Campaign\Domain\Classes\CommandKey;
 use Illuminate\Support\Facades\{Queue, Notification};
 use App\Campaign\Notifications\CommanderConfirmUpdated;
-use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup};
+use App\Campaign\Jobs\{UpdateCommanderArea, UpdateCommanderGroup, UpdateCommanderTag};
 
 class Laguna2ndDistrictConfirmTest extends TestCase
 {
@@ -42,6 +42,9 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         });
         Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
             return $job->contact->is($this->commander) && $job->handle == $name;
+        });
+        Queue::assertPushed(UpdateCommanderTag::class, function ($job) use ($lead) {
+            return $job->commander->is($this->commander) && $job->code == $lead->code;
         });
         Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
             return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
