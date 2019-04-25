@@ -74,6 +74,9 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
             return $job->contact->is($this->commander) && $job->handle == $name;
         });
+        Queue::assertPushed(UpdateCommanderTag::class, function ($job) use ($lead) {
+            return $job->commander->is($this->commander) && $job->code == $lead->code;
+        });
         Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
             return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
         });
@@ -101,6 +104,9 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         $this->assertCommandIssued($missive);
         Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
             return $job->contact->is($this->commander) && $job->handle == $name;
+        });
+        Queue::assertPushed(UpdateCommanderTag::class, function ($job) use ($lead) {
+            return $job->commander->is($this->commander) && $job->code == $lead->code;
         });
         Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($lead) {
             return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($lead->area);
@@ -130,6 +136,7 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
             return $job->contact->is($this->commander) && $job->handle == $name;
         });
+        Queue::assertNotPushed(UpdateCommanderTag::class);
         optional(config('txtcmdr.default.area'), function ($default_area_name) {
             Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($default_area_name) {
                 return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($default_area_name);
@@ -161,6 +168,7 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         Queue::assertPushed(UpdateContact::class, function ($job) use ($name) {
             return $job->contact->is($this->commander) && $job->handle == $name;
         });
+        Queue::assertNotPushed(UpdateCommanderTag::class);
         optional(config('txtcmdr.default.area'), function ($default_area_name) {
             Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($default_area_name) {
                 return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($default_area_name);
@@ -191,6 +199,7 @@ class Laguna2ndDistrictConfirmTest extends TestCase
         Queue::assertPushed(UpdateContact::class, function ($job) {
             return $job->contact->is($this->commander) && $job->handle == config('txtcmdr.default.handle');
         });
+        Queue::assertNotPushed(UpdateCommanderTag::class);
         optional(config('txtcmdr.default.area'), function ($default_area_name) {
             Queue::assertPushed(UpdateCommanderArea::class, function ($job) use ($default_area_name) {
                 return $job->commander->is($this->commander) && strtoupper($job->area->name) == strtoupper($default_area_name);

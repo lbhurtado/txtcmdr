@@ -3,32 +3,21 @@
 namespace App\App\Stages;
 
 use Illuminate\Support\Arr;
+use App\Campaign\Domain\Models\Lead;
 use App\Campaign\Domain\Repositories\LeadRepository;
 
 class SanitizeCommanderLeadStage extends BaseStage
 {
-    const ID_NDX        = 'ID';
-    const HANDLE_NDX    = 'NAME';
-    const AREA_NDX      = 'AREA';
-    const GROUP_NDX     = 'GROUP';
-
-    protected $input_code;
-
-    protected $handle;
-
     protected $lead;
 
     protected function enabled()
     {
-
-        $this->input_code = trim(Arr::get($this->getParameters(), 'id'));
-
-        return $this->lead = $this->getSanitizedLead($this->input_code);
+        return $this->lead = $this->getSanitizedLead($this->getSanitizedInputCode());
     }
 
     public function execute()
     {
-        $handle = trim(Arr::get($this->getParameters(), 'handle')) ?? $this->lead->name;
+        $handle = $this->getSanitizedHandle();
         $area = $this->lead->area;
         $group = $this->lead->group;
 
@@ -36,11 +25,24 @@ class SanitizeCommanderLeadStage extends BaseStage
         Arr::set($this->parameters, 'area', $area);
         Arr::set($this->parameters, 'group', $group);
         Arr::set($this->parameters, 'models.lead', $this->lead);
-        Arr::set($this->parameters, 'tag', $this->input_code);
     }
 
-    protected function getSanitizedLead($input)
+    protected function getSanitizedLead($input): ?Lead
     {
         return app(LeadRepository::class)->findByField('code', $input)->first();
+    }
+
+    protected function getSanitizedInputCode(): string
+    {
+        $input_code = trim(Arr::get($this->getParameters(), 'id'));
+
+        return $input_code;
+    }
+
+    protected function getSanitizedHandle(): string
+    {
+        $handle = trim(Arr::get($this->getParameters(), 'handle')) ?? $this->lead->name;
+
+        return $handle;
     }
 }

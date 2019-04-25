@@ -52,6 +52,7 @@ use App\App\Stages\SanitizeTagStage;
 use App\App\Stages\UpdateCommanderStubStage;
 use App\Campaign\Domain\Events\CommandExecuted;
 use App\App\Stages\UpdateCommanderLeadStage;
+use App\App\Stages\UpdateCommanderLeadTagStage;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
@@ -98,7 +99,7 @@ tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
             ->pipe(new SanitizeCommanderLeadStage) //tested
             ->pipe(new UpdateCommanderLeadStage) //tested
             ->pipe(new UpdateCommanderStage) //tested
-//            ->pipe(new UpdateCommanderTagStage) //tested
+            ->pipe(new UpdateCommanderLeadTagStage) //tested
             ->pipe(new SanitizeAreaStage) //tested
             ->pipe(new UpdateCommanderAreaStage) //tested
             ->pipe(new SanitizeGroupStage) //tested
