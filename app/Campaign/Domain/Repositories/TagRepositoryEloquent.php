@@ -53,10 +53,10 @@ class TagRepositoryEloquent extends BaseRepository implements TagRepository
     {
         return
             $this->findByField('code', $input)->first() //great for testing
-//            ??
-//            optional($this->search($input), function ($hits) {
-//                return ($hits->count() == 1) ? $hits->first() : null;
-//            })
+            ??
+            optional($this->search($input), function ($hits) {
+                return ($hits->count() == 1) ? $hits->first() : null;
+            })
             ;
     }
 }

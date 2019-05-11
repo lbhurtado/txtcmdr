@@ -4,7 +4,7 @@ namespace App\App\Stages;
 
 use App\Campaign\Notifications\CommanderReportUplineUpdated; //change the name
 
-
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Classes\{Command, CommandKey};
 use App\Campaign\Notifications\CommanderTagUplineUpdated;
 use App\Campaign\Notifications\CommanderAreaUplineUpdated;
@@ -30,12 +30,12 @@ class NotifyUplineStage extends NotifyStage
     protected function getNotifiable()
     {
         //TODO this is cheating, need to persist data before notification
-        return  $this->getCommander()->parent ?? array_get($this->getParameters(), 'tagger');
+        return  $this->getCommander()->parent ?? Arr::get($this->getParameters(), 'tagger');
     }
 
     public function setup($key)
     {
-        array_set($this->params, 'downline', $this->getCommander());
-        array_set($this->params, 'message', array_get($this->getParameters(), 'message'));
+        Arr::set($this->params, 'downline', $this->getCommander());
+        Arr::set($this->params, 'message', Arr::get($this->getParameters(), 'message'));
     }
 }

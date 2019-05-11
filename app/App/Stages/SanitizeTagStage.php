@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Repositories\TagRepository;
 
 class SanitizeTagStage extends BaseStage
@@ -10,7 +11,7 @@ class SanitizeTagStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->input_code = trim(array_get($this->getParameters(), 'code'));
+        return $this->input_code = trim(Arr::get($this->getParameters(), 'code'));
     }
 
     public function execute()
@@ -22,8 +23,8 @@ class SanitizeTagStage extends BaseStage
             $code = trim(string($code)->concat(' ')->concat($word));
             if ($tag = $this->getSanitizedTag($code)) {
 
-                array_set($this->parameters, 'models.tag', $tag);
-                array_set($this->parameters, 'handle', implode(' ', $array));
+                Arr::set($this->parameters, 'models.tag', $tag);
+                Arr::set($this->parameters, 'handle', implode(' ', $array));
 
                 return;
             }

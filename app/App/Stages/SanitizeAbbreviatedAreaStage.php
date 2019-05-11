@@ -6,24 +6,19 @@ use Illuminate\Support\Arr;
 use App\Campaign\Domain\Models\Area;
 use App\Campaign\Domain\Repositories\AreaRepository;
 
-class SanitizeClusteredPrecinctStage extends BaseStage
+class SanitizeAbbreviatedAreaStage extends BaseStage
 {
-    protected $input_lgu;
-
-    protected $input_clustered_precinct;
+    protected $input_abbr;
 
     protected function enabled()
     {
-        $this->input_lgu = trim(Arr::get($this->getParameters(), 'lgu'));
-        $this->input_clustered_precinct = trim(Arr::get($this->getParameters(), 'cp'));
-
-        return $this->input_lgu && $this->input_clustered_precinct;
+        return $this->input_abbr = trim(Arr::get($this->getParameters(), 'abbr'));
     }
 
     public function execute()
     {
-        dd($this->getClusteredPrecinct());
-        $area = $this->getClusteredPrecinct() ?? $this->halt();
+        dd($this->getAreaFromAbbreviation());
+        $area = $this->getAreaFromAbbreviation() ?? $this->halt();
         $sanitized_area = $area->name;
 
         //TODO: combine the next 3 lines to something like the 4th line
@@ -34,25 +29,25 @@ class SanitizeClusteredPrecinctStage extends BaseStage
         Arr::set($this->parameters, 'models.area', $area);
     }
 
-    protected function getClusteredPrecinct()
+    protected function getAreaFromAbbreviation()
     {
-        switch ($this->input_lgu)
+        switch ($this->input_abbr)
         {
             case 'L':
-                $lgu = Area::where('name', 'Los Banos')->first();
+                $area = Area::where('name', 'Los Banos')->first();
                 break;
 
             case 'B':
-                $lgu = Area::where('name', 'Bay')->first();
+                $area = Area::where('name', 'Bay')->first();
                 break;
 
             case 'C':
-                $lgu = Area::where('name', 'Cabuyao City')->first();
+                $area = Area::where('name', 'Cabuyao City')->first();
                 break;
         }
 
-        $cp = (int) $this->input_clustered_precinct;
+        return $area;
 
-        return Area::descendantsOf($lgu)->where('name','CP'.$cp)->first();
+//        return Area::descendantsOf($lgu)->where('name','CP'.$cp)->first();
     }
 }

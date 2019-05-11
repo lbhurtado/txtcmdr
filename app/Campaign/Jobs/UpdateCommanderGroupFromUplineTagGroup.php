@@ -14,9 +14,9 @@ class UpdateCommanderGroupFromUplineTagGroup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $commander;
+    public $commander;
 
-    protected $group;
+    public $group;
 
     public function __construct(Contact $commander, Group $group)
     {
