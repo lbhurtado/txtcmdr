@@ -2,15 +2,16 @@
 
 namespace App\Campaign\Domain\Traits;
 
+use App\Campaign\Domain\Models\Area;
 use Illuminate\Database\QueryException;
 use App\Campaign\Domain\Models\AreaIssue;
 use App\Campaign\Domain\Repositories\IssueRepository;
 
 trait CanPollIssues
 {
-    public function poll($issue, $qty)
+    public function poll($issue, $qty, Area $area = null)
     {
-        optional($this->areas()->first(), function ($area) use ($issue, $qty) {
+        optional($area ?? $this->areas()->first(), function ($area) use ($issue, $qty) {
             $pivot = AreaIssue::conjure($this, $qty);
             optional(app(IssueRepository::class)->getSanitizedModel($issue), function ($issue) use ($area, $pivot) {
                 try {

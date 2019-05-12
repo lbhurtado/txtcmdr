@@ -3,7 +3,7 @@
 namespace App\Campaign\Jobs;
 
 use Illuminate\Bus\Queueable;
-//use App\Campaign\Domain\Models\Lead;
+use App\Campaign\Domain\Models\Area;
 use App\Missive\Domain\Models\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,10 +18,13 @@ class UpdateCommanderIssues implements ShouldQueue
 
     public $poll_array;
 
-    public function __construct(Contact $commander, $poll_array = [])
+    public $area;
+
+    public function __construct(Contact $commander, $poll_array = [], Area $area = null)
     {
         $this->commander = $commander;
         $this->poll_array = $poll_array;
+        $this->area = $area;
 
         $this->onQueue('sms');
     }
@@ -29,7 +32,7 @@ class UpdateCommanderIssues implements ShouldQueue
     public function handle()
     {
         foreach ($this->poll_array as $word => $number) {
-            $this->commander->poll($word, $number);
+            $this->commander->poll($word, $number, $this->area);
         }
     }
 }

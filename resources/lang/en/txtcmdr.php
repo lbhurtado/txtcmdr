@@ -17,7 +17,7 @@ return [
         'announce'          => "Your announcement ':tease' was sent to :count downlines.\n\n-:signature",
         'report'            => "Your report ':tease' was sent to :upline.\n\n-:signature",
         'broadcast'         => "Your broadcast ':tease' was sent to :count descendants.\n\n-:signature",
-        'poll'              => ":handle, salamat sa pagpapadala mo.\n\n-:signature",
+        'poll'              => "Salamat :handle!\n:poll\n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",

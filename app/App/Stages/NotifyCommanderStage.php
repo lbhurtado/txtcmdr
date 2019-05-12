@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderTagUpdated;
 use App\Campaign\Notifications\CommanderPollUpdated;
@@ -20,7 +21,6 @@ use App\Campaign\Notifications\CommanderAttributeUpdated;
 use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
 use App\Campaign\Notifications\CommanderAnnouncementUpdated;
-
 
 class NotifyCommanderStage extends NotifyStage
 {
@@ -51,10 +51,11 @@ class NotifyCommanderStage extends NotifyStage
 
     public function setup($key)
     {
-        $args = array_get($this->getParameters(), 'args');
+        $args = Arr::get($this->getParameters(), 'args');
 
-        array_set($this->params, 'message', array_get($this->getParameters(), 'message'));
-        array_set($this->params, 'count', array_get($args, 'count', 1));
-        array_set($this->params, 'context', array_get($args, 'context'));
+        Arr::set($this->params, 'message', Arr::get($this->getParameters(), 'message'));
+        Arr::set($this->params, 'count', Arr::get($args, 'count', 1));
+        Arr::set($this->params, 'context', Arr::get($args, 'context'));
+        Arr::set($this->params, 'poll_array', Arr::get($this->getParameters(), 'poll_array', []));
     }
 }

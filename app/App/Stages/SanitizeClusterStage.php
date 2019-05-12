@@ -16,8 +16,7 @@ class SanitizeClusterStage extends BaseStage
 
     public function execute()
     {
-        Arr::set($this->parameters, 'models.old_area', $this->getCommander()->area);
-        Arr::set($this->parameters, 'models.area', $this->getSanitizedClusteredPrecinct());
+        Arr::set($this->parameters, 'models.poll_area', $this->getSanitizedClusteredPrecinct());
     }
 
     protected function getSanitizedClusteredPrecinct()
@@ -29,14 +28,14 @@ class SanitizeClusterStage extends BaseStage
 
     protected function getClusteredPrecinctCode()
     {
-        $code = $this->getCode($this->getCommander()->area->name);
+        $code = $this->getCode($this->getCommander()->area->name) ?? $this->halt();
 
         return $code.'-'.$this->cluster;
     }
 
     protected function getCode($name)
     {
-        $retval = 'NA';
+        $retval = null;
 
         switch ($name)
         {

@@ -9,15 +9,18 @@ class UpdateCommanderIssuesStage extends BaseStage
 {
     protected $poll_array;
 
+    protected $poll_area;
+
     protected function enabled()
     {
-        return $this->poll_array = Arr::get($this->parameters, 'poll_array');
+        $this->poll_array = Arr::get($this->parameters, 'poll_array');
+        $this->poll_area = Arr::get($this->parameters, 'models.poll_area');
+
+        return $this->poll_array && $this->poll_area;
     }
 
     public function execute()
     {
-        $this->dispatch(new UpdateCommanderIssues($this->getCommander(), $this->poll_array));
-        $area = Arr::get($this->parameters, 'models.old_area');
-        Arr::set($this->parameters, 'models.area', $area);
+        $this->dispatch(new UpdateCommanderIssues($this->getCommander(), $this->poll_array, $this->poll_area));
     }
 }

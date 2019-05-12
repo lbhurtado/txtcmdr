@@ -117,11 +117,10 @@ tap(Command::using(CommandKey::POLL), function ($cmd) use ($txtcmdr) {
     $txtcmdr->register("{command=$cmd->CMD}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
         (new Pipeline)
             ->pipe(new SanitizeClusterStage)
-            ->pipe(new UpdateCommanderAreaStage) //tested
+//            ->pipe(new UpdateCommanderAreaStage) //tested
             ->pipe(new SanitizePollStage)
             ->pipe(new UpdateCommanderIssuesStage) //tested
             ->pipe(new NotifyCommanderStage) //tested
-//            ->pipe(new UpdateCommanderAreaStage) //tested
             ->pipe(new ChargeCommanderOutgoingSMSStage)
             ->process($parameters)
         ;

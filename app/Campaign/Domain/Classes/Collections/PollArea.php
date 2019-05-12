@@ -3,6 +3,7 @@
 namespace App\Campaign\Domain\Classes\Collections;
 
 use DB;
+use Illuminate\Support\Arr;
 use App\Campaign\Domain\Contracts\PollCollection;
 
 abstract class PollArea implements PollCollection
@@ -20,7 +21,7 @@ abstract class PollArea implements PollCollection
 
     protected static function getPollAreaClass($area): PollArea
     {
-        return app(array_get(config('txtcmdr.collections.poll'), $area));
+        return app(Arr::get(config('txtcmdr.collections.poll'), $area));
     }
 
     protected function getCollection()
@@ -32,8 +33,9 @@ abstract class PollArea implements PollCollection
             ->selectRaw('sum(area_issue.qty) as votes')
             ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
             ->join('categories', 'categories.id', '=', 'issues.category_id')
-            ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
-            ->join('areas as clusters', 'clusters.id', '=', 'precincts.parent_id')
+//            ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
+//            ->join('areas as clusters', 'clusters.id', '=', 'precincts.parent_id')
+            ->join('areas as clusters', 'clusters.id', '=', 'area_issue.area_id')
             ->join('areas as barangays', 'barangays.id', '=', 'clusters.parent_id')
             ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
             ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')

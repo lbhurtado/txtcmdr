@@ -27,7 +27,7 @@ class Laguna2ndDistrictRegisterTest extends TestCase
         $this->keyword = 'C';
     }
 
-    /** @test */
+//    /** @test */
     public function commander_can_register_using_syntax_lgu_code_existing_clustered_precinct_id_and_with_name()
     {
         /*** arrange ***/
