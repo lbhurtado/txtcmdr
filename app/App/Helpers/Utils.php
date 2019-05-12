@@ -73,3 +73,16 @@ if (!function_exists('excel_lookup')) {
                     : [];        
     }
 }
+
+if (!function_exists('process_word_number_sequence')) {
+
+    function process_word_number_sequence($word_number_sequence) {
+        $word_number_sequence_no_space_input = preg_replace('/[^\da-z]/i', '', $word_number_sequence);
+
+
+        return preg_match_all('/(?<word>[\D]+)(?<number>\d+)/', $word_number_sequence_no_space_input, $matches)
+            ? array_combine($matches['word'], $matches['number'])
+            : null
+            ;
+    }
+}

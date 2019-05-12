@@ -54,11 +54,29 @@ use App\Campaign\Domain\Events\CommandExecuted;
 use App\App\Stages\UpdateCommanderLeadStage;
 use App\App\Stages\UpdateCommanderLeadTagStage;
 use App\App\Stages\SanitizeAbbreviatedAreaStage;
+use App\App\Stages\SanitizePollStage;
+use App\App\Stages\UpdateCommanderIssuesStage;
+use App\App\Stages\SanitizeClusterStage;
+use App\Missive\Domain\Models\Contact;
 
 if (! Schema::hasTable('taggables')) return; //find other ways to make this elegant
 if (! Schema::hasTable('alerts')) return; //find other ways to make this elegant
 
 $txtcmdr = resolve('txtcmdr');
+
+tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
+	$txtcmdr->register("{message}", function (string $path, array $parameters) use ($cmd, $txtcmdr) {
+        $parameters['command'] = $cmd->CMD;
+        $parameters['tagger'] = Contact::where('handle', 'HQ 3')->first();
+        $parameters['from'] = $txtcmdr->sms()->from;
+		(new Pipeline)
+            ->pipe(new NotifyUplineStage) //tested
+		    ->process($parameters)
+		    ;
+
+		return true;
+	});
+});
 
 //tap(Command::using(CommandKey::OPTIN), function ($cmd) use ($txtcmdr) {
 //	$txtcmdr->register("{command={$cmd->CMD}}", function (string $path, array $parameters) {
@@ -71,45 +89,63 @@ $txtcmdr = resolve('txtcmdr');
 //});
 
 //// TODO add upline notification
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{=[\W\s]*}{code=[L|B|C]}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
-//    $txtcmdr->register("{code={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
-//    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
-        $parameters['command'] = $cmd->CMD;
-        (new Pipeline)
-            ->pipe(new SanitizeTagStage)
-            ->pipe(new UpdateCommanderStage) //tested
-            ->pipe(new UpdateCommanderUplineStage) //tested
-            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
-            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
-//            ->pipe(new UpdateCommanderTagStage) //tested
-//            ->pipe(new UpdateCommanderCampaignParametersStage) //done
-//            ->pipe(new UpdateCommanderTagCampaignStage) //tested
-//            ->pipe(new UpdateCommanderTagAreaStage) //tested
-//            ->pipe(new UpdateCommanderTagGroupStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new NotifyUplineStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
-    });
-});
-
 //tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-//    $txtcmdr->register("{=[\W\s]*}{abbr=[L|B|C]}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
+//    $txtcmdr->register("{=[\W\s]*}{code=[L|B|C]}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
+////    $txtcmdr->register("{code={$cmd->LST}} {handle}", function (string $path, array $parameters) use ($cmd) {
+////    $txtcmdr->register("{code}", function (string $path, array $parameters) use ($cmd) {
 //        $parameters['command'] = $cmd->CMD;
 //        (new Pipeline)
+//            ->pipe(new SanitizeTagStage)
 //            ->pipe(new UpdateCommanderStage) //tested
-//            ->pipe(new SanitizeAbbreviatedAreaStage)
-//            ->pipe(new SanitizeAreaStage) //tested
-//            ->pipe(new UpdateCommanderAreaStage) //tested
+//            ->pipe(new UpdateCommanderUplineStage) //tested
+//            ->pipe(new UpdateCommanderAreaFromUplineTagAreaStage) //tested
+//            ->pipe(new UpdateCommanderGroupFromUplineTagGroupStage) //tested
+////            ->pipe(new UpdateCommanderTagStage) //tested
+////            ->pipe(new UpdateCommanderCampaignParametersStage) //done
+////            ->pipe(new UpdateCommanderTagCampaignStage) //tested
+////            ->pipe(new UpdateCommanderTagAreaStage) //tested
+////            ->pipe(new UpdateCommanderTagGroupStage) //tested
+//            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new NotifyUplineStage) //tested
 //            ->pipe(new ChargeCommanderOutgoingSMSStage)
 //            ->process($parameters)
 //        ;
-//
-//        return true;
 //    });
 //});
+
+tap(Command::using(CommandKey::POLL), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{command=$cmd->CMD}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
+        (new Pipeline)
+            ->pipe(new SanitizeClusterStage)
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new SanitizePollStage)
+            ->pipe(new UpdateCommanderIssuesStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+
+        return true;
+    });
+});
+
+tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
+    $txtcmdr->register("{=[\W\s]*}{abbr=Los B\w*|[L|B|C]\w*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
+        $parameters['command'] = $cmd->CMD;
+        (new Pipeline)
+            ->pipe(new UpdateCommanderStage) //tested
+            ->pipe(new SanitizeAbbreviatedAreaStage)
+            ->pipe(new SanitizeAreaStage) //tested
+            ->pipe(new UpdateCommanderAreaStage) //tested
+            ->pipe(new NotifyCommanderStage) //tested
+            ->pipe(new ChargeCommanderOutgoingSMSStage)
+            ->process($parameters)
+        ;
+//TODO: update area the second time
+        return true;
+    });
+});
 
 //tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
 //    $txtcmdr->register("{=[\W\s]*}{command={$cmd->CMD}}{=[\W\s]*}{id=\d*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {

@@ -36,6 +36,7 @@ class NotifyUplineStage extends NotifyStage
     public function setup($key)
     {
         Arr::set($this->params, 'downline', $this->getCommander());
+        Arr::set($this->params, 'sms', $this->getSMS());
         Arr::set($this->params, 'message', Arr::get($this->getParameters(), 'message'));
     }
 }

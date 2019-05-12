@@ -38,6 +38,11 @@ abstract class BaseStage implements StageInterface
         return TxtCmdr::commander();
     }
 
+    protected function getSMS()
+    {
+        return TxtCmdr::sms();
+    }
+
     protected function getNotification()
     {
         return array_get($this->notifications, array_get($this->getParameters(), 'command'));

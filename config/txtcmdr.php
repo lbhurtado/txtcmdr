@@ -101,6 +101,10 @@ return [
             'cmd' => env('CONFIRM_COMMAND'),
             'class' => App\Campaign\Domain\Classes\ConfirmCommand::class,
         ],
+        CommandKey::POLL => [
+            'cmd' => env('POLL_COMMAND'),
+            'class' => App\Campaign\Domain\Classes\PollCommand::class,
+        ],
     ],
     'infokeys' => [
         InfoKey::TAG => env('INFO_KEYWORD_AREA', 'TAG'),

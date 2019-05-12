@@ -15,7 +15,7 @@ class VolunteersImport implements ToCollection, WithHeadingRow
     {
 
         $hq1 = Contact::where('mobile', '+639954705290')->first();
-        $hq2 = Contact::where('mobile', '+639612526279')->first();
+        $hq2 = Contact::where('mobile', '+639202371976')->first();
 
         foreach ($rows as $i=>$row) {
             $province = $citymun = $barangay = $precinct = $clustered_precinct = null;
@@ -52,7 +52,7 @@ class VolunteersImport implements ToCollection, WithHeadingRow
                     $contact = Contact::create(compact('mobile', 'handle'), $hq2);
 
                 $contact->syncGroups($group);
-                $contact->syncAreas($area);
+//                $contact->syncAreas($area);
                 $contact->extra_attributes['precinct'] = $precinct;
                 $contact->save();
             }

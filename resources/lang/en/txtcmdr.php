@@ -7,8 +7,7 @@ return [
         'confirm'           => "Salamat sa pagsali. Masigasig po tayong mangumbinsi para sa tagumpay ng ating laban. Ang panalo ko, ay panalo niyo! Nagmamahal,\n\n- Cong Ruth Hernandez",
 		'group'  	        => "You are now attached to :group. \n\n-:signature",
 		'tag'   	        => "Registration procedure for :context:\n\nsend :code [first name] [last name] to :numbers\n\n-:signature",
-        'registration'      => "Salamat sa pagsali. Masigasig po tayong mangumbinsi para sa tagumpay ng ating laban. Ang panalo ko, ay panalo niyo! Nagmamahal,\n\n- Cong Ruth Hernandez",
-//		'registration'      => "Akong higala :handle, ako si Atty. Levi Baligod, nagpasalamat kanimo sa imong kinasing-kasing nga pagsuporta alang sa Kausaban sa Baybay.  Magtinabangay ta arun masulusyonan ang mga problema sa atong lungsod, hilabi na ang kawad-on ug ang pagbatuk sa korapsyon ug sa ginadili na droga",
+        'registration'      => "Salamat sa pagrehistro.\n\n-:signature",
 		'alert'		        => ":alert alert was issued to:\n:handle\n:groups \n\n-:signature",
 		'attribute'	        => "You changed a :attribute attribute. \n\n-:signature",
 		'status'	        => "Your status changed to: :status*\n\n*:reason\n\n-:signature",
@@ -18,6 +17,7 @@ return [
         'announce'          => "Your announcement ':tease' was sent to :count downlines.\n\n-:signature",
         'report'            => "Your report ':tease' was sent to :upline.\n\n-:signature",
         'broadcast'         => "Your broadcast ':tease' was sent to :count descendants.\n\n-:signature",
+        'poll'              => ":handle, salamat sa pagpapadala mo.\n\n-:signature",
         'info'		        => [
             'tag' 	        => "Tag:\n:data\n\n-:signature",
         	'area' 	        => "Area:\n:data\n\n-:signature",

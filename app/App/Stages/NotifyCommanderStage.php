@@ -4,6 +4,7 @@ namespace App\App\Stages;
 
 use App\Campaign\Domain\Classes\CommandKey;
 use App\Campaign\Notifications\CommanderTagUpdated;
+use App\Campaign\Notifications\CommanderPollUpdated;
 use App\Campaign\Notifications\CommanderSendUpdated;
 use App\Campaign\Notifications\CommanderAreaUpdated;
 use App\Campaign\Notifications\CommanderTestUpdated;
@@ -19,6 +20,7 @@ use App\Campaign\Notifications\CommanderAttributeUpdated;
 use App\Campaign\Notifications\CommanderBroadcastUpdated;
 use App\Campaign\Notifications\CommanderRegistrationUpdated;
 use App\Campaign\Notifications\CommanderAnnouncementUpdated;
+
 
 class NotifyCommanderStage extends NotifyStage
 {
@@ -39,6 +41,7 @@ class NotifyCommanderStage extends NotifyStage
         CommandKey::ANNOUNCE  => CommanderAnnouncementUpdated::class,
         CommandKey::ATTRIBUTE => CommanderAttributeUpdated::class,
         CommandKey::BROADCAST => CommanderBroadcastUpdated::class,
+        CommandKey::POLL      => CommanderPollUpdated::class,
     ];
 
     protected function getNotifiable()

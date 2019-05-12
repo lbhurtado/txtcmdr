@@ -2,12 +2,11 @@
 
 namespace App\Campaign\Notifications;
 
-use Illuminate\Support\Arr;
 use App\Missive\Domain\Models\Contact;
 
-class CommanderRegistrationUpdated extends BaseNotification
+class CommanderPollUpdated extends BaseNotification
 {
-    protected $template = "txtcmdr.commander.registration";
+    protected $template = "txtcmdr.commander.poll";
 
     public $queue = 'sms';
 

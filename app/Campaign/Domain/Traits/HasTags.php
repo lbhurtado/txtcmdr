@@ -24,6 +24,13 @@ trait HasTags
         return $this->tag()->updateOrCreate(compact('contact_id'), compact('code'));
     }
 
+    public function addTag($code)
+    {
+        $contact_id = $this->id;
+
+        return $this->tag()->firstOrCreate(compact('contact_id','code'));
+    }
+
     public function setTag($code)
     {
         $this->syncTag($code);

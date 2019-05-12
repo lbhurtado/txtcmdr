@@ -35,19 +35,24 @@ class VolunteerSeeder extends Seeder
 
         DB::transaction(function () use ($group_nodes, $area_nodes) {
             $contact = Contact::create(['mobile' => '+639954705290', 'handle' => 'HQ 1']);
-            Contact::create(['mobile' => '+639612526279', 'handle' => 'HQ 2'], $contact);
+            Contact::create(['mobile' => '+639202371976', 'handle' => 'HQ 2'], $contact);
+            Contact::create(['mobile' => '+639565711304', 'handle' => 'HQ 3'], $contact);
 
             $category = Category::create(['name' => 'Governor']);
             Issue::make(['code' => 'RAMIL', 'name' => 'Ramil Hernandez'])->category()->associate($category)->save();
             Issue::make(['code' => 'ER', 'name' => 'ER Ejercito'])->category()->associate($category)->save();
 
             $category = Category::create(['name' => 'Representative']);
-            Issue::make(['code' => 'CARINGAL', 'name' => 'Banjo Caringal'])->category()->associate($category)->save();
+            Issue::make(['code' => 'BANJO', 'name' => 'Banjo Caringal'])->category()->associate($category)->save();
             Issue::make(['code' => 'GENUINO', 'name' => 'Efraim Genuino'])->category()->associate($category)->save();
             Issue::make(['code' => 'HEMEDEZ', 'name' => 'Isidro Hemedez Jr.'])->category()->associate($category)->save();
-            Issue::make(['code' => 'HERNANDEZ', 'name' => 'Ruth Hernandez'])->category()->associate($category)->save();
-            Issue::make(['code' => 'LAVINA', 'name' => 'Tirso Lavina'])->category()->associate($category)->save();
+            Issue::make(['code' => 'RUTH', 'name' => 'Ruth Hernandez'])->category()->associate($category)->save();
+            Issue::make(['code' => 'TIRSO', 'name' => 'Tirso Lavina'])->category()->associate($category)->save();
             Issue::make(['code' => 'REVILLA', 'name' => 'Rosauro Revilla'])->category()->associate($category)->save();
+
+            $category = Category::create(['name' => 'System']);
+            Issue::make(['code' => 'TOTAL', 'name' => 'Total Voters'])->category()->associate($category)->save();
+
 
             foreach ($group_nodes as $group_node) {
                 Group::build($group_node);
@@ -55,42 +60,6 @@ class VolunteerSeeder extends Seeder
             foreach ($area_nodes as $area_node) {
                 Area::build($area_node);
             }
-
-            tap($contact->syncTag('CAB'), function ($tag) {
-                optional(Area::where('name', 'CABUYAO CITY')->first(), function ($area) use ($tag) {
-                    $tag->setArea($area, true);
-                });
-                optional(Group::where('name', 'WATCHER')->first(), function ($group) use ($tag) {
-                    $tag->setGroup($group, true);
-                });
-                optional(Campaign::where('name', 'default')->first(), function ($campaign) use ($tag) {
-                    $tag->setCampaign($campaign, true);
-                });
-            });
-
-            tap($contact->syncTag('BAY'), function ($tag) {
-                optional(Area::where('name', 'Bay')->first(), function ($area) use ($tag) {
-                    $tag->setArea($area, true);
-                });
-                optional(Group::where('name', 'WATCHER')->first(), function ($group) use ($tag) {
-                    $tag->setGroup($group, true);
-                });
-                optional(Campaign::where('name', 'default')->first(), function ($campaign) use ($tag) {
-                    $tag->setCampaign($campaign, true);
-                });
-            });
-
-            tap($contact->syncTag('LB'), function ($tag) {
-                optional(Area::where('name', 'LOS BANOS')->first(), function ($area) use ($tag) {
-                    $tag->setArea($area, true);
-                });
-                optional(Group::where('name', 'WATCHER')->first(), function ($group) use ($tag) {
-                    $tag->setGroup($group, true);
-                });
-                optional(Campaign::where('name', 'default')->first(), function ($campaign) use ($tag) {
-                    $tag->setCampaign($campaign, true);
-                });
-            });
         });
 
         Excel::import(new VolunteersImport, database_path($this->spreadsheet));

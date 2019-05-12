@@ -2,6 +2,7 @@
 
 namespace App\App\Stages;
 
+use Illuminate\Support\Arr;
 use App\Campaign\Jobs\UpdateCommanderArea;
 
 class UpdateCommanderAreaStage extends BaseStage
@@ -10,7 +11,7 @@ class UpdateCommanderAreaStage extends BaseStage
 
     protected function enabled()
     {
-        return $this->area = array_get($this->parameters, 'models.area');
+        return $this->area = Arr::get($this->parameters, 'models.area');
     }
 
     public function execute()

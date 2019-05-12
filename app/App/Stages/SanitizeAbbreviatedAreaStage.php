@@ -17,7 +17,6 @@ class SanitizeAbbreviatedAreaStage extends BaseStage
 
     public function execute()
     {
-        dd($this->getAreaFromAbbreviation());
         $area = $this->getAreaFromAbbreviation() ?? $this->halt();
         $sanitized_area = $area->name;
 
@@ -31,7 +30,7 @@ class SanitizeAbbreviatedAreaStage extends BaseStage
 
     protected function getAreaFromAbbreviation()
     {
-        switch ($this->input_abbr)
+        switch ($this->input_abbr[0])
         {
             case 'L':
                 $area = Area::where('name', 'Los Banos')->first();
