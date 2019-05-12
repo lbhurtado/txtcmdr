@@ -11,7 +11,7 @@ class PollDistricts extends PollArea
 
     public function getCategoryIds()
     {
-        return [1];
+        return [1, 2];
     }
 
     public function getGroupByField1()
