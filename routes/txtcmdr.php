@@ -114,7 +114,7 @@ tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 //});
 
 tap(Command::using(CommandKey::POLL), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{command=$cmd->CMD}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
+    $txtcmdr->register("{=.*}{command=$cmd->CMD}{=[\W\s]*}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
         (new Pipeline)
             ->pipe(new SanitizeClusterStage)
 //            ->pipe(new UpdateCommanderAreaStage) //tested
