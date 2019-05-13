@@ -41,9 +41,9 @@ class VolunteersImport implements ToCollection, WithHeadingRow
             Group::build($group_name);
             $group = Group::dig($group_name);
 
-            $area_name = "{$province}.{$citymun}.{$barangay}.{$this->getCode($citymun)}-{$this->getNumber($clustered_precinct)}";
-            Area::build($area_name);
-            $area = Area::dig($area_name);
+//            $area_name = "{$province}.{$citymun}.{$barangay}.{$this->getCode($citymun)}-{$this->getNumber($clustered_precinct)}";
+//            Area::build($area_name);
+//            $area = Area::dig($area_name);
 
             try {
                 if ($group->name == 'CORE')

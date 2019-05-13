@@ -41,7 +41,7 @@ class SanitizeAbbreviatedAreaStage extends BaseStage
                 break;
 
             case 'C':
-                $area = Area::where('name', 'Cabuyao City')->first();
+                $area = Area::where('name', 'Cabuyao')->first();
                 break;
         }
 

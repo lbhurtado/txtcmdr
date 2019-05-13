@@ -34,6 +34,8 @@ class SMSsImport implements ToCollection, WithHeadingRow
             if (strlen($message) == 0)
                 continue;
 
+            $from = "+".$from;
+
             try {
                 tap(SMS::create(compact('from', 'to', 'message')), function ($sms) {
 

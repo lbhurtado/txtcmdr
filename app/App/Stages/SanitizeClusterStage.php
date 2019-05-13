@@ -39,7 +39,7 @@ class SanitizeClusterStage extends BaseStage
 
         switch ($name)
         {
-            case 'CABUYAO CITY':
+            case 'CABUYAO':
                 $retval = 'CAB';
                 break;
             case 'LOS BANOS':
