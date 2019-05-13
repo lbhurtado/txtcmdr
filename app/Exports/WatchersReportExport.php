@@ -45,7 +45,7 @@ class WatchersReportExport implements FromCollection, Responsable, WithHeadings,
         return [
             'Town',
             'Barangay',
-            'Cluster',
+            'Cluster #',
             'Candidate',
             'Votes',
             'Watcher',
@@ -63,7 +63,7 @@ class WatchersReportExport implements FromCollection, Responsable, WithHeadings,
             $area_issue->candidate,
             $area_issue->votes,
             $area_issue->watcher,
-            $area_issue->mobile,
+            $area_issue->mobile . ' ',
             $area_issue->datetime
         ];
     }
