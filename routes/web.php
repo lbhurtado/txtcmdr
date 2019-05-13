@@ -2,7 +2,7 @@
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Campaign\Exports\{AreasExport, AreaContactsExport};
-
+use App\Exports\WatchersReportExport;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,3 +70,7 @@ Route::get('/poll4', function() {
 });
 
 Route::get('/report/{area}', 'PollController@poll_area');
+
+Route::get('/export/watchers', function() {
+    return Excel::download(new WatchersReportExport, 'watchers.xlsx');
+});
