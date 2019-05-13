@@ -31,11 +31,12 @@ class WatchersReportExport implements FromCollection, Responsable, WithHeadings,
             ->addSelect('area_issue.updated_at as datetime')
             ->join('contacts', 'contacts.id', '=', 'area_issue.contact_id')
             ->join('issues', 'issues.id', '=', 'area_issue.issue_id')
+            ->join('categories', 'categories.id', '=', 'issues.category_id')
             ->join('areas as precincts', 'precincts.id', '=', 'area_issue.area_id')
             ->join('areas as barangays', 'barangays.id', '=', 'precincts.parent_id')
             ->join('areas as towns', 'towns.id', '=', 'barangays.parent_id')
             ->join('areas as districts', 'districts.id', '=', 'towns.parent_id')
-            ->orderByRaw('precincts.id')
+            ->orderByRaw('precincts.id, categories.id, issues.id')
             ->get();
     }
 
