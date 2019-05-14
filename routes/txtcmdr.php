@@ -113,38 +113,38 @@ tap(Command::using(CommandKey::REPORT), function ($cmd) use ($txtcmdr) {
 //    });
 //});
 
-tap(Command::using(CommandKey::POLL), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{=.*}{command=$cmd->CMD}{=[\W\s]*}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
-        (new Pipeline)
-            ->pipe(new SanitizeClusterStage)
+//tap(Command::using(CommandKey::POLL), function ($cmd) use ($txtcmdr) {
+//    $txtcmdr->register("{=.*}{command=$cmd->CMD}{=[\W\s]*}{cluster=[\d]*}{poll}", function (string $path, array $parameters) use ($cmd) {
+//        (new Pipeline)
+//            ->pipe(new SanitizeClusterStage)
+////            ->pipe(new UpdateCommanderAreaStage) //tested
+//            ->pipe(new SanitizePollStage)
+//            ->pipe(new UpdateCommanderIssuesStage) //tested
+//            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new ChargeCommanderOutgoingSMSStage)
+//            ->process($parameters)
+//        ;
+//
+//        return true;
+//    });
+//});
+//
+//tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
+//    $txtcmdr->register("{=[\W\s]*}{abbr=Los B\w*|[L|B|C]\w*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
+//        $parameters['command'] = $cmd->CMD;
+//        (new Pipeline)
+//            ->pipe(new UpdateCommanderStage) //tested
+//            ->pipe(new SanitizeAbbreviatedAreaStage)
+//            ->pipe(new SanitizeAreaStage) //tested
 //            ->pipe(new UpdateCommanderAreaStage) //tested
-            ->pipe(new SanitizePollStage)
-            ->pipe(new UpdateCommanderIssuesStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
-
-        return true;
-    });
-});
-
-tap(Command::using(CommandKey::REGISTER), function ($cmd) use ($txtcmdr) {
-    $txtcmdr->register("{=[\W\s]*}{abbr=Los B\w*|[L|B|C]\w*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
-        $parameters['command'] = $cmd->CMD;
-        (new Pipeline)
-            ->pipe(new UpdateCommanderStage) //tested
-            ->pipe(new SanitizeAbbreviatedAreaStage)
-            ->pipe(new SanitizeAreaStage) //tested
-            ->pipe(new UpdateCommanderAreaStage) //tested
-            ->pipe(new NotifyCommanderStage) //tested
-            ->pipe(new ChargeCommanderOutgoingSMSStage)
-            ->process($parameters)
-        ;
-//TODO: update area the second time
-        return true;
-    });
-});
+//            ->pipe(new NotifyCommanderStage) //tested
+//            ->pipe(new ChargeCommanderOutgoingSMSStage)
+//            ->process($parameters)
+//        ;
+////TODO: update area the second time
+//        return true;
+//    });
+//});
 
 //tap(Command::using(CommandKey::CONFIRM), function ($cmd) use ($txtcmdr) {
 //    $txtcmdr->register("{=[\W\s]*}{command={$cmd->CMD}}{=[\W\s]*}{id=\d*}{=[\W\s]*}{handle=.*?}{=[\W]*}", function (string $path, array $parameters) use ($cmd) {
